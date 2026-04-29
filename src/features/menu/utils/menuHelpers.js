@@ -28,6 +28,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.dashboard;
   }
 
+  if (path === "/admin/tripPerformance") {
+    return APP_ROUTES.tripPerformance;
+  }
+
   return null;
 };
 

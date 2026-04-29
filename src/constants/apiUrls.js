@@ -8,4 +8,7 @@ export const API_URLS = {
   dashboard: {
     overview: "/admin/dashboard",
   },
+  reports: {
+    tripPerformance: "/admin/tripPerformance",
+  },
 };

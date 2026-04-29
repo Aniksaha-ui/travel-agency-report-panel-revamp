@@ -7,6 +7,7 @@ import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import LoginPage from "./features/auth/pages/LoginPage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
+import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import { store } from "./store/store";
 
 const queryClient = new QueryClient({
@@ -56,6 +57,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.tripPerformance}
+          element={
+            <ProtectedRoute>
+              <TripPerformancePage />
             </ProtectedRoute>
           }
         />

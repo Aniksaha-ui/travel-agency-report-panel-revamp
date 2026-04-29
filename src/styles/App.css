@@ -1134,6 +1134,347 @@
   background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
 }
 
+.trip-performance-page-header .page-title {
+  margin-bottom: 0.4rem;
+}
+
+.trip-performance-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.6rem 1.8rem;
+  border-radius: 1.65rem;
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+}
+
+.trip-performance-hero__copy {
+  max-width: 44rem;
+}
+
+.trip-performance-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  margin-bottom: 0.85rem;
+  border-radius: 999px;
+  background: rgba(14, 116, 144, 0.1);
+  color: #0f766e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.trip-performance-hero__meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  min-width: min(33rem, 100%);
+}
+
+.trip-performance-hero__meta-item {
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  background: rgba(14, 116, 144, 0.08);
+}
+
+.trip-performance-hero__meta-label,
+.trip-performance-summary-grid__label,
+.trip-performance-page-control__value,
+.trip-performance-mobile__eyebrow,
+.trip-performance-mobile__item-grid-label {
+  display: block;
+  color: var(--travel-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.trip-performance-card {
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+}
+
+.trip-performance-highlight {
+  padding: 1rem 1.1rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #15305e 0%, #1d4f91 100%);
+  color: #ffffff;
+}
+
+.trip-performance-highlight__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.trip-performance-highlight__value {
+  margin-top: 0.55rem;
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.trip-performance-highlight__meta {
+  margin-top: 0.45rem;
+  color: rgba(226, 232, 240, 0.82);
+  font-size: 0.86rem;
+}
+
+.trip-performance-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.trip-performance-summary-grid__item {
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+  border: 1px solid rgba(14, 116, 144, 0.08);
+}
+
+.trip-performance-summary-grid__item strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.15rem;
+}
+
+.trip-performance-page-control {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.2rem;
+  min-height: 100%;
+}
+
+.trip-performance-page-control__value {
+  margin-bottom: 0.55rem;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.trip-performance-page-control__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.trip-performance-meter {
+  min-width: 8rem;
+}
+
+.trip-performance-meter__label {
+  margin-bottom: 0.35rem;
+  color: var(--travel-muted);
+  font-size: 0.74rem;
+}
+
+.trip-performance-meter__track {
+  position: relative;
+  height: 0.55rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.22);
+}
+
+.trip-performance-meter__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2dd4bf 0%, #0f766e 100%);
+}
+
+.trip-performance-mobile {
+  padding: 0.05rem 0 0.75rem;
+}
+
+.trip-performance-mobile__screen {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.trip-performance-mobile__hero,
+.trip-performance-mobile__card {
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(20, 32, 66, 0.96) 0%, rgba(11, 20, 46, 0.98) 100%);
+  color: #f8fbff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 22px 40px rgba(3, 8, 24, 0.34);
+}
+
+.trip-performance-mobile__hero {
+  background:
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(22, 40, 78, 0.98) 0%, rgba(11, 20, 46, 0.98) 100%);
+}
+
+.trip-performance-mobile__hero-top,
+.trip-performance-mobile__card-header,
+.trip-performance-mobile__item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.trip-performance-mobile__title,
+.trip-performance-mobile__card-title {
+  margin: 0.2rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.trip-performance-mobile__subtitle,
+.trip-performance-mobile__card-subtle,
+.trip-performance-mobile__item-meta,
+.trip-performance-mobile__item-grid-label,
+.trip-performance-mobile__spotlight-meta {
+  color: rgba(217, 231, 255, 0.72);
+}
+
+.trip-performance-mobile__subtitle {
+  margin: 0.45rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.trip-performance-mobile__date,
+.trip-performance-mobile__pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.42rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.74rem;
+}
+
+.trip-performance-mobile__spotlight {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 0.95rem;
+  margin-top: 0.95rem;
+  border-radius: 1.1rem;
+  background: linear-gradient(135deg, rgba(19, 78, 74, 0.55) 0%, rgba(17, 24, 39, 0.22) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.trip-performance-mobile__spotlight-label {
+  color: rgba(191, 219, 254, 0.76);
+  font-size: 0.74rem;
+}
+
+.trip-performance-mobile__spotlight-value {
+  margin-top: 0.35rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.trip-performance-mobile__spotlight-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+}
+
+.trip-performance-mobile__spotlight-stack span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.68rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.trip-performance-mobile__metric-grid,
+.trip-performance-mobile__item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.trip-performance-mobile__metric-grid {
+  margin-top: 0.95rem;
+}
+
+.trip-performance-mobile__metric {
+  padding: 0.85rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.trip-performance-mobile__metric-label {
+  color: rgba(191, 219, 254, 0.78);
+  font-size: 0.72rem;
+}
+
+.trip-performance-mobile__metric-value {
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.trip-performance-mobile__metric-meta {
+  margin-top: 0.25rem;
+  color: rgba(217, 231, 255, 0.72);
+  font-size: 0.69rem;
+}
+
+.trip-performance-mobile__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.95rem;
+}
+
+.trip-performance-mobile__item {
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.trip-performance-mobile__item-title,
+.trip-performance-mobile__item-profit,
+.trip-performance-mobile__item-grid-value {
+  font-weight: 700;
+}
+
+.trip-performance-mobile__item-profit {
+  text-align: right;
+}
+
+.trip-performance-mobile__item-grid {
+  margin-top: 0.8rem;
+}
+
+.trip-performance-mobile__pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.trip-performance-mobile__empty {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(217, 231, 255, 0.72);
+  text-align: center;
+}
+
 .responsive-data-table td,
 .responsive-data-table th {
   vertical-align: middle;
@@ -1586,8 +1927,41 @@
   }
 
   .dashboard-desktop-hero__stats,
-  .dashboard-summary-grid {
+  .dashboard-summary-grid,
+  .trip-performance-hero__meta,
+  .trip-performance-summary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .trip-performance-hero {
+    padding: 1.2rem;
+  }
+
+  .trip-performance-mobile .container-xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .trip-performance-mobile__hero,
+  .trip-performance-mobile__card {
+    padding: 0.95rem;
+    border-radius: 1.28rem;
+  }
+
+  .trip-performance-mobile__spotlight,
+  .trip-performance-mobile__hero-top,
+  .trip-performance-mobile__card-header,
+  .trip-performance-mobile__item-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .trip-performance-mobile__spotlight-stack {
+    align-items: flex-start;
+  }
+
+  .trip-performance-mobile__item-profit {
+    text-align: left;
   }
 
   .responsive-data-table thead {

@@ -1,0 +1,10 @@
+:root {
+  --travel-primary: #0f766e;
+  --travel-primary-dark: #115e59;
+  --travel-accent: #f59e0b;
+  --travel-surface: #f5f7fb;
+  --travel-panel: #ffffff;
+  --travel-text: #172033;
+  --travel-muted: #6b7280;
+  --travel-gradient: linear-gradient(135deg, #0f766e 0%, #0ea5a3 52%, #f59e0b 100%);
+}

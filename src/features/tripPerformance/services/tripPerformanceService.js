@@ -12,6 +12,9 @@ const formatNumber = (value) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(toNumber(value));
 
 const formatCurrency = (value) => `BDT ${formatNumber(value)}`;
+const normalizeSearch = (value) => String(value ?? "").trim().toLowerCase();
+const shortenLabel = (value, maxLength = 14) =>
+  String(value ?? "").length > maxLength ? `${String(value).slice(0, maxLength - 1)}…` : String(value ?? "");
 
 const formatDateRange = (departureTime, arrivalTime) => {
   const departureLabel = formatTravelDate(departureTime);
@@ -70,6 +73,9 @@ export const normalizeTripPerformance = (payload) => {
   const visibleCapacity = trips.reduce((sum, trip) => sum + trip.totalCapacity, 0);
   const visibleUtilization = visibleCapacity ? Math.round((visibleBookedSeats / visibleCapacity) * 100) : 0;
   const topTrip = [...trips].sort((first, second) => second.totalProfit - first.totalProfit)[0] ?? null;
+  const trendTrips = [...trips].slice(0, 6).reverse();
+  const occupancyLeaders = [...trips].sort((first, second) => second.occupancyRate - first.occupancyRate).slice(0, 5);
+  const revenueLeaders = [...trips].sort((first, second) => second.totalRevenue - first.totalRevenue).slice(0, 5);
 
   return {
     copy: TRIP_PERFORMANCE_COPY,
@@ -128,15 +134,66 @@ export const normalizeTripPerformance = (payload) => {
       totalTripsLabel: formatNumber(source.total),
       topTrip,
     },
+    charts: {
+      revenueTrend: trendTrips.map((trip) => ({
+        id: trip.id,
+        label: shortenLabel(trip.tripName, 12),
+        revenue: trip.totalRevenue,
+        profit: trip.totalProfit,
+      })),
+      occupancyRanking: occupancyLeaders.map((trip) => ({
+        id: trip.id,
+        label: shortenLabel(trip.tripName, 20),
+        value: trip.occupancyRate,
+        meta: `${trip.bookedSeatsLabel}/${trip.capacityLabel} seats`,
+      })),
+      seatComposition: revenueLeaders.map((trip) => ({
+        id: trip.id,
+        label: shortenLabel(trip.tripName, 18),
+        total: trip.totalCapacity,
+        bookedTrip: trip.tripBookedSeats,
+        bookedPackage: trip.packageBookedSeats,
+        available: trip.availableSeats,
+        meta: `${trip.occupancyRateLabel} • ${trip.totalRevenueLabel}`,
+      })),
+    },
   };
 };
 
-const fallbackTripPerformance = normalizeTripPerformance(TRIP_PERFORMANCE_FALLBACK_RESPONSE);
+const filterFallbackTrips = (payload, search) => {
+  const normalizedSearch = normalizeSearch(search);
 
-export const getTripPerformance = async ({ page = 1 } = {}) => {
+  if (!normalizedSearch) {
+    return payload;
+  }
+
+  const filteredTrips = (payload?.data?.data ?? []).filter((item) =>
+    String(item.trip_name ?? "").toLowerCase().includes(normalizedSearch)
+  );
+
+  return {
+    ...payload,
+    data: {
+      ...payload.data,
+      data: filteredTrips,
+      total: filteredTrips.length,
+      from: filteredTrips.length ? 1 : 0,
+      to: filteredTrips.length,
+      current_page: 1,
+      last_page: 1,
+      next_page_url: null,
+      prev_page_url: null,
+    },
+  };
+};
+
+export const getTripPerformance = async ({ page = 1, search = "" } = {}) => {
   try {
     const response = await apiClient.get(API_URLS.reports.tripPerformance, {
-      params: { page },
+      params: {
+        page,
+        ...(search ? { search } : {}),
+      },
     });
 
     if (response.data) {
@@ -148,5 +205,5 @@ export const getTripPerformance = async ({ page = 1 } = {}) => {
     });
   }
 
-  return fallbackTripPerformance;
+  return normalizeTripPerformance(filterFallbackTrips(TRIP_PERFORMANCE_FALLBACK_RESPONSE, search));
 };

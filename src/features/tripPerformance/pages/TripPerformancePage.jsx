@@ -1,7 +1,11 @@
 import { startTransition, useState } from "react";
+import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
+import RechartsRankingChart from "../../../components/charts/RechartsRankingChart";
+import RechartsBarChart from "../../../components/charts/RechartsBarChart";
 import Button from "../../../components/common/Button";
 import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
+import useDebouncedValue from "../../../hooks/useDebouncedValue";
 import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import { TRIP_PERFORMANCE_COPY } from "../constants/tripPerformance.constants";
@@ -74,14 +78,28 @@ const tripColumns = [
   },
 ];
 
+const revenueTrendSeries = [
+  { key: "revenue", label: "Revenue", color: "#38bdf8" },
+  { key: "profit", label: "Profit", color: "#22c55e" },
+];
+
+const seatCompositionSegments = [
+  { key: "bookedTrip", label: "Trip seats", color: "#38bdf8" },
+  { key: "bookedPackage", label: "Package seats", color: "#8b5cf6" },
+  { key: "available", label: "Available seats", color: "#f59e0b" },
+];
+
 export default function TripPerformancePage() {
   const [page, setPage] = useState(1);
-  const { data, isFetching, isLoading } = useTripPerformance(page);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebouncedValue(searchTerm, 450);
+  const { data, isFetching, isLoading } = useTripPerformance(page, debouncedSearchTerm);
   const copy = data?.copy ?? TRIP_PERFORMANCE_COPY;
   const metrics = data?.metrics ?? [];
   const trips = data?.trips ?? [];
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
+  const charts = data?.charts ?? {};
   const topTrip = summary.topTrip;
   const boardDate = new Intl.DateTimeFormat("en-US", {
     weekday: "short",
@@ -94,6 +112,40 @@ export default function TripPerformancePage() {
       setPage(nextPage);
     });
   };
+
+  const handleSearchChange = (event) => {
+    const { value } = event.target;
+
+    startTransition(() => {
+      setSearchTerm(value);
+      setPage(1);
+    });
+  };
+
+  const tableFooter = (
+    <div className="trip-performance-table-footer">
+      <div className="trip-performance-table-footer__summary">
+        <strong>
+          Showing {pagination.from ?? 0}-{pagination.to ?? 0}
+        </strong>
+        <span>
+          of {pagination.total ?? 0} trips{debouncedSearchTerm ? ` for "${debouncedSearchTerm}"` : ""}
+        </span>
+      </div>
+      <div className="trip-performance-table-footer__actions">
+        <Button
+          variant="outline"
+          disabled={!pagination.hasPrev || isFetching}
+          onClick={() => changePage(page - 1)}
+        >
+          Previous
+        </Button>
+        <Button disabled={!pagination.hasNext || isFetching} onClick={() => changePage(page + 1)}>
+          Next
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <AdminLayout>
@@ -140,6 +192,43 @@ export default function TripPerformancePage() {
             <section className="trip-performance-mobile__card">
               <div className="trip-performance-mobile__card-header">
                 <div>
+                  <div className="trip-performance-mobile__card-title">Revenue vs profit</div>
+                  <div className="trip-performance-mobile__card-subtle">
+                    Trend across the visible trip list
+                  </div>
+                </div>
+              </div>
+
+              <RechartsAreaChart
+                data={charts.revenueTrend ?? []}
+                series={revenueTrendSeries}
+                height={210}
+                labelKey="label"
+                valueFormatter={(value) => `${Math.round(Number(value) / 1000)}k`}
+              />
+            </section>
+
+            <section className="trip-performance-mobile__card">
+              <div className="trip-performance-mobile__card-header">
+                <div>
+                  <div className="trip-performance-mobile__card-title">Seat composition</div>
+                  <div className="trip-performance-mobile__card-subtle">
+                    Booked and available seats for top revenue trips
+                  </div>
+                </div>
+              </div>
+
+              <RechartsBarChart
+                items={charts.seatComposition ?? []}
+                segments={seatCompositionSegments}
+                labelKey="label"
+                height={250}
+              />
+            </section>
+
+            <section className="trip-performance-mobile__card">
+              <div className="trip-performance-mobile__card-header">
+                <div>
                   <div className="trip-performance-mobile__card-title">Trip ledger</div>
                   <div className="trip-performance-mobile__card-subtle">
                     Showing {pagination.from ?? 0}-{pagination.to ?? 0} of {pagination.total ?? 0}
@@ -148,6 +237,32 @@ export default function TripPerformancePage() {
                 <div className="trip-performance-mobile__pill">
                   Page {pagination.currentPage ?? 1}/{pagination.lastPage ?? 1}
                 </div>
+              </div>
+
+              <div className="trip-performance-mobile__search">
+                <span className="trip-performance-mobile__search-icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={18}
+                    height={18}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                    <path d="M21 21l-6 -6" />
+                  </svg>
+                </span>
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Search trips"
+                  aria-label="Search trips"
+                />
               </div>
 
               <div className="trip-performance-mobile__list">
@@ -247,6 +362,40 @@ export default function TripPerformancePage() {
 
             <section className="dashboard-section">
               <div className="row g-3">
+                <div className="col-12 col-xl-8">
+                  <Card
+                    title="Revenue and profit trend"
+                    subtitle="Compare how combined revenue and profit move across the visible trips."
+                    className="trip-performance-card border-0 h-100"
+                  >
+                    <RechartsAreaChart
+                      data={charts.revenueTrend ?? []}
+                      series={revenueTrendSeries}
+                      labelKey="label"
+                      valueFormatter={(value) => `${Math.round(Number(value) / 1000)}k`}
+                    />
+                  </Card>
+                </div>
+
+                <div className="col-12 col-xl-4">
+                  <Card
+                    title="Occupancy leaders"
+                    subtitle="Highest seat utilization on the current result set."
+                    className="trip-performance-card border-0 h-100"
+                  >
+                    <RechartsRankingChart
+                      items={charts.occupancyRanking ?? []}
+                      labelKey="label"
+                      valueKey="value"
+                      valueFormatter={(value) => `${value}%`}
+                    />
+                  </Card>
+                </div>
+              </div>
+            </section>
+
+            <section className="dashboard-section">
+              <div className="row g-3">
                 <div className="col-12 col-xl-5">
                   <Card
                     title="Top performer"
@@ -288,33 +437,16 @@ export default function TripPerformancePage() {
 
                 <div className="col-12 col-xl-7">
                   <Card
-                    title="Page controls"
-                    subtitle="Move through the paginated report without leaving the screen."
+                    title="Seat composition by trip"
+                    subtitle="See how direct trip seats, package seats, and remaining capacity are distributed."
                     className="trip-performance-card border-0 h-100"
                   >
-                    <div className="trip-performance-page-control">
-                      <div className="trip-performance-page-control__copy">
-                        <div className="trip-performance-page-control__value">
-                          Page {pagination.currentPage ?? 1} of {pagination.lastPage ?? 1}
-                        </div>
-                        <p className="text-secondary mb-0">
-                          The API reports {pagination.total ?? 0} total trips with {pagination.perPage ?? 0} rows per
-                          page.
-                        </p>
-                      </div>
-                      <div className="trip-performance-page-control__actions">
-                        <Button
-                          variant="outline"
-                          disabled={!pagination.hasPrev || isFetching}
-                          onClick={() => changePage(page - 1)}
-                        >
-                          Previous page
-                        </Button>
-                        <Button disabled={!pagination.hasNext || isFetching} onClick={() => changePage(page + 1)}>
-                          Next page
-                        </Button>
-                      </div>
-                    </div>
+                    <RechartsBarChart
+                      items={charts.seatComposition ?? []}
+                      segments={seatCompositionSegments}
+                      labelKey="label"
+                      height={350}
+                    />
                   </Card>
                 </div>
               </div>
@@ -326,6 +458,40 @@ export default function TripPerformancePage() {
                 subtitle="Revenue, capacity, and profitability for each scheduled trip."
                 className="trip-performance-card border-0"
                 bodyClassName="p-0"
+                footer={tableFooter}
+                actions={
+                  <div className="dashboard-search trip-performance-search">
+                    <div className="input-icon">
+                      <span className="input-icon-addon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="icon"
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                          <path d="M21 21l-6 -6" />
+                        </svg>
+                      </span>
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search trips"
+                        aria-label="Search trips"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                      />
+                    </div>
+                  </div>
+                }
               >
                 {isLoading && !trips.length ? (
                   <div className="p-4 text-center text-secondary">Loading trip performance data...</div>

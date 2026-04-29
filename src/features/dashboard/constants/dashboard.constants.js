@@ -1,50 +1,59 @@
 export const DASHBOARD_COPY = {
-  pageTitle: "Datatables",
-  pageSubtitle: "",
+  pageTitle: "Travel operations dashboard",
+  pageSubtitle: "Live booking, payment, and inventory performance from your admin API.",
 };
 
-export const DASHBOARD_METRICS = [
-  { id: "revenue", label: "Monthly revenue", value: "$128,400", change: "+12.4%", changeTone: "success" },
-  { id: "bookings", label: "Active bookings", value: "284", change: "+31 today", changeTone: "info" },
-  { id: "pending", label: "Pending approvals", value: "19", change: "Needs review", changeTone: "warning" },
-  { id: "cancellations", label: "Cancellations", value: "6", change: "-2 vs last week", changeTone: "danger" },
-];
-
-export const RECENT_BOOKINGS = [
-  {
-    id: "BK-1042",
-    traveler: "Nafisa Karim",
-    destination: "Bali Escape",
-    departureDate: "2026-05-14",
-    amount: "$4,280",
-    agent: "M. Hossain",
-    status: "confirmed",
+export const DASHBOARD_FALLBACK_RESPONSE = {
+  data: {
+    totalGuide: 2,
+    totalPackage: 3,
+    totalRoute: 8,
+    totalBookings: 82,
+    thisMonthTotalBookings: 20,
+    thisMonthTotalHotelBookings: 0,
+    totalHotelBookings: 8,
+    totalPackageBookings: 10,
+    totalTransaction: 81,
+    totalTable: 41,
+    totalTours: 19,
+    totalVehicles: 8,
+    totalPayments: 81,
+    monthlyPayments: "4040500.00",
+    tripData: [
+      {
+        trip_exist: "1",
+        origin: "Amarica",
+      },
+      {
+        trip_exist: "12",
+        origin: "Asia",
+      },
+      {
+        trip_exist: "3",
+        origin: "Europe",
+      },
+      {
+        trip_exist: "3",
+        origin: "Ocean Area",
+      },
+    ],
+    paymentData: [
+      {
+        total_amount: "1037780.00",
+        payment_held: "22",
+        payment_method: "bkash",
+      },
+      {
+        total_amount: "4241200.00",
+        payment_held: "42",
+        payment_method: "card",
+      },
+      {
+        total_amount: "1835780.00",
+        payment_held: "17",
+        payment_method: "nagad",
+      },
+    ],
   },
-  {
-    id: "BK-1043",
-    traveler: "Adnan Kabir",
-    destination: "Dubai Stopover",
-    departureDate: "2026-05-18",
-    amount: "$2,110",
-    agent: "S. Ahmed",
-    status: "pending",
-  },
-  {
-    id: "BK-1044",
-    traveler: "Farzana Ali",
-    destination: "Singapore City Pass",
-    departureDate: "2026-05-22",
-    amount: "$3,560",
-    agent: "T. Islam",
-    status: "awaiting-payment",
-  },
-  {
-    id: "BK-1045",
-    traveler: "Rafi Chowdhury",
-    destination: "Bali Escape",
-    departureDate: "2026-06-03",
-    amount: "$5,040",
-    agent: "M. Hossain",
-    status: "confirmed",
-  },
-];
+  message: "success",
+};

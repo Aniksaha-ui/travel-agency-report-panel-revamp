@@ -6,6 +6,6 @@ export const API_URLS = {
     menu: "/admin/menu",
   },
   dashboard: {
-    overview: "/dashboard/overview",
+    overview: "/admin/dashboard",
   },
 };

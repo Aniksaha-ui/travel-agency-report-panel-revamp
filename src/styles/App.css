@@ -1403,6 +1403,31 @@
   align-items: center;
 }
 
+/* Recharts Customizations */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(148, 163, 184, 0.1) !important;
+}
+
+.recharts-text {
+  font-family: inherit;
+}
+
+.recharts-legend-item-text {
+  color: var(--travel-text) !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.trip-performance-card .recharts-responsive-container {
+  font-size: 12px;
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 100;
+}
+
+
 .trip-performance-mobile__search input {
   width: 100%;
   border: 0;

@@ -1,4 +1,5 @@
 export const APP_ROUTES = {
+  bookingSummary: "/admin/bookings/summary",
   changePassword: "/admin/account/change-password",
   customerValue: "/admin/customerValueReport",
   dailyBalance: "/admin/account/daily-balance",
@@ -7,6 +8,8 @@ export const APP_ROUTES = {
   guideEfficiency: "/admin/guideEfficency",
   monthRunningBalance: "/admin/monthRunningBalance",
   profile: "/admin/account/profile",
+  transactions: "/admin/transactions",
   tripPerformance: "/admin/tripPerformance",
+  vehicleTrackingReport: "/admin/vehicletrackingreport",
   login: "/login",
 };

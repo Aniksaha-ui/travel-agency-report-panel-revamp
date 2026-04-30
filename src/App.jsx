@@ -8,13 +8,16 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import ChangePasswordPage from "./features/account/pages/ChangePasswordPage";
 import ProfilePage from "./features/account/pages/ProfilePage";
 import LoginPage from "./features/auth/pages/LoginPage";
+import BookingSummaryPage from "./features/bookingSummary/pages/BookingSummaryPage";
 import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
 import DailyBalancePage from "./features/dailyBalance/pages/DailyBalancePage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import FinancialReportPage from "./features/financialReport/pages/FinancialReportPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
+import TransactionsPage from "./features/transactions/pages/TransactionsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
+import VehicleTrackingReportPage from "./features/vehicleTrackingReport/pages/VehicleTrackingReportPage";
 import { store } from "./store/store";
 
 const queryClient = new QueryClient({
@@ -88,6 +91,30 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <TripPerformancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.transactions}
+          element={
+            <ProtectedRoute>
+              <TransactionsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.bookingSummary}
+          element={
+            <ProtectedRoute>
+              <BookingSummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.vehicleTrackingReport}
+          element={
+            <ProtectedRoute>
+              <VehicleTrackingReportPage />
             </ProtectedRoute>
           }
         />

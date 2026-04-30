@@ -1965,6 +1965,15 @@
   cursor: not-allowed;
 }
 
+.booking-summary-color-dot {
+  display: inline-flex;
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.12);
+}
+
 @media (max-width: 767.98px) {
   .page {
     background:

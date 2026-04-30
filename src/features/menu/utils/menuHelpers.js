@@ -32,6 +32,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.customerValue;
   }
 
+  if (path === "/admin/bookings/summary") {
+    return APP_ROUTES.bookingSummary;
+  }
+
   if (path === "/admin/account/daily-balance") {
     return APP_ROUTES.dailyBalance;
   }
@@ -46,6 +50,14 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/tripPerformance") {
     return APP_ROUTES.tripPerformance;
+  }
+
+  if (path === "/admin/transactions") {
+    return APP_ROUTES.transactions;
+  }
+
+  if (path === "/admin/vehicletrackingreport") {
+    return APP_ROUTES.vehicleTrackingReport;
   }
 
   if (path === "/admin/guideEfficency") {

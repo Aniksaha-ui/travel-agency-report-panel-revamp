@@ -32,6 +32,14 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.customerValue;
   }
 
+  if (path === "/admin/account/daily-balance") {
+    return APP_ROUTES.dailyBalance;
+  }
+
+  if (path === "/admin/financialReport") {
+    return APP_ROUTES.financialReport;
+  }
+
   if (path === "/admin/monthRunningBalance") {
     return APP_ROUTES.monthRunningBalance;
   }

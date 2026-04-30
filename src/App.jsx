@@ -5,9 +5,13 @@ import { ToastContainer } from "react-toastify";
 import { APP_ROUTES } from "./constants/routes";
 import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import ChangePasswordPage from "./features/account/pages/ChangePasswordPage";
+import ProfilePage from "./features/account/pages/ProfilePage";
 import LoginPage from "./features/auth/pages/LoginPage";
 import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
+import DailyBalancePage from "./features/dailyBalance/pages/DailyBalancePage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
+import FinancialReportPage from "./features/financialReport/pages/FinancialReportPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
@@ -64,6 +68,22 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.profile}
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.changePassword}
+          element={
+            <ProtectedRoute>
+              <ChangePasswordPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.tripPerformance}
           element={
             <ProtectedRoute>
@@ -80,10 +100,26 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.dailyBalance}
+          element={
+            <ProtectedRoute>
+              <DailyBalancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.monthRunningBalance}
           element={
             <ProtectedRoute>
               <MonthRunningBalancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.financialReport}
+          element={
+            <ProtectedRoute>
+              <FinancialReportPage />
             </ProtectedRoute>
           }
         />

@@ -1,12 +1,16 @@
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { APP_BRAND } from "../../constants/brand";
+import { APP_ROUTES } from "../../constants/routes";
 import { selectMenu } from "../../features/menu/store/menuSlice";
 
 export default function Header({ onOpenDrawer }) {
   const { auth, logout } = useAuthContext();
   const { status } = useSelector(selectMenu);
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef(null);
   const userInitial = auth.user?.name?.charAt(0)?.toUpperCase() ?? "A";
   const roleLabel = auth.user?.role ?? "Administrator";
   const headerDate = new Intl.DateTimeFormat("en-US", {
@@ -14,6 +18,41 @@ export default function Header({ onOpenDrawer }) {
     month: "short",
     day: "numeric",
   }).format(new Date());
+
+  useEffect(() => {
+    if (!isAccountMenuOpen) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+        setIsAccountMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsAccountMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isAccountMenuOpen]);
+
+  const closeAccountMenu = () => {
+    setIsAccountMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    closeAccountMenu();
+    logout();
+  };
 
   return (
     <header className="navbar navbar-expand-md d-print-none app-header">
@@ -24,6 +63,7 @@ export default function Header({ onOpenDrawer }) {
               type="button"
               className="btn btn-outline-secondary app-header__menu-trigger"
               onClick={onOpenDrawer}
+              aria-label="Open navigation menu"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -73,23 +113,81 @@ export default function Header({ onOpenDrawer }) {
               </div>
             </div>
 
-            <div className="nav-item app-header__profile">
-              <div className="app-header__user">
-                <span className="avatar avatar-sm app-header__avatar">{userInitial}</span>
-                <div className="app-header__user-copy">
-                  <div className="app-header__user-name">{auth.user?.name ?? "Admin User"}</div>
-                  <div className="app-header__user-email">{auth.user?.email ?? ""}</div>
-                </div>
-              </div>
-
+            <div className="nav-item app-header__profile" ref={accountMenuRef}>
               <button
                 type="button"
-                className="btn btn-primary app-header__logout"
-                onClick={logout}
+                className="app-header__account-button"
+                onClick={() => setIsAccountMenuOpen((isOpen) => !isOpen)}
+                aria-expanded={isAccountMenuOpen}
+                aria-haspopup="menu"
               >
-                <span className="d-none d-sm-inline">Log out</span>
-                <span className="d-inline d-sm-none">Exit</span>
+                <span className="avatar avatar-sm app-header__avatar">{userInitial}</span>
+                <span className="app-header__user-copy">
+                  <span className="app-header__user-name">{auth.user?.name ?? "Admin User"}</span>
+                  <span className="app-header__user-email">{auth.user?.email ?? ""}</span>
+                </span>
+                <span className="app-header__account-caret" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={16}
+                    height={16}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M6 9l6 6l6 -6" />
+                  </svg>
+                </span>
               </button>
+
+              {isAccountMenuOpen ? (
+                <div className="app-header__account-menu" role="menu">
+                  <div className="app-header__account-card">
+                    <span className="avatar avatar-sm app-header__avatar">{userInitial}</span>
+                    <div>
+                      <div className="app-header__account-name">{auth.user?.name ?? "Admin User"}</div>
+                      <div className="app-header__account-email">{auth.user?.email ?? ""}</div>
+                      <div className="app-header__account-role">{roleLabel}</div>
+                    </div>
+                  </div>
+
+                  <div className="app-header__account-links">
+                    <NavLink
+                      to={APP_ROUTES.profile}
+                      className="app-header__account-link"
+                      onClick={closeAccountMenu}
+                    >
+                      Profile
+                    </NavLink>
+                    <NavLink
+                      to={APP_ROUTES.changePassword}
+                      className="app-header__account-link"
+                      onClick={closeAccountMenu}
+                    >
+                      Change password
+                    </NavLink>
+                    <NavLink
+                      to={APP_ROUTES.dashboard}
+                      end
+                      className="app-header__account-link"
+                      onClick={closeAccountMenu}
+                    >
+                      Dashboard
+                    </NavLink>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="app-header__account-logout"
+                    onClick={handleLogout}
+                  >
+                    Log out
+                  </button>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

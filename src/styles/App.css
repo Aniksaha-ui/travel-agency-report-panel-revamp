@@ -39,6 +39,7 @@
 .app-header__brand-group,
 .app-header__profile {
   gap: 0.85rem;
+  position: relative;
 }
 
 .app-header__brand {
@@ -84,6 +85,38 @@
   margin-left: auto;
 }
 
+.app-header__account-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 20rem;
+  padding: 0.45rem 0.58rem 0.45rem 0.45rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--travel-text);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.app-header__account-button:hover,
+.app-header__account-button:focus-visible {
+  border-color: rgba(29, 120, 224, 0.35);
+  box-shadow: 0 18px 42px rgba(29, 120, 224, 0.14);
+  transform: translateY(-1px);
+  outline: 0;
+}
+
+.app-header__account-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--travel-muted);
+}
+
 .app-header__user {
   gap: 0.75rem;
   min-width: 0;
@@ -96,12 +129,18 @@
 }
 
 .app-header__user-copy {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  text-align: left;
 }
 
 .app-header__user-name {
   font-weight: 700;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .app-header__user-email {
@@ -114,11 +153,96 @@
 }
 
 .app-header__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
   min-width: 6rem;
   border: 0;
   border-radius: 1rem;
   background: linear-gradient(135deg, #1d78e0 0%, #2f9bff 100%);
   box-shadow: 0 14px 28px rgba(29, 120, 224, 0.24);
+}
+
+.app-header__account-menu {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  z-index: 1090;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: 0.55rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.app-header__account-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at top right, rgba(47, 155, 255, 0.2), transparent 34%),
+    linear-gradient(135deg, #101933 0%, #17244a 100%);
+  color: #ffffff;
+}
+
+.app-header__account-name {
+  font-weight: 800;
+}
+
+.app-header__account-email,
+.app-header__account-role {
+  color: rgba(226, 232, 240, 0.76);
+  font-size: 0.78rem;
+}
+
+.app-header__account-links {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.45rem 0;
+}
+
+.app-header__account-link,
+.app-header__account-logout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 2.55rem;
+  padding: 0.65rem 0.75rem;
+  border: 0;
+  border-radius: 0.85rem;
+  background: transparent;
+  color: var(--travel-text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.app-header__account-link:hover,
+.app-header__account-link:focus-visible,
+.app-header__account-link.active {
+  background: rgba(29, 120, 224, 0.1);
+  color: #1d78e0;
+  outline: 0;
+}
+
+.app-header__account-logout {
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  color: #dc2626;
+}
+
+.app-header__account-logout:hover,
+.app-header__account-logout:focus-visible {
+  background: rgba(220, 38, 38, 0.08);
+  outline: 0;
 }
 
 .app-header__mobile-banner {
@@ -1427,6 +1551,20 @@
   z-index: 100;
 }
 
+.recharts-pie-total {
+  fill: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.recharts-pie-total-label {
+  fill: var(--travel-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 
 .trip-performance-mobile__search input {
   width: 100%;
@@ -1565,6 +1703,93 @@
   margin-left: auto;
 }
 
+.daily-balance-pdf-viewer {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 1rem;
+  background: #f8fafc;
+}
+
+.daily-balance-pdf-viewer--empty {
+  align-items: center;
+  padding: 2rem;
+  color: var(--travel-muted);
+  text-align: center;
+}
+
+.daily-balance-pdf-viewer__frame {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  background: #ffffff;
+}
+
+.app-modal-open {
+  overflow: hidden;
+}
+
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.app-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background:
+    radial-gradient(circle at top left, rgba(14, 116, 144, 0.22), transparent 34%),
+    rgba(2, 6, 23, 0.72);
+}
+
+.app-modal__dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(100%, 72rem);
+  height: min(88vh, 54rem);
+  overflow: hidden;
+  border-radius: 1.35rem;
+  background: #ffffff;
+  box-shadow: 0 30px 70px rgba(2, 6, 23, 0.38);
+}
+
+.app-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.app-modal__title {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.app-modal__subtitle {
+  margin-top: 0.2rem;
+  color: var(--travel-muted);
+  font-size: 0.84rem;
+}
+
+.app-modal__body {
+  min-height: 0;
+  padding: 1rem;
+}
+
 .responsive-data-table td,
 .responsive-data-table th {
   vertical-align: middle;
@@ -1682,6 +1907,64 @@
   transform: translateY(-2px);
 }
 
+.account-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.account-profile-card__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1.35rem;
+  background: linear-gradient(135deg, #1d78e0 0%, #2f9bff 100%);
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 800;
+  box-shadow: 0 18px 36px rgba(29, 120, 224, 0.24);
+}
+
+.account-profile-card__name {
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+}
+
+.account-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.account-detail-grid__item {
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.account-detail-grid__item span {
+  display: block;
+  color: var(--travel-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.account-detail-grid__item strong {
+  display: block;
+  margin-top: 0.35rem;
+  overflow-wrap: anywhere;
+}
+
+.account-form .form-control:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
 @media (max-width: 767.98px) {
   .page {
     background:
@@ -1703,21 +1986,33 @@
 
   .app-header {
     padding-top: calc(0.75rem + env(safe-area-inset-top));
-    padding-bottom: 0.15rem;
+    padding-bottom: 0.45rem;
   }
 
   .app-header__container {
-    gap: 0.45rem;
+    gap: 0;
   }
 
   .app-header__top-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 1.35rem;
+    background:
+      linear-gradient(135deg, rgba(22, 42, 83, 0.86) 0%, rgba(12, 23, 52, 0.88) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 18px 40px rgba(2, 8, 23, 0.24);
+    backdrop-filter: blur(18px);
   }
 
   .app-header__brand-group {
     flex: 1;
     min-width: 0;
-    gap: 0.55rem;
+    gap: 0.62rem;
   }
 
   .app-header__tagline {
@@ -1725,41 +2020,61 @@
   }
 
   .app-header__menu-trigger {
-    width: 3rem;
-    height: 3rem;
+    flex: 0 0 auto;
+    width: 2.85rem;
+    height: 2.85rem;
     padding: 0;
     border-color: rgba(148, 163, 184, 0.2);
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.07);
     color: #ffffff;
-    backdrop-filter: blur(18px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .app-header .navbar-brand-image {
-    width: 2.55rem;
-    height: 2.55rem;
-    padding: 0.55rem;
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0.5rem;
     border-radius: 0.95rem;
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 24px rgba(8, 15, 36, 0.28);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(45, 212, 191, 0.3), transparent 38%),
+      rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 22px rgba(8, 15, 36, 0.24);
+  }
+
+  .app-header__brand-link {
+    min-width: 0;
+    gap: 0.58rem;
   }
 
   .app-header__brand-copy {
     line-height: 1;
+    min-width: 0;
   }
 
   .app-header__brand-name {
     color: #ffffff;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
   }
 
   .app-header__brand-subtitle {
     color: rgba(197, 208, 255, 0.7);
     font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .app-header__actions {
+    flex: 0 0 auto;
+    margin-left: 0;
+    min-width: 0;
   }
 
   .app-header__profile {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
     margin-left: auto;
-    gap: 0.45rem;
+    gap: 0.48rem;
     padding: 0;
     border: 0;
     border-radius: 0;
@@ -1767,28 +2082,47 @@
     backdrop-filter: none;
   }
 
-  .app-header__user {
-    gap: 0.45rem;
-    padding: 0.35rem 0.45rem;
-    border-radius: 0.95rem;
-    background: rgba(8, 14, 33, 0.26);
+  .app-header__account-button {
+    gap: 0.5rem;
+    min-width: 0;
+    max-width: 10.6rem;
+    padding: 0.36rem 0.58rem 0.36rem 0.38rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 999px;
+    background: rgba(8, 14, 33, 0.32);
+    color: #ffffff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .app-header__avatar {
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    font-size: 0.78rem;
   }
 
   .app-header__user-name {
     font-size: 0.88rem;
     color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .app-header__user-email {
     display: none;
   }
 
-  .app-header__logout {
-    min-width: 0;
-    padding: 0.66rem 0.82rem;
-    font-size: 0.76rem;
-    border-radius: 0.95rem;
-    box-shadow: 0 10px 22px rgba(29, 120, 224, 0.22);
+  .app-header__account-caret {
+    color: rgba(226, 232, 240, 0.8);
+  }
+
+  .app-header__account-menu {
+    position: fixed;
+    top: calc(4.8rem + env(safe-area-inset-top));
+    right: 1rem;
+    left: 1rem;
+    width: auto;
   }
 
   .app-header__mobile-banner {
@@ -1945,6 +2279,15 @@
 
   .dashboard-mobile-pool {
     grid-template-columns: 1fr;
+  }
+
+  .account-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-profile-card {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .dashboard-mobile-payment-item,
@@ -2158,11 +2501,91 @@
     margin-top: 0.75rem;
   }
 
+  .app-modal {
+    align-items: end;
+    padding: 0;
+  }
+
+  .app-modal__dialog {
+    width: 100%;
+    height: 92vh;
+    border-radius: 1.25rem 1.25rem 0 0;
+  }
+
+  .app-modal__header {
+    align-items: flex-start;
+    padding: 0.9rem 1rem;
+  }
+
+  .app-modal__title {
+    font-size: 0.95rem;
+  }
+
+  .app-modal__subtitle {
+    font-size: 0.76rem;
+  }
+
+  .app-modal__body {
+    padding: 0.75rem;
+  }
+
+  .daily-balance-pdf-viewer {
+    border-radius: 0.9rem;
+  }
+
   .mobile-bottom-nav {
     display: block;
   }
 
   .app-footer {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-header__top-row {
+    gap: 0.55rem;
+    padding: 0.52rem;
+  }
+
+  .app-header__brand-group {
+    gap: 0.48rem;
+  }
+
+  .app-header__menu-trigger {
+    width: 2.55rem;
+    height: 2.55rem;
+  }
+
+  .app-header .navbar-brand-image {
+    width: 2.1rem;
+    height: 2.1rem;
+    padding: 0.45rem;
+  }
+
+  .app-header__brand-name {
+    font-size: 0.86rem;
+  }
+
+  .app-header__brand-subtitle {
+    font-size: 0.65rem;
+  }
+
+  .app-header__account-button {
+    max-width: 8.1rem;
+    padding-right: 0.48rem;
+  }
+
+  .app-header__avatar {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  .app-header__user-name {
+    font-size: 0.8rem;
+  }
+
+  .app-header__account-caret {
     display: none;
   }
 }

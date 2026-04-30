@@ -32,6 +32,14 @@ Use this skill for any new or modified feature UI in this repo.
    If the backend path is `/admin/tripPerformance`, prefer that exact route unless there is a strong reason not to.
 
 4. Follow the page composition pattern.
+   For report modules, keep `pages/*Page.jsx` as the state and data coordinator.
+   Put module-local UI pieces in `src/features/<feature>/component/`.
+   Prefer these files when the page has both desktop and mobile report views:
+   `<Feature>MobileView.jsx`
+   `<Feature>DesktopView.jsx`
+   `<Feature>TableFooter.jsx`
+   `<feature>View.config.jsx`
+
    Desktop:
    Use `AdminLayout`, `Card`, `Table`, and `MetricsOverview` where they fit.
    Keep page-level summaries in a hero/header block and detailed data in cards below.
@@ -85,6 +93,7 @@ Use this skill for any new or modified feature UI in this repo.
 - Hook uses `useApi`
 - Route added in `routes.js` and `App.jsx`
 - Menu helper maps backend path
+- Large report pages are broken into module-local components
 - Search is debounced and server-side
 - Pagination is below the table
 - Mobile and desktop both designed intentionally

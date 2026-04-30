@@ -9,6 +9,8 @@ export const API_URLS = {
     overview: "/admin/dashboard",
   },
   reports: {
+    customerValue: "/admin/customerValue",
+    guideEfficiency: "/admin/guideEfficency",
     tripPerformance: "/admin/tripPerformance",
   },
 };

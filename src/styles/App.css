@@ -1561,6 +1561,10 @@
   text-align: center;
 }
 
+.trip-performance-table-footer .trip-performance-table-footer__summary + .trip-performance-table-footer__summary {
+  margin-left: auto;
+}
+
 .responsive-data-table td,
 .responsive-data-table th {
   vertical-align: middle;

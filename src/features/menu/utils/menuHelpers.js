@@ -28,8 +28,16 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.dashboard;
   }
 
+  if (path === "/admin/customerValueReport") {
+    return APP_ROUTES.customerValue;
+  }
+
   if (path === "/admin/tripPerformance") {
     return APP_ROUTES.tripPerformance;
+  }
+
+  if (path === "/admin/guideEfficency") {
+    return APP_ROUTES.guideEfficiency;
   }
 
   return null;

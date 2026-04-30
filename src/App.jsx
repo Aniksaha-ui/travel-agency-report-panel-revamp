@@ -6,7 +6,9 @@ import { APP_ROUTES } from "./constants/routes";
 import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import LoginPage from "./features/auth/pages/LoginPage";
+import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
+import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import { store } from "./store/store";
 
@@ -65,6 +67,22 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <TripPerformancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.customerValue}
+          element={
+            <ProtectedRoute>
+              <CustomerValuePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.guideEfficiency}
+          element={
+            <ProtectedRoute>
+              <GuideEfficiencyPage />
             </ProtectedRoute>
           }
         />

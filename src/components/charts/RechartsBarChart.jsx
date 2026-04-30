@@ -14,7 +14,6 @@ export default function RechartsBarChart({
   segments,
   labelKey = "label",
   height = 300,
-  valueFormatter = (value) => value,
 }) {
   if (!items || items.length === 0) {
     return (

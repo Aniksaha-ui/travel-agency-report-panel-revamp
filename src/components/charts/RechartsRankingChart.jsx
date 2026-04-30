@@ -10,8 +10,10 @@ import {
 } from "recharts";
 
 export default function RechartsRankingChart({
+  getCellColor,
   items,
   labelKey = "label",
+  tooltipLabel = "Value",
   valueKey = "value",
   height = 300,
   valueFormatter = (value) => value,
@@ -63,13 +65,21 @@ export default function RechartsRankingChart({
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
             cursor={{ fill: "rgba(0,0,0,0.04)" }}
-            formatter={(value) => [valueFormatter(value), "Occupancy"]}
+            formatter={(value) => [valueFormatter(value), tooltipLabel]}
           />
           <Bar dataKey={valueKey} radius={[0, 4, 4, 0]} barSize={12} animationDuration={1500}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={entry.value > 80 ? "#22c55e" : entry.value > 50 ? "#38bdf8" : "#f59e0b"}
+                fill={
+                  getCellColor
+                    ? getCellColor(entry, index)
+                    : entry[valueKey] > 80
+                      ? "#22c55e"
+                      : entry[valueKey] > 50
+                        ? "#38bdf8"
+                        : "#f59e0b"
+                }
               />
             ))}
           </Bar>

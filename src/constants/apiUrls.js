@@ -16,6 +16,8 @@ export const API_URLS = {
     financialReport: "/admin/financial_report",
     guideEfficiency: "/admin/guideEfficency",
     monthRunningBalance: "/admin/monthRunningBalance",
+    overallSalesSummary: "/admin/overall-sales-summary",
+    routeWiseSalesSummary: "/admin/route-wise-sales-summary",
     transactions: "/admin/transactionHistory",
     tripPerformance: "/admin/tripPerformance",
     vehicleTrackingReport: "/admin/useageOfVehicle",

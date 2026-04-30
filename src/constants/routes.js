@@ -7,6 +7,7 @@ export const APP_ROUTES = {
   financialReport: "/admin/financialReport",
   guideEfficiency: "/admin/guideEfficency",
   monthRunningBalance: "/admin/monthRunningBalance",
+  overallSales: "/admin/account/overall-sales",
   profile: "/admin/account/profile",
   transactions: "/admin/transactions",
   tripPerformance: "/admin/tripPerformance",

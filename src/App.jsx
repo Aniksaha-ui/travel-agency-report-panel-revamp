@@ -15,6 +15,7 @@ import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import FinancialReportPage from "./features/financialReport/pages/FinancialReportPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
+import OverallSalesPage from "./features/overallSales/pages/OverallSalesPage";
 import TransactionsPage from "./features/transactions/pages/TransactionsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import VehicleTrackingReportPage from "./features/vehicleTrackingReport/pages/VehicleTrackingReportPage";
@@ -131,6 +132,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <DailyBalancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.overallSales}
+          element={
+            <ProtectedRoute>
+              <OverallSalesPage />
             </ProtectedRoute>
           }
         />

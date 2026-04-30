@@ -9,6 +9,7 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
+import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import { store } from "./store/store";
 
@@ -75,6 +76,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <CustomerValuePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.monthRunningBalance}
+          element={
+            <ProtectedRoute>
+              <MonthRunningBalancePage />
             </ProtectedRoute>
           }
         />

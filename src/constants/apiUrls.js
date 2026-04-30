@@ -11,6 +11,7 @@ export const API_URLS = {
   reports: {
     customerValue: "/admin/customerValue",
     guideEfficiency: "/admin/guideEfficency",
+    monthRunningBalance: "/admin/monthRunningBalance",
     tripPerformance: "/admin/tripPerformance",
   },
 };

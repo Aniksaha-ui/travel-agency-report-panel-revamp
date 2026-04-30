@@ -32,6 +32,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.customerValue;
   }
 
+  if (path === "/admin/monthRunningBalance") {
+    return APP_ROUTES.monthRunningBalance;
+  }
+
   if (path === "/admin/tripPerformance") {
     return APP_ROUTES.tripPerformance;
   }

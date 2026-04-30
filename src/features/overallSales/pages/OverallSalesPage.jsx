@@ -1,3 +1,4 @@
+import { startTransition, useState } from "react";
 import AdminLayout from "../../../layouts/AdminLayout";
 import OverallSalesDesktopView from "../component/OverallSalesDesktopView";
 import OverallSalesMobileView from "../component/OverallSalesMobileView";
@@ -15,6 +16,7 @@ const EMPTY_ROUTE_WISE = {
 };
 
 export default function OverallSalesPage() {
+  const [activeReport, setActiveReport] = useState("overall");
   const { data, isLoading } = useOverallSales();
   const copy = data?.copy ?? OVERALL_SALES_COPY;
   const metrics = data?.metrics ?? [];
@@ -26,21 +28,31 @@ export default function OverallSalesPage() {
     day: "numeric",
   }).format(new Date());
 
+  const handleChangeReport = (reportId) => {
+    startTransition(() => {
+      setActiveReport(reportId);
+    });
+  };
+
   return (
     <AdminLayout>
       <OverallSalesMobileView
+        activeReport={activeReport}
         boardDate={boardDate}
         copy={copy}
         isLoading={isLoading}
         metrics={metrics}
+        onChangeReport={handleChangeReport}
         overall={overall}
         routeWise={routeWise}
       />
       <OverallSalesDesktopView
+        activeReport={activeReport}
         boardDate={boardDate}
         copy={copy}
         isLoading={isLoading}
         metrics={metrics}
+        onChangeReport={handleChangeReport}
         overall={overall}
         routeWise={routeWise}
       />

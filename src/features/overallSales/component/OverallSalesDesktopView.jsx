@@ -3,6 +3,7 @@ import RechartsRankingChart from "../../../components/charts/RechartsRankingChar
 import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
+import OverallSalesTabs from "./OverallSalesTabs";
 import {
   overallSalesCompactCurrencyFormatter,
   overallSalesCurrencyFormatter,
@@ -12,10 +13,12 @@ import {
 } from "./overallSalesView.config";
 
 export default function OverallSalesDesktopView({
+  activeReport,
   boardDate,
   copy,
   isLoading,
   metrics,
+  onChangeReport,
   overall,
   routeWise,
 }) {
@@ -54,6 +57,16 @@ export default function OverallSalesDesktopView({
             <MetricsOverview metrics={metrics} />
           </section>
 
+          <section className="dashboard-section">
+            <OverallSalesTabs
+              activeReport={activeReport}
+              onChangeReport={onChangeReport}
+              overall={overall}
+              routeWise={routeWise}
+            />
+          </section>
+
+          {activeReport === "overall" ? (
           <section className="dashboard-section">
             <div className="row g-3">
               <div className="col-12">
@@ -113,7 +126,9 @@ export default function OverallSalesDesktopView({
               </div>
             </div>
           </section>
+          ) : null}
 
+          {activeReport === "routeWise" ? (
           <section className="dashboard-section">
             <div className="row g-3">
               <div className="col-12">
@@ -215,6 +230,7 @@ export default function OverallSalesDesktopView({
               </div>
             </div>
           </section>
+          ) : null}
         </div>
       </div>
     </div>

@@ -5,15 +5,20 @@ import {
   overallSalesCurrencyFormatter,
   routeBookingFormatter,
 } from "./overallSalesView.config";
+import OverallSalesTabs from "./OverallSalesTabs";
 
 export default function OverallSalesMobileView({
+  activeReport,
   boardDate,
   copy,
   isLoading,
   metrics,
+  onChangeReport,
   overall,
   routeWise,
 }) {
+  const isRouteWiseReport = activeReport === "routeWise";
+
   return (
     <div className="d-md-none trip-performance-mobile">
       <div className="container-xl">
@@ -30,12 +35,22 @@ export default function OverallSalesMobileView({
 
             <div className="trip-performance-mobile__spotlight">
               <div>
-                <div className="trip-performance-mobile__spotlight-label">Top sales source</div>
+                <div className="trip-performance-mobile__spotlight-label">
+                  {isRouteWiseReport ? "Top route" : "Top sales source"}
+                </div>
                 <div className="trip-performance-mobile__spotlight-value">
-                  {overall.topSource?.source ?? "N/A"}
+                  {isRouteWiseReport
+                    ? routeWise.topRoute?.routeName ?? "N/A"
+                    : overall.topSource?.source ?? "N/A"}
                 </div>
                 <div className="trip-performance-mobile__spotlight-meta">
-                  {overall.topSource?.amountLabel ?? "BDT 0"} - {overall.topSource?.shareLabel ?? "0%"}
+                  {isRouteWiseReport
+                    ? `${routeWise.topRoute?.totalRevenueLabel ?? "BDT 0"} - ${
+                        routeWise.topRoute?.totalBookingsLabel ?? "0"
+                      } bookings`
+                    : `${overall.topSource?.amountLabel ?? "BDT 0"} - ${
+                        overall.topSource?.shareLabel ?? "0%"
+                      }`}
                 </div>
               </div>
               <div className="trip-performance-mobile__spotlight-stack">
@@ -55,6 +70,16 @@ export default function OverallSalesMobileView({
             </div>
           </section>
 
+          <section className="trip-performance-mobile__card">
+            <OverallSalesTabs
+              activeReport={activeReport}
+              onChangeReport={onChangeReport}
+              overall={overall}
+              routeWise={routeWise}
+            />
+          </section>
+
+          {activeReport === "overall" ? (
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
@@ -93,7 +118,10 @@ export default function OverallSalesMobileView({
               )}
             </div>
           </section>
+          ) : null}
 
+          {activeReport === "routeWise" ? (
+            <>
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
@@ -150,6 +178,8 @@ export default function OverallSalesMobileView({
               )}
             </div>
           </section>
+            </>
+          ) : null}
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ export default function Header({ onOpenDrawer }) {
           <div className="app-header__brand-group">
             <button
               type="button"
-              className="btn btn-outline-secondary app-header__menu-trigger"
+              className="btn btn-outline-secondary app-header__menu-trigger d-md-none"
               onClick={onOpenDrawer}
               aria-label="Open navigation menu"
             >

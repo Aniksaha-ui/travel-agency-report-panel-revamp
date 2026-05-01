@@ -10,7 +10,7 @@
 }
 
 .app-header {
-  background: transparent;
+  background: white;
   border: 0;
   padding-top: 1rem;
 }
@@ -390,7 +390,7 @@
   border-radius: 0.95rem;
 }
 
-.app-drawer__section + .app-drawer__section {
+.app-drawer__section+.app-drawer__section {
   margin-top: 1.5rem;
 }
 
@@ -499,7 +499,7 @@
   overflow: hidden;
 }
 
-.dashboard-mobile-card + .dashboard-mobile-card {
+.dashboard-mobile-card+.dashboard-mobile-card {
   margin-top: 0;
 }
 
@@ -936,11 +936,11 @@
   margin-top: 1rem;
 }
 
-.dashboard-mobile-totals > div {
+.dashboard-mobile-totals>div {
   text-align: center;
 }
 
-.dashboard-mobile-totals > div,
+.dashboard-mobile-totals>div,
 .dashboard-mobile-pool {
   padding: 0.85rem;
   border-radius: 1rem;
@@ -1079,7 +1079,7 @@
   gap: 0.75rem;
 }
 
-.dashboard-section + .dashboard-section {
+.dashboard-section+.dashboard-section {
   margin-top: 1.5rem;
 }
 
@@ -1699,7 +1699,7 @@
   text-align: center;
 }
 
-.trip-performance-table-footer .trip-performance-table-footer__summary + .trip-performance-table-footer__summary {
+.trip-performance-table-footer .trip-performance-table-footer__summary+.trip-performance-table-footer__summary {
   margin-left: auto;
 }
 
@@ -2567,7 +2567,7 @@
     border: 0;
   }
 
-  .responsive-data-table td + td {
+  .responsive-data-table td+td {
     border-top: 1px solid rgba(148, 163, 184, 0.18);
   }
 
@@ -2591,7 +2591,7 @@
     margin-right: 0;
   }
 
-  .responsive-data-table .row > * {
+  .responsive-data-table .row>* {
     padding-left: 0;
     padding-right: 0;
   }
@@ -2617,12 +2617,12 @@
     align-items: stretch;
   }
 
-  .modal-footer > * {
+  .modal-footer>* {
     width: 100%;
     margin: 0;
   }
 
-  .modal-footer > * + * {
+  .modal-footer>*+* {
     margin-top: 0.75rem;
   }
 
@@ -2702,15 +2702,218 @@
   }
 
   .app-header__avatar {
-    width: 1.85rem;
-    height: 1.85rem;
+    .trip-performance-table-footer__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .trip-performance-table-footer__actions {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .trip-performance-mobile__spotlight,
+    .trip-performance-mobile__hero-top,
+    .trip-performance-mobile__card-header,
+    .trip-performance-mobile__item-top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .trip-performance-mobile__spotlight-stack {
+      align-items: flex-start;
+    }
+
+    .trip-performance-mobile__item-profit {
+      text-align: left;
+    }
+
+    .responsive-data-table thead {
+      display: none;
+    }
+
+    .responsive-data-table,
+    .responsive-data-table tbody,
+    .responsive-data-table tr,
+    .responsive-data-table td {
+      display: block;
+      width: 100%;
+    }
+
+    .responsive-data-table tbody {
+      padding: 1rem;
+    }
+
+    .responsive-data-table tr {
+      padding: 0.25rem 1rem;
+      margin-bottom: 0.875rem;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 1rem;
+      background: #ffffff;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    .responsive-data-table tr:last-child {
+      margin-bottom: 0;
+    }
+
+    .responsive-data-table td {
+      padding: 0.75rem 0;
+      border: 0;
+    }
+
+    .responsive-data-table td+td {
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .responsive-data-table td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--travel-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .responsive-data-table td.text-end {
+      text-align: left !important;
+    }
+
+    .responsive-data-table .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .responsive-data-table .row>* {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .modal-dialog {
+      width: auto;
+      max-width: none;
+      margin: 0.75rem;
+    }
+
+    .modal-content {
+      border-radius: 1.25rem;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+      padding: 1rem;
+    }
+
+    .modal-footer {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .modal-footer>* {
+      width: 100%;
+      margin: 0;
+    }
+
+    .modal-footer>*+* {
+      margin-top: 0.75rem;
+    }
+
+    .app-modal {
+      align-items: end;
+      padding: 0;
+    }
+
+    .app-modal__dialog {
+      width: 100%;
+      height: 92vh;
+      border-radius: 1.25rem 1.25rem 0 0;
+    }
+
+    .app-modal__header {
+      align-items: flex-start;
+      padding: 0.9rem 1rem;
+    }
+
+    .app-modal__title {
+      font-size: 0.95rem;
+    }
+
+    .app-modal__subtitle {
+      font-size: 0.76rem;
+    }
+
+    .app-modal__body {
+      padding: 0.75rem;
+    }
+
+    .daily-balance-pdf-viewer {
+      border-radius: 0.9rem;
+    }
+
+    .mobile-bottom-nav {
+      display: block;
+    }
+
+    .app-footer {
+      display: none;
+    }
   }
 
-  .app-header__user-name {
-    font-size: 0.8rem;
+  @media (max-width: 420px) {
+    .app-header__top-row {
+      gap: 0.55rem;
+      padding: 0.52rem;
+    }
+
+    .app-header__brand-group {
+      gap: 0.48rem;
+    }
+
+    .app-header__menu-trigger {
+      width: 2.55rem;
+      height: 2.55rem;
+    }
+
+    .app-header .navbar-brand-image {
+      width: 2.1rem;
+      height: 2.1rem;
+      padding: 0.45rem;
+    }
+
+    .app-header__brand-name {
+      font-size: 0.86rem;
+    }
+
+    .app-header__brand-subtitle {
+      font-size: 0.65rem;
+    }
+
+    .app-header__account-button {
+      max-width: 8.1rem;
+      padding-right: 0.48rem;
+    }
+
+    .app-header__avatar {
+      width: 1.85rem;
+      height: 1.85rem;
+    }
+
+    .app-header__user-name {
+      font-size: 0.8rem;
+    }
+
+    .app-header__account-caret {
+      display: none;
+    }
   }
 
-  .app-header__account-caret {
-    display: none;
+  @media (min-width: 768px) {
+    .app-header {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      padding-bottom: 0.5rem;
+    }
   }
-}

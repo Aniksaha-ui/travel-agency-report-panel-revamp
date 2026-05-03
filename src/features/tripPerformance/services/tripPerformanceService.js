@@ -1,6 +1,5 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
-import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import { formatTravelDate } from "../../../utils/dateUtils";
 import {
   TRIP_PERFORMANCE_COPY,
@@ -203,12 +202,7 @@ const filterFallbackTrips = (payload, search) => {
 
 export const getTripPerformance = async ({ page = 1, search = "" } = {}) => {
   try {
-    const response = await apiClient.get(
-      buildUrlWithQuery(API_URLS.reports.tripPerformance, {
-        page,
-        search,
-      }),
-    );
+    const response = await apiClient.get(API_URLS.reports.tripPerformance);
 
     if (response.data) {
       return normalizeTripPerformance(response.data);

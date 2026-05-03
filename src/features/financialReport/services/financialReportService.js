@@ -1,6 +1,5 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
-import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import { formatTravelDate } from "../../../utils/dateUtils";
 import {
   FINANCIAL_REPORT_COPY,
@@ -143,9 +142,7 @@ export const normalizeFinancialReport = (payload) => {
 
 export const getFinancialReport = async ({ page = 1 } = {}) => {
   try {
-    const response = await apiClient.get(
-      buildUrlWithQuery(API_URLS.reports.financialReport, { page }),
-    );
+    const response = await apiClient.get(API_URLS.reports.financialReport);
 
     if (response.data) {
       return normalizeFinancialReport(response.data);

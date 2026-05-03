@@ -1,6 +1,5 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
-import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import {
   CUSTOMER_VALUE_COPY,
   CUSTOMER_VALUE_FALLBACK_RESPONSE,
@@ -206,12 +205,7 @@ const filterFallbackCustomers = (payload, search) => {
 
 export const getCustomerValue = async ({ page = 1, search = "" } = {}) => {
   try {
-    const response = await apiClient.get(
-      buildUrlWithQuery(API_URLS.reports.customerValue, {
-        page,
-        search,
-      }),
-    );
+    const response = await apiClient.get(API_URLS.reports.customerValue);
 
     if (response.data) {
       return normalizeCustomerValue(response.data);

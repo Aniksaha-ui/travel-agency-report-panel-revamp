@@ -37,16 +37,24 @@ export default function DailyBalanceMobileView({
           <section className="trip-performance-mobile__hero">
             <div className="trip-performance-mobile__hero-top">
               <div>
-                <div className="trip-performance-mobile__eyebrow">/admin/account/daily-balance</div>
-                <h2 className="trip-performance-mobile__title">{copy.pageTitle}</h2>
-                <p className="trip-performance-mobile__subtitle">{copy.pageSubtitle}</p>
+                <div className="trip-performance-mobile__eyebrow">
+                  /admin/account/daily-balance
+                </div>
+                <h2 className="trip-performance-mobile__title">
+                  {copy.pageTitle}
+                </h2>
+                <p className="trip-performance-mobile__subtitle">
+                  {copy.pageSubtitle}
+                </p>
               </div>
               <span className="trip-performance-mobile__date">{boardDate}</span>
             </div>
 
             <div className="trip-performance-mobile__spotlight">
               <div>
-                <div className="trip-performance-mobile__spotlight-label">Latest running balance</div>
+                <div className="trip-performance-mobile__spotlight-label">
+                  Latest running balance
+                </div>
                 <div className="trip-performance-mobile__spotlight-value">
                   {latestDay?.balanceLabel ?? "BDT 0"}
                 </div>
@@ -64,10 +72,19 @@ export default function DailyBalanceMobileView({
 
             <div className="trip-performance-mobile__metric-grid">
               {metrics.map((metric) => (
-                <article key={metric.id} className="trip-performance-mobile__metric">
-                  <div className="trip-performance-mobile__metric-label">{metric.label}</div>
-                  <div className="trip-performance-mobile__metric-value">{metric.value}</div>
-                  <div className="trip-performance-mobile__metric-meta">{metric.change}</div>
+                <article
+                  key={metric.id}
+                  className="trip-performance-mobile__metric"
+                >
+                  <div className="trip-performance-mobile__metric-label">
+                    {metric.label}
+                  </div>
+                  <div className="trip-performance-mobile__metric-value">
+                    {metric.value}
+                  </div>
+                  <div className="trip-performance-mobile__metric-meta">
+                    {metric.change}
+                  </div>
                 </article>
               ))}
             </div>
@@ -76,7 +93,9 @@ export default function DailyBalanceMobileView({
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
-                <div className="trip-performance-mobile__card-title">Balance and net movement</div>
+                <div className="trip-performance-mobile__card-title">
+                  Balance and net movement
+                </div>
                 <div className="trip-performance-mobile__card-subtle">
                   Track the daily running balance alongside daily net flow
                 </div>
@@ -95,7 +114,9 @@ export default function DailyBalanceMobileView({
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
-                <div className="trip-performance-mobile__card-title">Monthly cash flow mix</div>
+                <div className="trip-performance-mobile__card-title">
+                  Monthly cash flow mix
+                </div>
                 <div className="trip-performance-mobile__card-subtle">
                   Total credit versus total debit for the selected month
                 </div>
@@ -114,7 +135,9 @@ export default function DailyBalanceMobileView({
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
-                <div className="trip-performance-mobile__card-title">Credit and debit mix</div>
+                <div className="trip-performance-mobile__card-title">
+                  Credit and debit mix
+                </div>
                 <div className="trip-performance-mobile__card-subtle">
                   Compare daily inflow and outflow across the month
                 </div>
@@ -132,9 +155,12 @@ export default function DailyBalanceMobileView({
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
-                <div className="trip-performance-mobile__card-title">Daily ledger</div>
+                <div className="trip-performance-mobile__card-title">
+                  Daily ledger
+                </div>
                 <div className="trip-performance-mobile__card-subtle">
-                  Showing {pagination.from ?? 0}-{pagination.to ?? 0} of {pagination.total ?? 0}
+                  Showing {pagination.from ?? 0}-{pagination.to ?? 0} of{" "}
+                  {pagination.total ?? 0}
                 </div>
               </div>
               <div className="trip-performance-mobile__pill">
@@ -145,39 +171,65 @@ export default function DailyBalanceMobileView({
             <div className="trip-performance-mobile__list">
               {days.length ? (
                 days.map((day) => (
-                  <article key={day.id} className="trip-performance-mobile__item">
+                  <article
+                    key={day.id}
+                    className="trip-performance-mobile__item"
+                  >
                     <div className="trip-performance-mobile__item-top">
                       <div>
-                        <div className="trip-performance-mobile__item-title">{day.dateLabel}</div>
+                        <div className="trip-performance-mobile__item-title">
+                          {day.dateLabel}
+                        </div>
                         <div className="trip-performance-mobile__item-meta">
-                          {day.txCountLabel} transactions - {day.debitShareLabel}
+                          {day.txCountLabel} transactions -{" "}
+                          {day.debitShareLabel}
                         </div>
                       </div>
-                      <div className="trip-performance-mobile__item-profit">{day.balanceLabel}</div>
+                      <div className="trip-performance-mobile__item-profit">
+                        {day.balanceLabel}
+                      </div>
                     </div>
                     <div className="trip-performance-mobile__item-grid">
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">{day.totalCreditLabel}</div>
-                        <div className="trip-performance-mobile__item-grid-label">Credit</div>
+                        <div className="trip-performance-mobile__item-grid-value">
+                          {day.totalCreditLabel}
+                        </div>
+                        <div className="trip-performance-mobile__item-grid-label">
+                          Credit
+                        </div>
                       </div>
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">{day.totalDebitLabel}</div>
-                        <div className="trip-performance-mobile__item-grid-label">Debit</div>
+                        <div className="trip-performance-mobile__item-grid-value">
+                          {day.totalDebitLabel}
+                        </div>
+                        <div className="trip-performance-mobile__item-grid-label">
+                          Debit
+                        </div>
                       </div>
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">{day.netMovementLabel}</div>
-                        <div className="trip-performance-mobile__item-grid-label">Net</div>
+                        <div className="trip-performance-mobile__item-grid-value">
+                          {day.netMovementLabel}
+                        </div>
+                        <div className="trip-performance-mobile__item-grid-label">
+                          Net
+                        </div>
                       </div>
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">{day.txCountLabel}</div>
-                        <div className="trip-performance-mobile__item-grid-label">Transactions</div>
+                        <div className="trip-performance-mobile__item-grid-value">
+                          {day.txCountLabel}
+                        </div>
+                        <div className="trip-performance-mobile__item-grid-label">
+                          Transactions
+                        </div>
                       </div>
                     </div>
                   </article>
                 ))
               ) : (
                 <div className="trip-performance-mobile__empty">
-                  {isLoading ? "Loading daily balance..." : "No daily balance data available."}
+                  {isLoading
+                    ? "Loading daily balance..."
+                    : "No daily balance data available."}
                 </div>
               )}
             </div>

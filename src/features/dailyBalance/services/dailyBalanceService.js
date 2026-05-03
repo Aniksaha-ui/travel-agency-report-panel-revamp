@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import { APP_CONFIG } from "../../../services/config";
 import { formatTravelDate } from "../../../utils/dateUtils";
 import {
@@ -263,9 +264,9 @@ export const normalizeDailyBalanceHistory = (payload) => {
 
 export const getDailyBalance = async ({ page = 1 } = {}) => {
   try {
-    const response = await apiClient.get(API_URLS.reports.dailyBalance, {
-      params: { page },
-    });
+    const response = await apiClient.get(
+      buildUrlWithQuery(API_URLS.reports.dailyBalance, { page }),
+    );
 
     if (response.data) {
       return normalizeDailyBalance(response.data);
@@ -281,9 +282,9 @@ export const getDailyBalance = async ({ page = 1 } = {}) => {
 
 export const getDailyBalanceHistory = async ({ page = 1 } = {}) => {
   try {
-    const response = await apiClient.get(API_URLS.reports.dailyBalanceHistory, {
-      params: { page },
-    });
+    const response = await apiClient.get(
+      buildUrlWithQuery(API_URLS.reports.dailyBalanceHistory, { page }),
+    );
 
     if (response.data) {
       return normalizeDailyBalanceHistory(response.data);

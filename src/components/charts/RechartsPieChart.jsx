@@ -6,6 +6,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { formatTooltipLabel, formatTooltipValue } from "./chartUtils";
 
 const DEFAULT_COLORS = ["#22c55e", "#38bdf8", "#f59e0b", "#ef4444", "#8b5cf6", "#14b8a6"];
 
@@ -83,7 +84,8 @@ export default function RechartsPieChart({
               border: "none",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
-            formatter={(value) => [valueFormatter(value), tooltipLabel]}
+            labelFormatter={(label, payload) => formatTooltipLabel(label, payload, labelKey)}
+            formatter={formatTooltipValue(valueFormatter, tooltipLabel)}
           />
           {showLegend ? <Legend verticalAlign="bottom" height={36} iconType="circle" /> : null}
         </PieChart>

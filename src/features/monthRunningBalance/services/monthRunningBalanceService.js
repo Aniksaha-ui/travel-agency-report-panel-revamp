@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import {
   MONTH_RUNNING_BALANCE_COPY,
   MONTH_RUNNING_BALANCE_FALLBACK_RESPONSE,
@@ -139,9 +140,9 @@ export const normalizeMonthRunningBalance = (payload) => {
 
 export const getMonthRunningBalance = async ({ page = 1 } = {}) => {
   try {
-    const response = await apiClient.get(API_URLS.reports.monthRunningBalance, {
-      params: { page },
-    });
+    const response = await apiClient.get(
+      buildUrlWithQuery(API_URLS.reports.monthRunningBalance, { page }),
+    );
 
     if (response.data) {
       return normalizeMonthRunningBalance(response.data);

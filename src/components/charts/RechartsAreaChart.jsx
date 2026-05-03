@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { formatTooltipLabel, formatTooltipValue } from "./chartUtils";
 
 export default function RechartsAreaChart({
   data,
@@ -67,7 +68,8 @@ export default function RechartsAreaChart({
               border: "none",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
-            formatter={(value) => [valueFormatter(value), ""]}
+            labelFormatter={(label, payload) => formatTooltipLabel(label, payload, labelKey)}
+            formatter={formatTooltipValue(valueFormatter)}
           />
           <Legend verticalAlign="top" height={36} iconType="circle" />
           {series.map((s) => (

@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { formatTooltipLabel, formatTooltipValue } from "./chartUtils";
 
 export default function RechartsRankingChart({
   getCellColor,
@@ -65,7 +66,8 @@ export default function RechartsRankingChart({
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
             cursor={{ fill: "rgba(0,0,0,0.04)" }}
-            formatter={(value) => [valueFormatter(value), tooltipLabel]}
+            labelFormatter={(label, payload) => formatTooltipLabel(label, payload, labelKey)}
+            formatter={formatTooltipValue(valueFormatter, tooltipLabel)}
           />
           <Bar dataKey={valueKey} radius={[0, 4, 4, 0]} barSize={12} animationDuration={1500}>
             {data.map((entry, index) => (

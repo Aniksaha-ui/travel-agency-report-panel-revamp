@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import { formatTravelDate } from "../../../utils/dateUtils";
 import {
   TRIP_PERFORMANCE_COPY,
@@ -15,6 +16,25 @@ const formatCurrency = (value) => `BDT ${formatNumber(value)}`;
 const normalizeSearch = (value) => String(value ?? "").trim().toLowerCase();
 const shortenLabel = (value, maxLength = 14) =>
   String(value ?? "").length > maxLength ? `${String(value).slice(0, maxLength - 1)}…` : String(value ?? "");
+const buildRevenueMix = (trips) => {
+  const rankedTrips = [...trips].sort((first, second) => second.totalRevenue - first.totalRevenue);
+  const primaryTrips = rankedTrips.slice(0, 5).map((trip) => ({
+    id: trip.id,
+    label: shortenLabel(trip.tripName, 20),
+    value: trip.totalRevenue,
+  }));
+  const remainingRevenue = rankedTrips.slice(5).reduce((sum, trip) => sum + trip.totalRevenue, 0);
+
+  if (remainingRevenue > 0) {
+    primaryTrips.push({
+      id: "others",
+      label: "Others",
+      value: remainingRevenue,
+    });
+  }
+
+  return primaryTrips.filter((item) => item.value > 0);
+};
 
 const formatDateRange = (departureTime, arrivalTime) => {
   const departureLabel = formatTravelDate(departureTime);
@@ -73,7 +93,6 @@ export const normalizeTripPerformance = (payload) => {
   const visibleCapacity = trips.reduce((sum, trip) => sum + trip.totalCapacity, 0);
   const visibleUtilization = visibleCapacity ? Math.round((visibleBookedSeats / visibleCapacity) * 100) : 0;
   const topTrip = [...trips].sort((first, second) => second.totalProfit - first.totalProfit)[0] ?? null;
-  const trendTrips = [...trips].slice(0, 6).reverse();
   const occupancyLeaders = [...trips].sort((first, second) => second.occupancyRate - first.occupancyRate).slice(0, 5);
   const revenueLeaders = [...trips].sort((first, second) => second.totalRevenue - first.totalRevenue).slice(0, 5);
 
@@ -135,12 +154,7 @@ export const normalizeTripPerformance = (payload) => {
       topTrip,
     },
     charts: {
-      revenueTrend: trendTrips.map((trip) => ({
-        id: trip.id,
-        label: shortenLabel(trip.tripName, 12),
-        revenue: trip.totalRevenue,
-        profit: trip.totalProfit,
-      })),
+      revenueMix: buildRevenueMix(trips),
       occupancyRanking: occupancyLeaders.map((trip) => ({
         id: trip.id,
         label: shortenLabel(trip.tripName, 20),
@@ -189,12 +203,12 @@ const filterFallbackTrips = (payload, search) => {
 
 export const getTripPerformance = async ({ page = 1, search = "" } = {}) => {
   try {
-    const response = await apiClient.get(API_URLS.reports.tripPerformance, {
-      params: {
+    const response = await apiClient.get(
+      buildUrlWithQuery(API_URLS.reports.tripPerformance, {
         page,
-        ...(search ? { search } : {}),
-      },
-    });
+        search,
+      }),
+    );
 
     if (response.data) {
       return normalizeTripPerformance(response.data);

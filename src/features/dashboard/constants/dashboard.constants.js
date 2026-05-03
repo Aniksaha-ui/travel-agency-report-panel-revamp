@@ -57,3 +57,20 @@ export const DASHBOARD_FALLBACK_RESPONSE = {
   },
   message: "success",
 };
+
+export const DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE = {
+  data: [
+    {
+      trip_name: "Explore Coxs Bazer",
+      month: "May-2026",
+      total_transaction: "28000.00",
+    },
+    {
+      trip_name: "Bankok trip",
+      month: "May-2026",
+      total_transaction: "50000.00",
+    },
+  ],
+  isExecute: "SUCCESS",
+  message: "Report fetch successfully",
+};

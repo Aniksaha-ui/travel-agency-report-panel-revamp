@@ -1,18 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { APP_BRAND } from "../../constants/brand";
 import { APP_ROUTES } from "../../constants/routes";
 import { selectMenu } from "../../features/menu/store/menuSlice";
+import { getSupportedRoute, hasChildren } from "../../features/menu/utils/menuHelpers";
+import { MenuIcon } from "../../features/menu/utils/menuIcons";
+import { classNames } from "../../utils/classNames";
 
 export default function Header({ onOpenDrawer }) {
   const { auth, logout } = useAuthContext();
-  const { status } = useSelector(selectMenu);
+  const { mainMenuItems, bottomMenuItems, status } = useSelector(selectMenu);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [openDesktopMenu, setOpenDesktopMenu] = useState(null);
   const accountMenuRef = useRef(null);
+  const desktopNavRef = useRef(null);
   const userInitial = auth.user?.name?.charAt(0)?.toUpperCase() ?? "A";
   const roleLabel = auth.user?.role ?? "Administrator";
+  const accountSubtitle = auth.user?.email || roleLabel;
   const headerDate = new Intl.DateTimeFormat("en-US", {
     weekday: "short",
     month: "short",
@@ -20,7 +27,7 @@ export default function Header({ onOpenDrawer }) {
   }).format(new Date());
 
   useEffect(() => {
-    if (!isAccountMenuOpen) {
+    if (!isAccountMenuOpen && !openDesktopMenu) {
       return undefined;
     }
 
@@ -28,11 +35,16 @@ export default function Header({ onOpenDrawer }) {
       if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
         setIsAccountMenuOpen(false);
       }
+
+      if (desktopNavRef.current && !desktopNavRef.current.contains(event.target)) {
+        setOpenDesktopMenu(null);
+      }
     };
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setIsAccountMenuOpen(false);
+        setOpenDesktopMenu(null);
       }
     };
 
@@ -43,15 +55,166 @@ export default function Header({ onOpenDrawer }) {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isAccountMenuOpen]);
+  }, [isAccountMenuOpen, openDesktopMenu]);
 
   const closeAccountMenu = () => {
     setIsAccountMenuOpen(false);
   };
 
+  const closeDesktopMenu = () => {
+    setOpenDesktopMenu(null);
+  };
+
   const handleLogout = () => {
     closeAccountMenu();
     logout();
+  };
+
+  const handleUnavailableMenu = (title) => {
+    closeDesktopMenu();
+    toast.info(`${title} page is not available yet.`);
+  };
+
+  const toggleDesktopMenu = (item, event) => {
+    if (!desktopNavRef.current) {
+      return;
+    }
+
+    if (openDesktopMenu?.id === item.id) {
+      setOpenDesktopMenu(null);
+      return;
+    }
+
+    const navRect = desktopNavRef.current.getBoundingClientRect();
+    const triggerRect = event.currentTarget.getBoundingClientRect();
+
+    setOpenDesktopMenu({
+      id: item.id,
+      title: item.title,
+      children: item.children ?? [],
+      left: Math.max(0, triggerRect.left - navRect.left),
+      top: triggerRect.bottom - navRect.top + 8,
+    });
+  };
+
+  const renderDesktopDropdownItems = (items) =>
+    items.map((item) => {
+      const supportedRoute = getSupportedRoute(item.path);
+
+      if (supportedRoute) {
+        return (
+          <NavLink
+            key={`${item.id}-${supportedRoute}`}
+            to={supportedRoute}
+            className={({ isActive }) =>
+              classNames("app-header__desktop-dropdown-item", isActive && "active")
+            }
+            onClick={closeDesktopMenu}
+          >
+            <span className="app-header__desktop-dropdown-icon">
+              <MenuIcon name={item.icon} size={16} />
+            </span>
+            <span>{item.title}</span>
+          </NavLink>
+        );
+      }
+
+      return (
+        <button
+          key={item.id}
+          type="button"
+          className="app-header__desktop-dropdown-item"
+          onClick={() => handleUnavailableMenu(item.title)}
+        >
+          <span className="app-header__desktop-dropdown-icon">
+            <MenuIcon name={item.icon} size={16} />
+          </span>
+          <span>{item.title}</span>
+        </button>
+      );
+    });
+
+  const renderDesktopMenuItem = (item, rowVariant = "primary") => {
+    const supportedRoute = getSupportedRoute(item.path);
+    const itemHasChildren = hasChildren(item);
+    const isOpen = openDesktopMenu?.id === item.id;
+
+    if (itemHasChildren) {
+      return (
+        <div key={item.id} className="app-header__desktop-item-wrap">
+          <button
+            type="button"
+            className={classNames(
+              "app-header__desktop-item",
+              rowVariant === "secondary" && "app-header__desktop-item--secondary",
+              isOpen && "is-open"
+            )}
+            onClick={(event) => toggleDesktopMenu(item, event)}
+            aria-expanded={isOpen}
+            aria-haspopup="menu"
+          >
+            <span className="app-header__desktop-item-icon">
+              <MenuIcon name={item.icon} size={16} />
+            </span>
+            <span>{item.title}</span>
+            <span className="app-header__desktop-item-caret" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={14}
+                height={14}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 9l6 6l6 -6" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      );
+    }
+
+    if (supportedRoute) {
+      return (
+        <NavLink
+          key={`${item.id}-${supportedRoute}`}
+          to={supportedRoute}
+          end={supportedRoute === APP_ROUTES.dashboard}
+          className={({ isActive }) =>
+            classNames(
+              "app-header__desktop-item",
+              rowVariant === "secondary" && "app-header__desktop-item--secondary",
+              isActive && "active"
+            )
+          }
+        >
+          <span className="app-header__desktop-item-icon">
+            <MenuIcon name={item.icon} size={16} />
+          </span>
+          <span>{item.title}</span>
+        </NavLink>
+      );
+    }
+
+    return (
+      <button
+        key={item.id}
+        type="button"
+        className={classNames(
+          "app-header__desktop-item",
+          rowVariant === "secondary" && "app-header__desktop-item--secondary"
+        )}
+        onClick={() => handleUnavailableMenu(item.title)}
+      >
+        <span className="app-header__desktop-item-icon">
+          <MenuIcon name={item.icon} size={16} />
+        </span>
+        <span>{item.title}</span>
+      </button>
+    );
   };
 
   return (
@@ -61,7 +224,7 @@ export default function Header({ onOpenDrawer }) {
           <div className="app-header__brand-group">
             <button
               type="button"
-              className="btn btn-outline-secondary app-header__menu-trigger"
+              className="btn btn-outline-secondary app-header__menu-trigger d-md-none"
               onClick={onOpenDrawer}
               aria-label="Open navigation menu"
             >
@@ -107,12 +270,7 @@ export default function Header({ onOpenDrawer }) {
           </div>
 
           <div className="navbar-nav flex-row order-md-last app-header__actions">
-            <div className="nav-item d-none d-md-flex me-3">
-              <div className="btn-list">
-                <span className="btn btn-ghost-secondary disabled">{roleLabel}</span>
-              </div>
-            </div>
-
+            <div className="app-header__role-copy d-none d-md-flex">{roleLabel.toLowerCase()}</div>
             <div className="nav-item app-header__profile" ref={accountMenuRef}>
               <button
                 type="button"
@@ -124,7 +282,7 @@ export default function Header({ onOpenDrawer }) {
                 <span className="avatar avatar-sm app-header__avatar">{userInitial}</span>
                 <span className="app-header__user-copy">
                   <span className="app-header__user-name">{auth.user?.name ?? "Admin User"}</span>
-                  <span className="app-header__user-email">{auth.user?.email ?? ""}</span>
+                  <span className="app-header__user-email">{accountSubtitle}</span>
                 </span>
                 <span className="app-header__account-caret" aria-hidden="true">
                   <svg
@@ -191,6 +349,52 @@ export default function Header({ onOpenDrawer }) {
             </div>
           </div>
         </div>
+
+        <nav
+          ref={desktopNavRef}
+          className="app-header__desktop-nav d-none d-md-flex"
+          aria-label="Primary navigation"
+        >
+          {status === "loading" ? (
+            <div className="app-header__desktop-nav-state">Loading menu...</div>
+          ) : (
+            <>
+              {mainMenuItems.length ? (
+                <div className="app-header__desktop-nav-scroll">
+                  <div className="app-header__desktop-nav-row">
+                    {mainMenuItems.map((item) => renderDesktopMenuItem(item, "primary"))}
+                  </div>
+                </div>
+              ) : null}
+
+              {bottomMenuItems.length ? (
+                <div className="app-header__desktop-nav-scroll">
+                  <div className="app-header__desktop-nav-row app-header__desktop-nav-row--secondary">
+                    {bottomMenuItems.map((item) => renderDesktopMenuItem(item, "secondary"))}
+                  </div>
+                </div>
+              ) : null}
+
+              {openDesktopMenu?.children?.length ? (
+                <div
+                  className="app-header__desktop-flyout"
+                  role="menu"
+                  aria-label={openDesktopMenu.title}
+                  style={{
+                    left: `${openDesktopMenu.left}px`,
+                    top: `${openDesktopMenu.top}px`,
+                  }}
+                >
+                  {renderDesktopDropdownItems(openDesktopMenu.children)}
+                </div>
+              ) : null}
+
+              {!mainMenuItems.length && !bottomMenuItems.length ? (
+                <div className="app-header__desktop-nav-state">Menu items will appear here once available.</div>
+              ) : null}
+            </>
+          )}
+        </nav>
 
         <div className="app-header__mobile-banner d-md-none">
           <div>

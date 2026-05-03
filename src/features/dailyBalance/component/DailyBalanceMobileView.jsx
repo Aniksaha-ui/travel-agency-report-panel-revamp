@@ -31,7 +31,7 @@ export default function DailyBalanceMobileView({
   summary,
 }) {
   return (
-    <div className="d-md-none trip-performance-mobile">
+    <div className="d-md-none trip-performance-mobile daily-balance-mobile">
       <div className="container-xl">
         <div className="trip-performance-mobile__screen">
           <section className="trip-performance-mobile__hero">

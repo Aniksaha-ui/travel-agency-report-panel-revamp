@@ -8,12 +8,14 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { formatTooltipLabel, formatTooltipValue } from "./chartUtils";
 
 export default function RechartsBarChart({
   items,
   segments,
   labelKey = "label",
   height = 300,
+  valueFormatter = (value) => value,
 }) {
   if (!items || items.length === 0) {
     return (
@@ -56,6 +58,8 @@ export default function RechartsBarChart({
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
             cursor={{ fill: "transparent" }}
+            labelFormatter={(label, payload) => formatTooltipLabel(label, payload, labelKey)}
+            formatter={formatTooltipValue(valueFormatter)}
           />
           <Legend verticalAlign="top" height={36} iconType="circle" />
           {segments.map((segment) => (

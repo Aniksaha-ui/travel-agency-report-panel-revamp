@@ -1,12 +1,11 @@
-import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
 import RechartsBarChart from "../../../components/charts/RechartsBarChart";
+import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import RechartsRankingChart from "../../../components/charts/RechartsRankingChart";
 import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import {
-  compactRevenueFormatter,
-  revenueTrendSeries,
+  currencyFormatter,
   seatCompositionSegments,
   tripColumns,
 } from "./tripPerformanceView.config";
@@ -68,15 +67,15 @@ export default function TripPerformanceDesktopView({
             <div className="row g-3">
               <div className="col-12 col-xl-8">
                 <Card
-                  title="Revenue and profit trend"
-                  subtitle="Compare how combined revenue and profit move across the visible trips."
+                  title="Revenue share by trip"
+                  subtitle="See which visible trips contribute the most revenue on the current page."
                   className="trip-performance-card border-0 h-100"
                 >
-                  <RechartsAreaChart
-                    data={charts.revenueTrend ?? []}
-                    series={revenueTrendSeries}
-                    labelKey="label"
-                    valueFormatter={compactRevenueFormatter}
+                  <RechartsPieChart
+                    items={charts.revenueMix ?? []}
+                    height={320}
+                    totalLabel="visible revenue"
+                    valueFormatter={currencyFormatter}
                   />
                 </Card>
               </div>

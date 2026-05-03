@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { APP_CONFIG } from "../../../services/config";
 import { getAdminMenu } from "../services/menuService";
+import { normalizeStoredMenuState } from "../utils/menuHelpers";
 
 const defaultState = {
   mainMenuItems: [],
@@ -11,7 +12,9 @@ const defaultState = {
 };
 
 export const getPersistedMenuState = () => {
-  const rawValue = window.localStorage.getItem(APP_CONFIG.menuStorageKey);
+  const rawValue =
+    window.localStorage.getItem("menuItems") ??
+    window.localStorage.getItem(APP_CONFIG.menuStorageKey);
 
   if (!rawValue) {
     return defaultState;
@@ -19,8 +22,7 @@ export const getPersistedMenuState = () => {
 
   try {
     const parsedValue = JSON.parse(rawValue);
-    const mainMenuItems = parsedValue.mainMenuItems ?? [];
-    const bottomMenuItems = parsedValue.bottomMenuItems ?? [];
+    const { mainMenuItems, bottomMenuItems } = normalizeStoredMenuState(parsedValue);
     const hasCachedMenu = mainMenuItems.length > 0 || bottomMenuItems.length > 0;
 
     return {

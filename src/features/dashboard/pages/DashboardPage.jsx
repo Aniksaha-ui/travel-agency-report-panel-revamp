@@ -1,4 +1,5 @@
 import Card from "../../../components/ui/Card";
+import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import Table from "../../../components/ui/Table";
 import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../components/MetricsOverview";
@@ -66,6 +67,7 @@ export default function DashboardPage() {
   const summaryStats = data?.summaryStats ?? [];
   const tripOrigins = data?.tripOrigins ?? [];
   const paymentMethods = data?.paymentMethods ?? [];
+  const tripSales = data?.tripSales ?? { items: [], chartItems: [], monthLabel: "Current month" };
   const totals = data?.totals ?? {};
   const paymentCaptureRate = data?.paymentCaptureRate ?? 0;
   const boardDate = new Intl.DateTimeFormat("en-US", {
@@ -175,6 +177,60 @@ export default function DashboardPage() {
                     {isLoading
                       ? "Loading trip coverage..."
                       : "Trip origin data is not available yet."}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="dashboard-mobile-card">
+              <div className="dashboard-mobile-card__header">
+                <div>
+                  <div className="dashboard-mobile-card__title">
+                    Current month trip sales
+                  </div>
+                  <div className="dashboard-mobile-card__subtle">
+                    {tripSales.monthLabel} revenue split across trips
+                  </div>
+                </div>
+                <div className="dashboard-mobile-pill">
+                  {totals.currentMonthTripSales ?? "BDT 0"}
+                </div>
+              </div>
+
+              <RechartsPieChart
+                items={tripSales.chartItems ?? []}
+                height={240}
+                totalLabel={tripSales.monthLabel ?? "current month"}
+                valueFormatter={(value) => `BDT ${new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Number(value) || 0)}`}
+              />
+
+              <div className="dashboard-mobile-payment-list">
+                {tripSales.items?.length ? (
+                  tripSales.items.map((item) => (
+                    <div key={item.id} className="dashboard-mobile-payment-item">
+                      <div>
+                        <div className="dashboard-mobile-payment-item__title">
+                          {item.tripName}
+                        </div>
+                        <div className="dashboard-mobile-payment-item__meta">
+                          {item.monthLabel}
+                        </div>
+                      </div>
+                      <div className="dashboard-mobile-payment-item__aside">
+                        <div className="dashboard-mobile-payment-item__value">
+                          {item.totalTransactionLabel}
+                        </div>
+                        <div className="dashboard-mobile-payment-item__share">
+                          {item.shareLabel}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="dashboard-mobile-empty">
+                    {isLoading
+                      ? "Loading trip sales..."
+                      : "Current month trip sales are not available yet."}
                   </div>
                 )}
               </div>
@@ -357,6 +413,57 @@ export default function DashboardPage() {
                           </strong>
                         </div>
                       ))}
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </section>
+
+            <section className="dashboard-section">
+              <div className="row g-3">
+                <div className="col-12 col-xl-5">
+                  <Card
+                    title="Current month trip sales"
+                    subtitle={`${tripSales.monthLabel ?? "Current month"} revenue contribution by trip.`}
+                    className="dashboard-table-card border-0 h-100"
+                  >
+                    <RechartsPieChart
+                      items={tripSales.chartItems ?? []}
+                      height={300}
+                      totalLabel={tripSales.monthLabel ?? "current month"}
+                      valueFormatter={(value) =>
+                        `BDT ${new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Number(value) || 0)}`
+                      }
+                    />
+                  </Card>
+                </div>
+                <div className="col-12 col-xl-7">
+                  <Card
+                    title="Trip sales breakdown"
+                    subtitle="Current month sales totals for each trip returned by the report API."
+                    className="dashboard-table-card border-0 h-100"
+                  >
+                    <div className="dashboard-trip-sales-list">
+                      {tripSales.items?.length ? (
+                        tripSales.items.map((item) => (
+                          <div key={item.id} className="dashboard-trip-sales-list__item">
+                            <div>
+                              <div className="dashboard-trip-sales-list__title">{item.tripName}</div>
+                              <div className="dashboard-trip-sales-list__meta">{item.monthLabel}</div>
+                            </div>
+                            <div className="dashboard-trip-sales-list__aside">
+                              <strong>{item.totalTransactionLabel}</strong>
+                              <span>{item.shareLabel}</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-secondary">
+                          {isLoading
+                            ? "Loading trip sales..."
+                            : "Current month trip sales are not available yet."}
+                        </div>
+                      )}
                     </div>
                   </Card>
                 </div>

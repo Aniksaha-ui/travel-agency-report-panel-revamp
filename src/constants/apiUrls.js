@@ -7,6 +7,7 @@ export const API_URLS = {
   },
   dashboard: {
     overview: "/admin/dashboard",
+    currentMonthTripSales: "/admin/current-month-trip-sales-report",
   },
   reports: {
     bookingSummary: "/admin/booking-summary",
@@ -18,7 +19,7 @@ export const API_URLS = {
     monthRunningBalance: "/admin/monthRunningBalance",
     overallSalesSummary: "/admin/overall-sales-summary",
     routeWiseSalesSummary: "/admin/route-wise-sales-summary",
-    transactions: "/admin/transactionHistory",
+    transactions: "/admin/transaction",
     tripPerformance: "/admin/tripPerformance",
     vehicleTrackingReport: "/admin/useageOfVehicle",
   },

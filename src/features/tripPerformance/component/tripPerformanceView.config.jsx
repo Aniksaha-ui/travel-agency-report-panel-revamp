@@ -65,15 +65,11 @@ export const tripColumns = [
   },
 ];
 
-export const revenueTrendSeries = [
-  { key: "revenue", label: "Revenue", color: "#38bdf8" },
-  { key: "profit", label: "Profit", color: "#22c55e" },
-];
-
 export const seatCompositionSegments = [
   { key: "bookedTrip", label: "Trip seats", color: "#38bdf8" },
   { key: "bookedPackage", label: "Package seats", color: "#8b5cf6" },
   { key: "available", label: "Available seats", color: "#f59e0b" },
 ];
 
-export const compactRevenueFormatter = (value) => `${Math.round(Number(value) / 1000)}k`;
+export const currencyFormatter = (value) =>
+  `BDT ${new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Number(value) || 0)}`;

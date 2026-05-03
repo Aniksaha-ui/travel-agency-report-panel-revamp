@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import { formatTravelDate } from "../../../utils/dateUtils";
 import {
   VEHICLE_TRACKING_REPORT_COPY,
@@ -184,9 +185,10 @@ export const normalizeVehicleTrackingReport = (payload) => {
 
 export const getVehicleTrackingReport = async ({ page = 1 } = {}) => {
   try {
-    const response = await apiClient.post(API_URLS.reports.vehicleTrackingReport, "", {
-      params: { page },
-    });
+    const response = await apiClient.post(
+      buildUrlWithQuery(API_URLS.reports.vehicleTrackingReport, { page }),
+      "",
+    );
 
     if (response.data) {
       return normalizeVehicleTrackingReport(response.data);

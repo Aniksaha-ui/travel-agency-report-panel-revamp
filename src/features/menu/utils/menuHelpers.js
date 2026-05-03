@@ -73,6 +73,81 @@ export const getSupportedRoute = (path) => {
 
 export const hasChildren = (item) => Array.isArray(item?.children) && item.children.length > 0;
 
+export const normalizeStoredMenuState = (payload) => {
+  if (!payload) {
+    return {
+      mainMenuItems: [],
+      bottomMenuItems: [],
+    };
+  }
+
+  if (Array.isArray(payload)) {
+    return {
+      mainMenuItems: sortMenuItems(payload),
+      bottomMenuItems: [],
+    };
+  }
+
+  if (Array.isArray(payload.menuItems)) {
+    return {
+      mainMenuItems: sortMenuItems(payload.menuItems),
+      bottomMenuItems: sortMenuItems(payload.bottomMenuItems ?? []),
+    };
+  }
+
+  if (payload.mainMenuItems || payload.bottomMenuItems) {
+    return {
+      mainMenuItems: sortMenuItems(payload.mainMenuItems ?? []),
+      bottomMenuItems: sortMenuItems(payload.bottomMenuItems ?? []),
+    };
+  }
+
+  if (payload.data?.MAIN_MENU_ITEMS || payload.data?.BOTTOM_MENU_ITEMS) {
+    return {
+      mainMenuItems: sortMenuItems(payload.data?.MAIN_MENU_ITEMS ?? []),
+      bottomMenuItems: sortMenuItems(payload.data?.BOTTOM_MENU_ITEMS ?? []),
+    };
+  }
+
+  if (payload.MAIN_MENU_ITEMS || payload.BOTTOM_MENU_ITEMS) {
+    return {
+      mainMenuItems: sortMenuItems(payload.MAIN_MENU_ITEMS ?? []),
+      bottomMenuItems: sortMenuItems(payload.BOTTOM_MENU_ITEMS ?? []),
+    };
+  }
+
+  return {
+    mainMenuItems: [],
+    bottomMenuItems: [],
+  };
+};
+
+export const getNavigableMenuItems = (items = []) => {
+  const seenRoutes = new Set();
+
+  const collectItems = (menuItems) =>
+    menuItems.flatMap((item) => {
+      const supportedRoute = getSupportedRoute(item.path);
+      const childItems = hasChildren(item) ? collectItems(item.children) : [];
+
+      if (!supportedRoute || seenRoutes.has(supportedRoute)) {
+        return childItems;
+      }
+
+      seenRoutes.add(supportedRoute);
+
+      return [
+        {
+          ...item,
+          supportedRoute,
+        },
+        ...childItems,
+      ];
+    });
+
+  return collectItems(items);
+};
+
 const findMenuItemByMatcher = (items, matcher) => items.find((item) => matcher(item));
 
 export const getBottomNavItems = ({ bottomMenuItems = [], mainMenuItems = [] }) => {

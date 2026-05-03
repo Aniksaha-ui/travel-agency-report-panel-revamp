@@ -3,6 +3,7 @@ import apiClient from "../../../services/apiClient";
 import {
   DASHBOARD_COPY,
   DASHBOARD_FALLBACK_RESPONSE,
+  DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE,
 } from "../constants/dashboard.constants";
 
 const formatNumber = (value) =>
@@ -29,8 +30,42 @@ const getToneByRank = (index) => {
   return "warning";
 };
 
-export const normalizeDashboardOverview = (payload) => {
+const normalizeTripSales = (payload) => {
+  const rows = payload?.data ?? payload ?? [];
+  const totalAmount = rows.reduce((sum, item) => sum + toNumber(item.total_transaction), 0);
+  const monthLabel = rows[0]?.month ?? "Current month";
+
+  return {
+    monthLabel,
+    totalAmount,
+    totalAmountLabel: formatCurrency(totalAmount),
+    items: rows.map((item, index) => {
+      const amount = toNumber(item.total_transaction);
+      const share = totalAmount ? Math.round((amount / totalAmount) * 100) : 0;
+
+      return {
+        id: `${item.trip_name}-${index}`,
+        tripName: item.trip_name || "Untitled trip",
+        monthLabel: item.month || monthLabel,
+        totalTransaction: amount,
+        totalTransactionLabel: formatCurrency(amount),
+        share,
+        shareLabel: `${share}% of visible sales`,
+      };
+    }),
+    chartItems: rows
+      .map((item, index) => ({
+        id: `${item.trip_name}-${index}`,
+        label: `${item.trip_name || "Untitled trip"}:${formatNumber(item.total_transaction)}`,
+        value: toNumber(item.total_transaction),
+      }))
+      .filter((item) => item.value > 0),
+  };
+};
+
+export const normalizeDashboardOverview = (payload, tripSalesPayload = DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE) => {
   const source = payload?.data ?? payload ?? {};
+  const tripSales = normalizeTripSales(tripSalesPayload);
   const totalTrips = source.tripData?.reduce((sum, item) => sum + toNumber(item.trip_exist), 0) ?? 0;
   const totalPaymentAmount =
     source.paymentData?.reduce((sum, item) => sum + toNumber(item.total_amount), 0) ?? 0;
@@ -126,6 +161,7 @@ export const normalizeDashboardOverview = (payload) => {
     summaryStats,
     tripOrigins,
     paymentMethods,
+    tripSales,
     paymentCaptureRate,
     totals: {
       monthlyPayments: formatCurrency(source.monthlyPayments),
@@ -140,18 +176,33 @@ export const normalizeDashboardOverview = (payload) => {
       totalPackages: formatNumber(source.totalPackage),
       totalTables: formatNumber(source.totalTable),
       totalTripRegions: formatNumber(totalTrips),
+      currentMonthTripSales: tripSales.totalAmountLabel,
+      currentMonthTripSalesMonth: tripSales.monthLabel,
     },
   };
 };
 
-const fallbackDashboardOverview = normalizeDashboardOverview(DASHBOARD_FALLBACK_RESPONSE);
+const fallbackDashboardOverview = normalizeDashboardOverview(
+  DASHBOARD_FALLBACK_RESPONSE,
+  DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE
+);
 
 export const getDashboardOverview = async () => {
   try {
-    const response = await apiClient.get(API_URLS.dashboard.overview);
+    const [overviewResult, tripSalesResult] = await Promise.allSettled([
+      apiClient.get(API_URLS.dashboard.overview),
+      apiClient.get(API_URLS.dashboard.currentMonthTripSales),
+    ]);
 
-    if (response.data) {
-      return normalizeDashboardOverview(response.data);
+    const overviewPayload =
+      overviewResult.status === "fulfilled" ? overviewResult.value.data : DASHBOARD_FALLBACK_RESPONSE;
+    const tripSalesPayload =
+      tripSalesResult.status === "fulfilled"
+        ? tripSalesResult.value.data
+        : DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE;
+
+    if (overviewPayload) {
+      return normalizeDashboardOverview(overviewPayload, tripSalesPayload);
     }
   } catch {
     await new Promise((resolve) => {

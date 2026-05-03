@@ -1,10 +1,9 @@
-import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
 import RechartsBarChart from "../../../components/charts/RechartsBarChart";
+import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import Button from "../../../components/common/Button";
 import {
-  compactRevenueFormatter,
+  currencyFormatter,
   renderOccupancy,
-  revenueTrendSeries,
   seatCompositionSegments,
 } from "./tripPerformanceView.config";
 
@@ -68,19 +67,18 @@ export default function TripPerformanceMobileView({
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
-                <div className="trip-performance-mobile__card-title">Revenue vs profit</div>
+                <div className="trip-performance-mobile__card-title">Revenue share by trip</div>
                 <div className="trip-performance-mobile__card-subtle">
-                  Trend across the visible trip list
+                  Revenue contribution from the visible trip list
                 </div>
               </div>
             </div>
 
-            <RechartsAreaChart
-              data={charts.revenueTrend ?? []}
-              series={revenueTrendSeries}
-              height={210}
-              labelKey="label"
-              valueFormatter={compactRevenueFormatter}
+            <RechartsPieChart
+              items={charts.revenueMix ?? []}
+              height={240}
+              totalLabel="visible revenue"
+              valueFormatter={currencyFormatter}
             />
           </section>
 

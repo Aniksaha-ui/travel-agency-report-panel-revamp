@@ -1,4 +1,5 @@
 export const APP_ROUTES = {
+  averageBookingValueReport: "/admin/avg-booking-value-report",
   bookingSummary: "/admin/bookings/summary",
   changePassword: "/admin/account/change-password",
   customerValue: "/admin/customerValueReport",
@@ -6,11 +7,16 @@ export const APP_ROUTES = {
   dashboard: "/",
   financialReport: "/admin/financialReport",
   guideEfficiency: "/admin/guideEfficency",
+  highCancellationPackages: "/admin/high-cancellation-packages",
+  lowOccupancyReport: "/admin/low-occupancy-report",
+  lowPerformingPackages: "/admin/low-performing-packages",
   monthRunningBalance: "/admin/monthRunningBalance",
   overallSales: "/admin/account/overall-sales",
   profile: "/admin/account/profile",
+  refundStatusReport: "/admin/refund-status-report",
   transactions: "/admin/transactions",
   tripPerformance: "/admin/tripPerformance",
+  userGrowthReport: "/admin/user-growth-report",
   vehicleTrackingReport: "/admin/vehicletrackingreport",
   login: "/login",
 };

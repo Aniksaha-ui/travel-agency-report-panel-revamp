@@ -185,12 +185,17 @@ export default function DailyBalanceMobileView({
                           {day.debitShareLabel}
                         </div>
                       </div>
-                      <div className="trip-performance-mobile__item-profit">
-                        {day.balanceLabel}
+                      <div className="daily-balance-mobile__item-balance">
+                        <div className="daily-balance-mobile__item-balance-label">
+                          Closing balance
+                        </div>
+                        <div className="trip-performance-mobile__item-profit">
+                          {day.balanceLabel}
+                        </div>
                       </div>
                     </div>
                     <div className="trip-performance-mobile__item-grid">
-                      <div>
+                      <div className="daily-balance-mobile__stat">
                         <div className="trip-performance-mobile__item-grid-value">
                           {day.totalCreditLabel}
                         </div>
@@ -198,7 +203,7 @@ export default function DailyBalanceMobileView({
                           Credit
                         </div>
                       </div>
-                      <div>
+                      <div className="daily-balance-mobile__stat">
                         <div className="trip-performance-mobile__item-grid-value">
                           {day.totalDebitLabel}
                         </div>
@@ -206,7 +211,7 @@ export default function DailyBalanceMobileView({
                           Debit
                         </div>
                       </div>
-                      <div>
+                      <div className="daily-balance-mobile__stat">
                         <div className="trip-performance-mobile__item-grid-value">
                           {day.netMovementLabel}
                         </div>
@@ -214,7 +219,7 @@ export default function DailyBalanceMobileView({
                           Net
                         </div>
                       </div>
-                      <div>
+                      <div className="daily-balance-mobile__stat">
                         <div className="trip-performance-mobile__item-grid-value">
                           {day.txCountLabel}
                         </div>

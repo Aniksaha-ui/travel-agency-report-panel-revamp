@@ -24,6 +24,10 @@ export const normalizeMenuResponse = (payload) => {
 };
 
 export const getSupportedRoute = (path) => {
+  if (path === "/admin/avg-booking-value-report") {
+    return APP_ROUTES.averageBookingValueReport;
+  }
+
   if (path === "/admin/dashboard") {
     return APP_ROUTES.dashboard;
   }
@@ -42,6 +46,18 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/financialReport") {
     return APP_ROUTES.financialReport;
+  }
+
+  if (path === "/admin/high-cancellation-packages") {
+    return APP_ROUTES.highCancellationPackages;
+  }
+
+  if (path === "/admin/low-occupancy-report") {
+    return APP_ROUTES.lowOccupancyReport;
+  }
+
+  if (path === "/admin/low-performing-packages") {
+    return APP_ROUTES.lowPerformingPackages;
   }
 
   if (path === "/admin/monthRunningBalance") {
@@ -64,8 +80,16 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.vehicleTrackingReport;
   }
 
+  if (path === "/admin/user-growth-report") {
+    return APP_ROUTES.userGrowthReport;
+  }
+
   if (path === "/admin/guideEfficency") {
     return APP_ROUTES.guideEfficiency;
+  }
+
+  if (path === "/admin/refund-status-report") {
+    return APP_ROUTES.refundStatusReport;
   }
 
   return null;

@@ -7,6 +7,7 @@ import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import ChangePasswordPage from "./features/account/pages/ChangePasswordPage";
 import ProfilePage from "./features/account/pages/ProfilePage";
+import AverageBookingValueReportPage from "./features/averageBookingValueReport/pages/AverageBookingValueReportPage";
 import LoginPage from "./features/auth/pages/LoginPage";
 import BookingSummaryPage from "./features/bookingSummary/pages/BookingSummaryPage";
 import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
@@ -14,10 +15,15 @@ import DailyBalancePage from "./features/dailyBalance/pages/DailyBalancePage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import FinancialReportPage from "./features/financialReport/pages/FinancialReportPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
+import HighCancellationPackagesPage from "./features/highCancellationPackages/pages/HighCancellationPackagesPage";
+import LowOccupancyReportPage from "./features/lowOccupancyReport/pages/LowOccupancyReportPage";
+import LowPerformingPackagesPage from "./features/lowPerformingPackages/pages/LowPerformingPackagesPage";
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
 import OverallSalesPage from "./features/overallSales/pages/OverallSalesPage";
+import RefundStatusReportPage from "./features/refundStatusReport/pages/RefundStatusReportPage";
 import TransactionsPage from "./features/transactions/pages/TransactionsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
+import UserGrowthReportPage from "./features/userGrowthReport/pages/UserGrowthReportPage";
 import VehicleTrackingReportPage from "./features/vehicleTrackingReport/pages/VehicleTrackingReportPage";
 import { store } from "./store/store";
 
@@ -63,6 +69,14 @@ function AppRoutes() {
   return (
     <>
       <Routes>
+        <Route
+          path={APP_ROUTES.averageBookingValueReport}
+          element={
+            <ProtectedRoute>
+              <AverageBookingValueReportPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path={APP_ROUTES.dashboard}
           element={
@@ -164,6 +178,46 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <GuideEfficiencyPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.highCancellationPackages}
+          element={
+            <ProtectedRoute>
+              <HighCancellationPackagesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.lowOccupancyReport}
+          element={
+            <ProtectedRoute>
+              <LowOccupancyReportPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.lowPerformingPackages}
+          element={
+            <ProtectedRoute>
+              <LowPerformingPackagesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.refundStatusReport}
+          element={
+            <ProtectedRoute>
+              <RefundStatusReportPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.userGrowthReport}
+          element={
+            <ProtectedRoute>
+              <UserGrowthReportPage />
             </ProtectedRoute>
           }
         />

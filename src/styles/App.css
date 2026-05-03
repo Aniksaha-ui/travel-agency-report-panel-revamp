@@ -1200,6 +1200,99 @@
   text-align: center;
 }
 
+.high-cancellation-mobile .dashboard-mobile-card {
+  border: 1px solid rgba(191, 219, 254, 0.84);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  color: var(--travel-text);
+  box-shadow: 0 18px 36px rgba(14, 30, 54, 0.08);
+}
+
+.high-cancellation-mobile .dashboard-mobile-card--hero {
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.14), transparent 35%),
+    linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+}
+
+.high-cancellation-mobile .dashboard-mobile-card--soft {
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 40%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.high-cancellation-mobile .dashboard-mobile-card__eyebrow {
+  color: #0f766e;
+}
+
+.high-cancellation-mobile .dashboard-mobile-card__title,
+.high-cancellation-mobile .dashboard-mobile-quick-grid__value,
+.high-cancellation-mobile .dashboard-mobile-metric__value,
+.high-cancellation-mobile .dashboard-mobile-spotlight__value,
+.high-cancellation-mobile__package-title {
+  color: #0f172a;
+}
+
+.high-cancellation-mobile .dashboard-mobile-card__subtle,
+.high-cancellation-mobile .dashboard-mobile-hero__subtitle,
+.high-cancellation-mobile .dashboard-mobile-metric__label,
+.high-cancellation-mobile .dashboard-mobile-metric__change,
+.high-cancellation-mobile .dashboard-mobile-quick-grid__label,
+.high-cancellation-mobile .dashboard-mobile-spotlight__label,
+.high-cancellation-mobile .dashboard-mobile-spotlight__meta,
+.high-cancellation-mobile .dashboard-mobile-empty {
+  color: #64748b;
+}
+
+.high-cancellation-mobile .dashboard-mobile-card__more,
+.high-cancellation-mobile .dashboard-mobile-pill {
+  border: 1px solid rgba(125, 211, 252, 0.34);
+  background: rgba(239, 246, 255, 0.96);
+  color: #0369a1;
+}
+
+.high-cancellation-mobile .dashboard-mobile-spotlight {
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.98) 0%, rgba(239, 246, 255, 0.98) 100%);
+}
+
+.high-cancellation-mobile .dashboard-mobile-spotlight__stack span {
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f172a;
+  box-shadow: 0 10px 24px rgba(14, 30, 54, 0.06);
+}
+
+.high-cancellation-mobile .dashboard-mobile-metric,
+.high-cancellation-mobile .dashboard-mobile-payment-item,
+.high-cancellation-mobile .dashboard-mobile-quick-grid__item,
+.high-cancellation-mobile .dashboard-mobile-empty {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 24px rgba(14, 30, 54, 0.05);
+}
+
+.high-cancellation-mobile .dashboard-mobile-payment-item {
+  display: block;
+}
+
+.high-cancellation-mobile__spotlight-copy {
+  line-height: 1.45;
+}
+
+.high-cancellation-mobile__package-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.high-cancellation-mobile__package-title {
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.high-cancellation-mobile__quick-grid {
+  margin-top: 0.85rem;
+}
+
 .dashboard-page-header .page-title {
   margin-bottom: 0.35rem;
 }
@@ -2006,10 +2099,68 @@
   box-shadow: 0 12px 24px rgba(14, 30, 54, 0.05);
 }
 
+.daily-balance-mobile .trip-performance-mobile__list {
+  gap: 1rem;
+}
+
+.daily-balance-mobile .trip-performance-mobile__item {
+  padding: 1rem;
+  border-radius: 1.2rem;
+}
+
+.daily-balance-mobile .trip-performance-mobile__item-top {
+  gap: 0.9rem;
+}
+
+.daily-balance-mobile__item-balance {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(125, 211, 252, 0.32);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+}
+
+.daily-balance-mobile__item-balance-label {
+  color: #0369a1;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.daily-balance-mobile .trip-performance-mobile__item-grid {
+  gap: 0.8rem;
+  margin-top: 0.95rem;
+}
+
+.daily-balance-mobile__stat {
+  min-width: 0;
+  padding: 0.82rem 0.9rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 0.95rem;
+  background: #f8fbff;
+}
+
 .daily-balance-mobile .trip-performance-mobile__item-profit,
 .daily-balance-mobile .trip-performance-mobile__item-grid-value,
 .daily-balance-mobile .trip-performance-mobile__spotlight-value {
   color: #0f172a;
+}
+
+.daily-balance-mobile .trip-performance-mobile__item-profit,
+.daily-balance-mobile .trip-performance-mobile__item-grid-value {
+  line-height: 1.2;
+}
+
+.daily-balance-mobile .trip-performance-mobile__item-grid-label {
+  margin-top: 0.22rem;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .trip-performance-table-footer .trip-performance-table-footer__summary + .trip-performance-table-footer__summary {
@@ -2981,6 +3132,19 @@
 }
 
 @media (max-width: 420px) {
+  .high-cancellation-mobile .dashboard-mobile-metrics--two-column,
+  .high-cancellation-mobile .dashboard-mobile-quick-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-balance-mobile .trip-performance-mobile__item-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-balance-mobile__item-balance {
+    width: 100%;
+  }
+
   .app-header__top-row {
     gap: 0.55rem;
     padding: 0.52rem;

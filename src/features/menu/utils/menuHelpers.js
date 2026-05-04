@@ -68,6 +68,14 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.overallSales;
   }
 
+  if (path === "/admin/routes") {
+    return APP_ROUTES.routes;
+  }
+
+  if (path === "/admin/trips" || path === "/admin/trip") {
+    return APP_ROUTES.trips;
+  }
+
   if (path === "/admin/tripPerformance") {
     return APP_ROUTES.tripPerformance;
   }
@@ -78,6 +86,10 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/vehicletrackingreport") {
     return APP_ROUTES.vehicleTrackingReport;
+  }
+
+  if (path === "/admin/vehiclewiseseatreport") {
+    return APP_ROUTES.vehicleWiseSeatReport;
   }
 
   if (path === "/admin/user-growth-report") {

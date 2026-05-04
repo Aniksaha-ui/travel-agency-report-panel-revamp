@@ -15,16 +15,23 @@ const SOURCE_COLORS = {
 const toNumber = (value) => Number(value) || 0;
 
 const formatNumber = (value) =>
-  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(toNumber(value));
+  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(
+    toNumber(value),
+  );
 
 const formatCurrency = (value) => `BDT ${formatNumber(value)}`;
 
 const shortenLabel = (value, maxLength = 22) =>
-  String(value ?? "").length > maxLength ? `${String(value).slice(0, maxLength - 1)}...` : String(value ?? "");
+  String(value ?? "").length > maxLength
+    ? `${String(value).slice(0, maxLength - 1)}...`
+    : String(value ?? "");
 
 const normalizeOverallSalesSummary = (payload) => {
   const rows = payload?.data ?? [];
-  const totalSales = rows.reduce((sum, item) => sum + toNumber(item.total_amount), 0);
+  const totalSales = rows.reduce(
+    (sum, item) => sum + toNumber(item.total_amount),
+    0,
+  );
   const sources = rows
     .map((item, index) => {
       const amount = toNumber(item.total_amount);
@@ -38,7 +45,9 @@ const normalizeOverallSalesSummary = (payload) => {
         amountLabel: formatCurrency(amount),
         share,
         shareLabel: `${share}% of sales`,
-        color: SOURCE_COLORS[source] ?? ["#38bdf8", "#22c55e", "#f59e0b", "#8b5cf6"][index % 4],
+        color:
+          SOURCE_COLORS[source] ??
+          ["#38bdf8", "#22c55e", "#f59e0b", "#8b5cf6"][index % 4],
       };
     })
     .sort((first, second) => second.amount - first.amount);
@@ -86,8 +95,14 @@ const normalizeRouteWiseSalesSummary = (payload) => {
     })
     .sort((first, second) => second.totalRevenue - first.totalRevenue);
 
-  const totalRouteRevenue = routes.reduce((sum, route) => sum + route.totalRevenue, 0);
-  const totalRouteBookings = routes.reduce((sum, route) => sum + route.totalBookings, 0);
+  const totalRouteRevenue = routes.reduce(
+    (sum, route) => sum + route.totalRevenue,
+    0,
+  );
+  const totalRouteBookings = routes.reduce(
+    (sum, route) => sum + route.totalBookings,
+    0,
+  );
 
   return {
     routes,
@@ -111,7 +126,10 @@ const normalizeRouteWiseSalesSummary = (payload) => {
   };
 };
 
-export const normalizeOverallSales = ({ overallSalesPayload, routeWisePayload }) => {
+export const normalizeOverallSales = ({
+  overallSalesPayload,
+  routeWisePayload,
+}) => {
   const overall = normalizeOverallSalesSummary(overallSalesPayload);
   const routeWise = normalizeRouteWiseSalesSummary(routeWisePayload);
 
@@ -157,8 +175,8 @@ export const normalizeOverallSales = ({ overallSalesPayload, routeWisePayload })
 export const getOverallSales = async () => {
   try {
     const [overallResponse, routeWiseResponse] = await Promise.all([
-      apiClient.post(API_URLS.reports.overallSalesSummary, ""),
-      apiClient.post(API_URLS.reports.routeWiseSalesSummary, ""),
+      apiClient.get(API_URLS.reports.overallSalesSummary, ""),
+      apiClient.get(API_URLS.reports.routeWiseSalesSummary, ""),
     ]);
 
     return normalizeOverallSales({

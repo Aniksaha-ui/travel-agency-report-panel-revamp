@@ -25,7 +25,8 @@ const formatMonthLabel = (value) => {
 };
 
 export const normalizeUserGrowthReport = (payload) => {
-  const rows = payload?.data ?? payload ?? [];
+  const source = payload?.data ?? {};
+  const rows = source.data ?? payload?.data ?? payload ?? [];
   const growthRows = rows.map((item, index) => {
     const newUsers = toNumber(item.new_users);
 
@@ -68,6 +69,16 @@ export const normalizeUserGrowthReport = (payload) => {
       },
     ],
     growthRows,
+    pagination: {
+      currentPage: toNumber(source.current_page) || 1,
+      lastPage: toNumber(source.last_page) || 1,
+      total: toNumber(source.total) || growthRows.length,
+      from: toNumber(source.from) || (growthRows.length ? 1 : 0),
+      to: toNumber(source.to) || growthRows.length,
+      perPage: toNumber(source.per_page),
+      hasPrev: Boolean(source.prev_page_url),
+      hasNext: Boolean(source.next_page_url),
+    },
     summary: {
       totalNewUsersLabel: formatNumber(totalNewUsers),
       averagePerMonthLabel: formatNumber(averagePerMonth),

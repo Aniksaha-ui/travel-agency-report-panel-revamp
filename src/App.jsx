@@ -21,9 +21,13 @@ import LowPerformingPackagesPage from "./features/lowPerformingPackages/pages/Lo
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
 import OverallSalesPage from "./features/overallSales/pages/OverallSalesPage";
 import RefundStatusReportPage from "./features/refundStatusReport/pages/RefundStatusReportPage";
+import RoutesPage from "./features/routes/pages/RoutesPage";
 import TransactionsPage from "./features/transactions/pages/TransactionsPage";
+import TripEditPage from "./features/trips/pages/TripEditPage";
+import TripsPage from "./features/trips/pages/TripsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import UserGrowthReportPage from "./features/userGrowthReport/pages/UserGrowthReportPage";
+import VehicleWiseSeatReportPage from "./features/vehicleWiseSeatReport/pages/VehicleWiseSeatReportPage";
 import VehicleTrackingReportPage from "./features/vehicleTrackingReport/pages/VehicleTrackingReportPage";
 import { store } from "./store/store";
 
@@ -114,6 +118,22 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <TransactionsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.trips}
+          element={
+            <ProtectedRoute>
+              <TripsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.tripEdit}
+          element={
+            <ProtectedRoute>
+              <TripEditPage />
             </ProtectedRoute>
           }
         />
@@ -214,10 +234,26 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.routes}
+          element={
+            <ProtectedRoute>
+              <RoutesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.userGrowthReport}
           element={
             <ProtectedRoute>
               <UserGrowthReportPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.vehicleWiseSeatReport}
+          element={
+            <ProtectedRoute>
+              <VehicleWiseSeatReportPage />
             </ProtectedRoute>
           }
         />

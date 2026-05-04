@@ -74,3 +74,31 @@ export const DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE = {
   isExecute: "SUCCESS",
   message: "Report fetch successfully",
 };
+
+export const DASHBOARD_PACKAGE_PROFIT_MARGIN_FALLBACK_RESPONSE = {
+  data: [
+    {
+      package_name: "Grand Package to cox's bazer testing",
+      total_revenue: "90000.00",
+      total_fixed_cost: "0.00",
+      gross_profit: "90000.00",
+      margin_percentage: "100.000000",
+    },
+    {
+      package_name: "Complete Package of New Zealand Travel",
+      total_revenue: "2085000.00",
+      total_fixed_cost: "0.00",
+      gross_profit: "2085000.00",
+      margin_percentage: "100.000000",
+    },
+    {
+      package_name: "Grand Package to cox's bazer (23 Feb)",
+      total_revenue: "900000.00",
+      total_fixed_cost: "16500.00",
+      gross_profit: "883500.00",
+      margin_percentage: "98.166667",
+    },
+  ],
+  isExecute: "SUCCESS",
+  message: "Report fetch successfully",
+};

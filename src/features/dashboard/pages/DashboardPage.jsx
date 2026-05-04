@@ -1,5 +1,6 @@
 import Card from "../../../components/ui/Card";
 import RechartsPieChart from "../../../components/charts/RechartsPieChart";
+import RechartsRankingChart from "../../../components/charts/RechartsRankingChart";
 import Table from "../../../components/ui/Table";
 import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../components/MetricsOverview";
@@ -67,6 +68,7 @@ export default function DashboardPage() {
   const summaryStats = data?.summaryStats ?? [];
   const tripOrigins = data?.tripOrigins ?? [];
   const paymentMethods = data?.paymentMethods ?? [];
+  const packageProfitMargin = data?.packageProfitMargin ?? { items: [], chartItems: [] };
   const tripSales = data?.tripSales ?? { items: [], chartItems: [], monthLabel: "Current month" };
   const totals = data?.totals ?? {};
   const paymentCaptureRate = data?.paymentCaptureRate ?? 0;
@@ -231,6 +233,62 @@ export default function DashboardPage() {
                     {isLoading
                       ? "Loading trip sales..."
                       : "Current month trip sales are not available yet."}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="dashboard-mobile-card">
+              <div className="dashboard-mobile-card__header">
+                <div>
+                  <div className="dashboard-mobile-card__title">
+                    Package profit margin
+                  </div>
+                  <div className="dashboard-mobile-card__subtle">
+                    Margin health across reported packages
+                  </div>
+                </div>
+                <div className="dashboard-mobile-pill">
+                  {totals.packageAverageMargin ?? "0%"}
+                </div>
+              </div>
+
+              <RechartsRankingChart
+                items={packageProfitMargin.chartItems ?? []}
+                labelKey="label"
+                valueKey="value"
+                tooltipLabel="Margin percentage"
+                valueFormatter={(value) => `${Number(value) || 0}%`}
+                getCellColor={() => "#22c55e"}
+              />
+
+              <div className="dashboard-mobile-payment-list">
+                {packageProfitMargin.items?.length ? (
+                  packageProfitMargin.items.map((item) => (
+                    <div key={item.id} className="dashboard-mobile-payment-item">
+                      <div>
+                        <div className="dashboard-mobile-payment-item__title">
+                          {item.packageName}
+                        </div>
+                        <div className="dashboard-mobile-payment-item__meta">
+                          Revenue {item.totalRevenueLabel} • Cost {item.totalFixedCostLabel}
+                        </div>
+                      </div>
+                      <div className="dashboard-mobile-payment-item__aside">
+                        <div className="dashboard-mobile-payment-item__value">
+                          {item.grossProfitLabel}
+                        </div>
+                        <div className="dashboard-mobile-payment-item__share">
+                          {item.marginPercentageLabel}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="dashboard-mobile-empty">
+                    {isLoading
+                      ? "Loading package profit margin..."
+                      : "Package profit margin data is not available yet."}
                   </div>
                 )}
               </div>
@@ -462,6 +520,59 @@ export default function DashboardPage() {
                           {isLoading
                             ? "Loading trip sales..."
                             : "Current month trip sales are not available yet."}
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </section>
+
+            <section className="dashboard-section">
+              <div className="row g-3">
+                <div className="col-12 col-xl-5">
+                  <Card
+                    title="Package profit margin"
+                    subtitle="Reported margin percentage across packages from the profit margin API."
+                    className="dashboard-table-card border-0 h-100"
+                  >
+                    <RechartsRankingChart
+                      items={packageProfitMargin.chartItems ?? []}
+                      labelKey="label"
+                      valueKey="value"
+                      tooltipLabel="Margin percentage"
+                      valueFormatter={(value) => `${Number(value) || 0}%`}
+                      getCellColor={() => "#22c55e"}
+                    />
+                  </Card>
+                </div>
+                <div className="col-12 col-xl-7">
+                  <Card
+                    title="Package margin breakdown"
+                    subtitle="Revenue, fixed cost, gross profit, and margin percentage for each package."
+                    className="dashboard-table-card border-0 h-100"
+                  >
+                    <div className="dashboard-trip-sales-list">
+                      {packageProfitMargin.items?.length ? (
+                        packageProfitMargin.items.map((item) => (
+                          <div key={item.id} className="dashboard-trip-sales-list__item">
+                            <div>
+                              <div className="dashboard-trip-sales-list__title">{item.packageName}</div>
+                              <div className="dashboard-trip-sales-list__meta">
+                                Revenue {item.totalRevenueLabel} • Cost {item.totalFixedCostLabel}
+                              </div>
+                            </div>
+                            <div className="dashboard-trip-sales-list__aside">
+                              <strong>{item.grossProfitLabel}</strong>
+                              <span>{item.marginPercentageLabel}</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-secondary">
+                          {isLoading
+                            ? "Loading package profit margin..."
+                            : "Package profit margin data is not available yet."}
                         </div>
                       )}
                     </div>

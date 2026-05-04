@@ -51,6 +51,7 @@ const shortenLabel = (value, maxLength = 18) =>
   String(value ?? "").length > maxLength
     ? `${String(value).slice(0, maxLength - 1)}...`
     : String(value ?? "");
+const normalizeSearch = (value) => String(value ?? "").trim().toLowerCase();
 
 const countByKey = (items, key) =>
   items.reduce((accumulator, item) => {
@@ -209,10 +210,50 @@ export const normalizeTransactions = (payload) => {
   };
 };
 
-export const getTransactions = async ({ page = 1 } = {}) => {
+const filterFallbackTransactions = (payload, search) => {
+  const normalizedSearch = normalizeSearch(search);
+
+  if (!normalizedSearch) {
+    return payload;
+  }
+
+  const filteredTransactions = (payload?.data?.data ?? []).filter((item) =>
+    [
+      item.transaction_reference,
+      item.customer_name,
+      item.cus_name,
+      item.customer_email,
+      item.cus_email,
+      item.payment_method,
+      item.bank_transaction_id,
+      item.bank_tran_id,
+      item.payment_id,
+    ].some((value) => String(value ?? "").toLowerCase().includes(normalizedSearch))
+  );
+
+  return {
+    ...payload,
+    data: {
+      ...payload.data,
+      data: filteredTransactions,
+      total: filteredTransactions.length,
+      from: filteredTransactions.length ? 1 : 0,
+      to: filteredTransactions.length,
+      current_page: 1,
+      last_page: 1,
+      next_page_url: null,
+      prev_page_url: null,
+    },
+  };
+};
+
+export const getTransactions = async ({ page = 1, search = "" } = {}) => {
   try {
     const response = await apiClient.get(
-      buildUrlWithQuery(API_URLS.reports.transactions, { page }),
+      buildUrlWithQuery(API_URLS.reports.transactions, {
+        page,
+        search: String(search ?? "").trim(),
+      }),
       "",
     );
 
@@ -225,5 +266,5 @@ export const getTransactions = async ({ page = 1 } = {}) => {
     });
   }
 
-  return normalizeTransactions(TRANSACTIONS_FALLBACK_RESPONSE);
+  return normalizeTransactions(filterFallbackTransactions(TRANSACTIONS_FALLBACK_RESPONSE, search));
 };

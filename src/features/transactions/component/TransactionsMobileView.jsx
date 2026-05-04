@@ -1,6 +1,7 @@
 import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
 import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import Button from "../../../components/common/Button";
+import SearchField from "../../../components/forms/SearchField";
 import {
   amountTrendSeries,
   transactionCompactCurrencyFormatter,
@@ -11,11 +12,13 @@ export default function TransactionsMobileView({
   changePage,
   charts,
   copy,
+  handleSearchChange,
   isFetching,
   isLoading,
   metrics,
   page,
   pagination,
+  searchTerm,
   summary,
   transactions,
 }) {
@@ -110,6 +113,15 @@ export default function TransactionsMobileView({
               </div>
             </div>
 
+            <div className="mb-3">
+              <SearchField
+                className="trip-performance-search"
+                placeholder="Search transactions"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+
             <div className="trip-performance-mobile__list">
               {transactions.length ? (
                 transactions.map((transaction) => (
@@ -155,7 +167,7 @@ export default function TransactionsMobileView({
                 ))
               ) : (
                 <div className="trip-performance-mobile__empty">
-                  {isLoading ? "Loading transactions..." : "No transactions available."}
+                  {isLoading ? "Loading transactions..." : "No transactions matched the current search."}
                 </div>
               )}
             </div>

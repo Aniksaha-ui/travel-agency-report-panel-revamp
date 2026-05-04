@@ -15,7 +15,9 @@ const TYPE_COLORS = {
 const toNumber = (value) => Number(value) || 0;
 
 const formatNumber = (value) =>
-  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(toNumber(value));
+  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(
+    toNumber(value),
+  );
 
 const formatLabel = (value) =>
   String(value ?? "Unknown")
@@ -24,12 +26,17 @@ const formatLabel = (value) =>
 
 export const normalizeBookingSummary = (payload) => {
   const rows = payload?.data ?? [];
-  const totalBookings = rows.reduce((sum, item) => sum + toNumber(item.total_booking), 0);
+  const totalBookings = rows.reduce(
+    (sum, item) => sum + toNumber(item.total_booking),
+    0,
+  );
   const categories = rows
     .map((item, index) => {
       const bookingType = String(item.booking_type ?? "unknown").toLowerCase();
       const totalBooking = toNumber(item.total_booking);
-      const share = totalBookings ? Math.round((totalBooking / totalBookings) * 100) : 0;
+      const share = totalBookings
+        ? Math.round((totalBooking / totalBookings) * 100)
+        : 0;
 
       return {
         id: bookingType,
@@ -39,7 +46,9 @@ export const normalizeBookingSummary = (payload) => {
         totalBookingLabel: formatNumber(totalBooking),
         share,
         shareLabel: `${share}% of bookings`,
-        color: TYPE_COLORS[bookingType] ?? ["#38bdf8", "#22c55e", "#f59e0b", "#8b5cf6"][index % 4],
+        color:
+          TYPE_COLORS[bookingType] ??
+          ["#38bdf8", "#22c55e", "#f59e0b", "#8b5cf6"][index % 4],
       };
     })
     .sort((first, second) => second.totalBooking - first.totalBooking);
@@ -67,7 +76,9 @@ export const normalizeBookingSummary = (payload) => {
       {
         id: "average-bookings",
         label: "Average/category",
-        value: formatNumber(categories.length ? totalBookings / categories.length : 0),
+        value: formatNumber(
+          categories.length ? totalBookings / categories.length : 0,
+        ),
         change: "Visible category average",
         changeTone: "warning",
       },
@@ -106,7 +117,7 @@ export const normalizeBookingSummary = (payload) => {
 
 export const getBookingSummary = async () => {
   try {
-    const response = await apiClient.post(API_URLS.reports.bookingSummary, "");
+    const response = await apiClient.get(API_URLS.reports.bookingSummary, "");
 
     if (response.data) {
       return normalizeBookingSummary(response.data);

@@ -41,10 +41,10 @@ export default function DailyBalanceMobileView({
                   /admin/account/daily-balance
                 </div>
                 <h2 className="trip-performance-mobile__title">
-                  {copy.pageTitle}
+                  {copy?.pageTitle ?? "Daily balance report"}
                 </h2>
                 <p className="trip-performance-mobile__subtitle">
-                  {copy.pageSubtitle}
+                  {copy?.pageSubtitle ?? "Track daily credit, debit, balance, and saved report history."}
                 </p>
               </div>
               <span className="trip-performance-mobile__date">{boardDate}</span>

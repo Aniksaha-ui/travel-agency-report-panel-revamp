@@ -1,9 +1,11 @@
+import { keepPreviousData } from "@tanstack/react-query";
 import useApi from "../../../hooks/useApi";
 import { getTransactions } from "../services/transactionsService";
 
-export default function useTransactions(page) {
+export default function useTransactions(page, search) {
   return useApi({
-    queryKey: ["reports", "transactions", page],
-    queryFn: () => getTransactions({ page }),
+    placeholderData: keepPreviousData,
+    queryKey: ["reports", "transactions", page, search ?? ""],
+    queryFn: () => getTransactions({ page, search }),
   });
 }

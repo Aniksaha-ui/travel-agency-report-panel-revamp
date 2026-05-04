@@ -39,8 +39,10 @@ export default function DailyBalanceDesktopView({
           <div className="trip-performance-hero">
             <div className="trip-performance-hero__copy">
               <span className="trip-performance-hero__eyebrow">/admin/account/daily-balance</span>
-              <h2 className="page-title">{copy.pageTitle}</h2>
-              <p className="text-secondary mb-0">{copy.pageSubtitle}</p>
+              <h2 className="page-title">{copy?.pageTitle ?? "Daily balance report"}</h2>
+              <p className="text-secondary mb-0">
+                {copy?.pageSubtitle ?? "Track daily credit, debit, balance, and saved report history."}
+              </p>
             </div>
 
             <div className="trip-performance-hero__meta">

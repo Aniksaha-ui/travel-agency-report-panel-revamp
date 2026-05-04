@@ -8,6 +8,7 @@ export const API_URLS = {
   dashboard: {
     overview: "/admin/dashboard",
     currentMonthTripSales: "/admin/current-month-trip-sales-report",
+    packageProfitMargin: "/admin/package-profit-margin",
   },
   reports: {
     averageBookingValueReport: "/admin/avg-booking-value-report",
@@ -23,10 +24,18 @@ export const API_URLS = {
     monthRunningBalance: "/admin/monthRunningBalance",
     overallSalesSummary: "/admin/overall-sales-summary",
     refundStatusReport: "/admin/refund-status-report",
+    routes: "/admin/routes",
     routeWiseSalesSummary: "/admin/route-wise-sales-summary",
+    routeDropdown: "/admin/routes/dropdown",
+    singleRoute: (routeId) => `/admin/routes/${routeId}`,
+    singleTrip: (tripId) => `/admin/single/trip/${tripId}`,
     transactions: "/admin/transaction",
+    trips: "/admin/trip",
+    tripUpdate: (tripId) => `/admin/trip/update/${tripId}`,
     tripPerformance: "/admin/tripPerformance",
     userGrowthReport: "/admin/user-growth-report",
+    vehicleDropdown: "/admin/vehicles/dropdown",
+    vehicleWiseSeatReport: "/admin/vehiclewisetotalseat",
     vehicleTrackingReport: "/admin/useageOfVehicle",
   },
 };

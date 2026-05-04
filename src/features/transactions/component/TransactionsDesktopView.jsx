@@ -1,6 +1,7 @@
 import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
 import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import RechartsRankingChart from "../../../components/charts/RechartsRankingChart";
+import SearchField from "../../../components/forms/SearchField";
 import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
@@ -15,9 +16,12 @@ export default function TransactionsDesktopView({
   boardDate,
   charts,
   copy,
+  handleSearchChange,
+  isFetching,
   isLoading,
   metrics,
   pagination,
+  searchTerm,
   summary,
   tableFooter,
   transactions,
@@ -162,6 +166,13 @@ export default function TransactionsDesktopView({
               className="trip-performance-card border-0"
               bodyClassName="p-0"
               footer={tableFooter}
+              actions={
+                <SearchField
+                  placeholder="Search transactions"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+              }
             >
               {isLoading && !transactions.length ? (
                 <div className="p-4 text-center text-secondary">Loading transactions...</div>
@@ -170,7 +181,11 @@ export default function TransactionsDesktopView({
                   columns={transactionColumns}
                   data={transactions}
                   emptyTitle="No transactions"
-                  emptyDescription="The report endpoint did not return any transaction rows."
+                  emptyDescription={
+                    isFetching
+                      ? "Searching transactions..."
+                      : "The report endpoint did not return any transaction rows."
+                  }
                 />
               )}
             </Card>

@@ -3,6 +3,7 @@ import apiClient from "../../../services/apiClient";
 import {
   DASHBOARD_COPY,
   DASHBOARD_FALLBACK_RESPONSE,
+  DASHBOARD_PACKAGE_PROFIT_MARGIN_FALLBACK_RESPONSE,
   DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE,
 } from "../constants/dashboard.constants";
 
@@ -10,6 +11,11 @@ const formatNumber = (value) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Number(value) || 0);
 
 const formatCurrency = (value) => `BDT ${formatNumber(value)}`;
+const formatPercent = (value) =>
+  `${new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(Number(value) || 0)}%`;
 
 const formatLabel = (value) =>
   String(value ?? "")
@@ -63,9 +69,48 @@ const normalizeTripSales = (payload) => {
   };
 };
 
-export const normalizeDashboardOverview = (payload, tripSalesPayload = DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE) => {
+const normalizePackageProfitMargin = (payload) => {
+  const rows = payload?.data ?? payload ?? [];
+  const totalGrossProfit = rows.reduce((sum, item) => sum + toNumber(item.gross_profit), 0);
+  const averageMargin = rows.length
+    ? rows.reduce((sum, item) => sum + toNumber(item.margin_percentage), 0) / rows.length
+    : 0;
+
+  return {
+    totalGrossProfit,
+    totalGrossProfitLabel: formatCurrency(totalGrossProfit),
+    averageMargin,
+    averageMarginLabel: formatPercent(averageMargin),
+    items: rows.map((item, index) => ({
+      id: `${item.package_name}-${index}`,
+      packageName: item.package_name || "Untitled package",
+      totalRevenue: toNumber(item.total_revenue),
+      totalRevenueLabel: formatCurrency(item.total_revenue),
+      totalFixedCost: toNumber(item.total_fixed_cost),
+      totalFixedCostLabel: formatCurrency(item.total_fixed_cost),
+      grossProfit: toNumber(item.gross_profit),
+      grossProfitLabel: formatCurrency(item.gross_profit),
+      marginPercentage: toNumber(item.margin_percentage),
+      marginPercentageLabel: formatPercent(item.margin_percentage),
+    })),
+    chartItems: rows
+      .map((item, index) => ({
+        id: `${item.package_name}-${index}`,
+        label: item.package_name || "Untitled package",
+        value: toNumber(item.margin_percentage),
+      }))
+      .sort((first, second) => second.value - first.value),
+  };
+};
+
+export const normalizeDashboardOverview = (
+  payload,
+  tripSalesPayload = DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE,
+  packageProfitPayload = DASHBOARD_PACKAGE_PROFIT_MARGIN_FALLBACK_RESPONSE,
+) => {
   const source = payload?.data ?? payload ?? {};
   const tripSales = normalizeTripSales(tripSalesPayload);
+  const packageProfitMargin = normalizePackageProfitMargin(packageProfitPayload);
   const totalTrips = source.tripData?.reduce((sum, item) => sum + toNumber(item.trip_exist), 0) ?? 0;
   const totalPaymentAmount =
     source.paymentData?.reduce((sum, item) => sum + toNumber(item.total_amount), 0) ?? 0;
@@ -161,6 +206,7 @@ export const normalizeDashboardOverview = (payload, tripSalesPayload = DASHBOARD
     summaryStats,
     tripOrigins,
     paymentMethods,
+    packageProfitMargin,
     tripSales,
     paymentCaptureRate,
     totals: {
@@ -178,20 +224,24 @@ export const normalizeDashboardOverview = (payload, tripSalesPayload = DASHBOARD
       totalTripRegions: formatNumber(totalTrips),
       currentMonthTripSales: tripSales.totalAmountLabel,
       currentMonthTripSalesMonth: tripSales.monthLabel,
+      packageGrossProfit: packageProfitMargin.totalGrossProfitLabel,
+      packageAverageMargin: packageProfitMargin.averageMarginLabel,
     },
   };
 };
 
 const fallbackDashboardOverview = normalizeDashboardOverview(
   DASHBOARD_FALLBACK_RESPONSE,
-  DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE
+  DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE,
+  DASHBOARD_PACKAGE_PROFIT_MARGIN_FALLBACK_RESPONSE,
 );
 
 export const getDashboardOverview = async () => {
   try {
-    const [overviewResult, tripSalesResult] = await Promise.allSettled([
+    const [overviewResult, tripSalesResult, packageProfitResult] = await Promise.allSettled([
       apiClient.get(API_URLS.dashboard.overview),
       apiClient.get(API_URLS.dashboard.currentMonthTripSales),
+      apiClient.get(API_URLS.dashboard.packageProfitMargin),
     ]);
 
     const overviewPayload =
@@ -200,9 +250,13 @@ export const getDashboardOverview = async () => {
       tripSalesResult.status === "fulfilled"
         ? tripSalesResult.value.data
         : DASHBOARD_TRIP_SALES_FALLBACK_RESPONSE;
+    const packageProfitPayload =
+      packageProfitResult.status === "fulfilled"
+        ? packageProfitResult.value.data
+        : DASHBOARD_PACKAGE_PROFIT_MARGIN_FALLBACK_RESPONSE;
 
     if (overviewPayload) {
-      return normalizeDashboardOverview(overviewPayload, tripSalesPayload);
+      return normalizeDashboardOverview(overviewPayload, tripSalesPayload, packageProfitPayload);
     }
   } catch {
     await new Promise((resolve) => {

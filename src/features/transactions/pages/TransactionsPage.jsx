@@ -1,4 +1,5 @@
 import { startTransition, useState } from "react";
+import useDebouncedValue from "../../../hooks/useDebouncedValue";
 import AdminLayout from "../../../layouts/AdminLayout";
 import TransactionsDesktopView from "../component/TransactionsDesktopView";
 import TransactionsMobileView from "../component/TransactionsMobileView";
@@ -8,7 +9,9 @@ import useTransactions from "../hooks/useTransactions";
 
 export default function TransactionsPage() {
   const [page, setPage] = useState(1);
-  const { data, isFetching, isLoading } = useTransactions(page);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebouncedValue(searchTerm, 450);
+  const { data, isFetching, isLoading } = useTransactions(page, debouncedSearchTerm);
   const copy = data?.copy ?? TRANSACTIONS_COPY;
   const metrics = data?.metrics ?? [];
   const transactions = data?.transactions ?? [];
@@ -24,6 +27,15 @@ export default function TransactionsPage() {
   const changePage = (nextPage) => {
     startTransition(() => {
       setPage(nextPage);
+    });
+  };
+
+  const handleSearchChange = (event) => {
+    const { value } = event.target;
+
+    startTransition(() => {
+      setPage(1);
+      setSearchTerm(value);
     });
   };
 
@@ -43,11 +55,13 @@ export default function TransactionsPage() {
         changePage={changePage}
         charts={charts}
         copy={copy}
+        handleSearchChange={handleSearchChange}
         isFetching={isFetching}
         isLoading={isLoading}
         metrics={metrics}
         page={page}
         pagination={pagination}
+        searchTerm={searchTerm}
         summary={summary}
         transactions={transactions}
       />
@@ -55,9 +69,12 @@ export default function TransactionsPage() {
         boardDate={boardDate}
         charts={charts}
         copy={copy}
+        handleSearchChange={handleSearchChange}
+        isFetching={isFetching}
         isLoading={isLoading}
         metrics={metrics}
         pagination={pagination}
+        searchTerm={searchTerm}
         summary={summary}
         tableFooter={tableFooter}
         transactions={transactions}

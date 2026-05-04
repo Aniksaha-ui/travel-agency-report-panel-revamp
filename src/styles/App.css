@@ -1200,99 +1200,6 @@
   text-align: center;
 }
 
-.high-cancellation-mobile .dashboard-mobile-card {
-  border: 1px solid rgba(191, 219, 254, 0.84);
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  color: var(--travel-text);
-  box-shadow: 0 18px 36px rgba(14, 30, 54, 0.08);
-}
-
-.high-cancellation-mobile .dashboard-mobile-card--hero {
-  background:
-    radial-gradient(circle at top right, rgba(56, 189, 248, 0.14), transparent 35%),
-    linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
-}
-
-.high-cancellation-mobile .dashboard-mobile-card--soft {
-  background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 40%),
-    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
-}
-
-.high-cancellation-mobile .dashboard-mobile-card__eyebrow {
-  color: #0f766e;
-}
-
-.high-cancellation-mobile .dashboard-mobile-card__title,
-.high-cancellation-mobile .dashboard-mobile-quick-grid__value,
-.high-cancellation-mobile .dashboard-mobile-metric__value,
-.high-cancellation-mobile .dashboard-mobile-spotlight__value,
-.high-cancellation-mobile__package-title {
-  color: #0f172a;
-}
-
-.high-cancellation-mobile .dashboard-mobile-card__subtle,
-.high-cancellation-mobile .dashboard-mobile-hero__subtitle,
-.high-cancellation-mobile .dashboard-mobile-metric__label,
-.high-cancellation-mobile .dashboard-mobile-metric__change,
-.high-cancellation-mobile .dashboard-mobile-quick-grid__label,
-.high-cancellation-mobile .dashboard-mobile-spotlight__label,
-.high-cancellation-mobile .dashboard-mobile-spotlight__meta,
-.high-cancellation-mobile .dashboard-mobile-empty {
-  color: #64748b;
-}
-
-.high-cancellation-mobile .dashboard-mobile-card__more,
-.high-cancellation-mobile .dashboard-mobile-pill {
-  border: 1px solid rgba(125, 211, 252, 0.34);
-  background: rgba(239, 246, 255, 0.96);
-  color: #0369a1;
-}
-
-.high-cancellation-mobile .dashboard-mobile-spotlight {
-  border: 1px solid rgba(125, 211, 252, 0.28);
-  background: linear-gradient(135deg, rgba(236, 253, 245, 0.98) 0%, rgba(239, 246, 255, 0.98) 100%);
-}
-
-.high-cancellation-mobile .dashboard-mobile-spotlight__stack span {
-  background: rgba(255, 255, 255, 0.96);
-  color: #0f172a;
-  box-shadow: 0 10px 24px rgba(14, 30, 54, 0.06);
-}
-
-.high-cancellation-mobile .dashboard-mobile-metric,
-.high-cancellation-mobile .dashboard-mobile-payment-item,
-.high-cancellation-mobile .dashboard-mobile-quick-grid__item,
-.high-cancellation-mobile .dashboard-mobile-empty {
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 10px 24px rgba(14, 30, 54, 0.05);
-}
-
-.high-cancellation-mobile .dashboard-mobile-payment-item {
-  display: block;
-}
-
-.high-cancellation-mobile__spotlight-copy {
-  line-height: 1.45;
-}
-
-.high-cancellation-mobile__package-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.high-cancellation-mobile__package-title {
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-.high-cancellation-mobile__quick-grid {
-  margin-top: 0.85rem;
-}
-
 .dashboard-page-header .page-title {
   margin-bottom: 0.35rem;
 }
@@ -2026,79 +1933,6 @@
   text-align: center;
 }
 
-.daily-balance-mobile .trip-performance-mobile__hero,
-.daily-balance-mobile .trip-performance-mobile__card {
-  border: 1px solid rgba(191, 219, 254, 0.92);
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  color: var(--travel-text);
-  box-shadow: 0 20px 42px rgba(14, 30, 54, 0.08);
-}
-
-.daily-balance-mobile .trip-performance-mobile__hero {
-  background:
-    radial-gradient(circle at top right, rgba(14, 165, 163, 0.14), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #f2f8ff 100%);
-}
-
-.daily-balance-mobile .trip-performance-mobile__eyebrow,
-.daily-balance-mobile .trip-performance-mobile__metric-label,
-.daily-balance-mobile .trip-performance-mobile__spotlight-label {
-  color: #0f766e;
-}
-
-.daily-balance-mobile .trip-performance-mobile__subtitle,
-.daily-balance-mobile .trip-performance-mobile__card-subtle,
-.daily-balance-mobile .trip-performance-mobile__item-meta,
-.daily-balance-mobile .trip-performance-mobile__item-grid-label,
-.daily-balance-mobile .trip-performance-mobile__spotlight-meta,
-.daily-balance-mobile .trip-performance-mobile__metric-meta {
-  color: #64748b;
-}
-
-.daily-balance-mobile .trip-performance-mobile__date,
-.daily-balance-mobile .trip-performance-mobile__pill {
-  border: 1px solid rgba(125, 211, 252, 0.34);
-  background: rgba(239, 246, 255, 0.96);
-  color: #0369a1;
-}
-
-.daily-balance-mobile .trip-performance-mobile__search {
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  background: #ffffff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.daily-balance-mobile .trip-performance-mobile__search-icon {
-  color: #64748b;
-}
-
-.daily-balance-mobile .trip-performance-mobile__search input {
-  color: var(--travel-text);
-}
-
-.daily-balance-mobile .trip-performance-mobile__search input::placeholder {
-  color: #94a3b8;
-}
-
-.daily-balance-mobile .trip-performance-mobile__spotlight {
-  border: 1px solid rgba(125, 211, 252, 0.28);
-  background: linear-gradient(135deg, rgba(236, 253, 245, 0.98) 0%, rgba(239, 246, 255, 0.98) 100%);
-}
-
-.daily-balance-mobile .trip-performance-mobile__spotlight-stack span {
-  background: rgba(255, 255, 255, 0.92);
-  color: #0f172a;
-  box-shadow: 0 10px 24px rgba(14, 30, 54, 0.06);
-}
-
-.daily-balance-mobile .trip-performance-mobile__metric,
-.daily-balance-mobile .trip-performance-mobile__item,
-.daily-balance-mobile .trip-performance-mobile__empty {
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 24px rgba(14, 30, 54, 0.05);
-}
-
 .daily-balance-mobile .trip-performance-mobile__list {
   gap: 1rem;
 }
@@ -2117,13 +1951,13 @@
   flex-direction: column;
   gap: 0.28rem;
   padding: 0.85rem 0.95rem;
-  border: 1px solid rgba(125, 211, 252, 0.32);
+  border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 1rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+  background: linear-gradient(135deg, rgba(20, 32, 66, 0.92) 0%, rgba(14, 24, 51, 0.88) 100%);
 }
 
 .daily-balance-mobile__item-balance-label {
-  color: #0369a1;
+  color: rgba(191, 219, 254, 0.78);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -2138,15 +1972,15 @@
 .daily-balance-mobile__stat {
   min-width: 0;
   padding: 0.82rem 0.9rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 0.95rem;
-  background: #f8fbff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .daily-balance-mobile .trip-performance-mobile__item-profit,
 .daily-balance-mobile .trip-performance-mobile__item-grid-value,
 .daily-balance-mobile .trip-performance-mobile__spotlight-value {
-  color: #0f172a;
+  color: #f8fbff;
 }
 
 .daily-balance-mobile .trip-performance-mobile__item-profit,
@@ -2156,7 +1990,7 @@
 
 .daily-balance-mobile .trip-performance-mobile__item-grid-label {
   margin-top: 0.22rem;
-  color: #64748b;
+  color: rgba(217, 231, 255, 0.72);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -3132,11 +2966,6 @@
 }
 
 @media (max-width: 420px) {
-  .high-cancellation-mobile .dashboard-mobile-metrics--two-column,
-  .high-cancellation-mobile .dashboard-mobile-quick-grid {
-    grid-template-columns: 1fr;
-  }
-
   .daily-balance-mobile .trip-performance-mobile__item-grid {
     grid-template-columns: 1fr;
   }

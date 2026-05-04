@@ -4,13 +4,8 @@ import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
 import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
+import HighCancellationPackagesMobileView from "../component/HighCancellationPackagesMobileView";
 import useHighCancellationPackages from "../hooks/useHighCancellationPackages";
-
-const MOBILE_METRIC_BADGES = {
-  "tracked-packages": "PK",
-  "cancelled-bookings": "CB",
-  "highest-cancellation": "HC",
-};
 
 const highCancellationPackagesColumns = [
   {
@@ -54,153 +49,15 @@ export default function HighCancellationPackagesPage() {
 
   return (
     <AdminLayout>
-      <div className="d-md-none dashboard-mobile-app high-cancellation-mobile">
-        <div className="container-xl">
-          <div className="dashboard-mobile-app__screen">
-            <section className="dashboard-mobile-card dashboard-mobile-card--hero">
-              <div className="dashboard-mobile-card__header">
-                <div>
-                  <div className="dashboard-mobile-card__eyebrow">
-                    /admin/high-cancellation-packages
-                  </div>
-                  <h2 className="dashboard-mobile-card__title">
-                    {copy?.pageTitle ?? "High cancellation packages"}
-                  </h2>
-                  <p className="dashboard-mobile-hero__subtitle">
-                    {copy?.pageSubtitle ??
-                      "Review packages with the highest cancellation rate from the report API."}
-                  </p>
-                </div>
-                <span className="dashboard-mobile-card__more">{boardDate}</span>
-              </div>
-
-              <div className="dashboard-mobile-spotlight">
-                <div>
-                  <div className="dashboard-mobile-spotlight__label">
-                    Highest risk package
-                  </div>
-                  <div className="dashboard-mobile-spotlight__value">
-                    {summary.highestPackage?.cancellationRateLabel ?? "0%"}
-                  </div>
-                  <div className="dashboard-mobile-spotlight__meta high-cancellation-mobile__spotlight-copy">
-                    {summary.highestPackage?.packageName ?? "No package data available"}
-                  </div>
-                </div>
-                <div className="dashboard-mobile-spotlight__stack">
-                  <span>{summary.totalBookingsLabel ?? "0"} bookings</span>
-                  <span>{summary.totalCancelledLabel ?? "0"} cancelled</span>
-                </div>
-              </div>
-
-              <div className="dashboard-mobile-metrics dashboard-mobile-metrics--two-column">
-                {metrics.map((metric) => (
-                  <article
-                    key={metric.id}
-                    className={`dashboard-mobile-metric dashboard-mobile-metric--${metric.changeTone ?? "info"}`}
-                  >
-                    <div className="dashboard-mobile-metric__badge">
-                      {MOBILE_METRIC_BADGES[metric.id] ?? metric.label.charAt(0)}
-                    </div>
-                    <div className="dashboard-mobile-metric__label">
-                      {metric.label}
-                    </div>
-                    <div className="dashboard-mobile-metric__value">
-                      {metric.value}
-                    </div>
-                    <div className="dashboard-mobile-metric__change">
-                      {metric.change}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section className="dashboard-mobile-card dashboard-mobile-card--soft">
-              <div className="dashboard-mobile-card__header">
-                <div>
-                  <div className="dashboard-mobile-card__title">
-                    Cancellation rate ranking
-                  </div>
-                  <div className="dashboard-mobile-card__subtle">
-                    Packages ordered by cancellation rate
-                  </div>
-                </div>
-                <div className="dashboard-mobile-pill">
-                  {packages.length} packages
-                </div>
-              </div>
-
-              <RechartsRankingChart
-                items={charts.cancellationRanking ?? []}
-                labelKey="label"
-                valueKey="value"
-                tooltipLabel="Cancellation rate"
-                valueFormatter={(value) => `${Number(value) || 0}%`}
-                getCellColor={() => "#ef4444"}
-              />
-            </section>
-
-            <section className="dashboard-mobile-card">
-              <div className="dashboard-mobile-card__header">
-                <div>
-                  <div className="dashboard-mobile-card__title">
-                    Package breakdown
-                  </div>
-                  <div className="dashboard-mobile-card__subtle">
-                    Booking and cancellation details for each package
-                  </div>
-                </div>
-                <div className="dashboard-mobile-pill">
-                  Avg {summary.averageRateLabel ?? "0%"}
-                </div>
-              </div>
-
-              <div className="dashboard-mobile-payment-list">
-                {packages.length ? (
-                  packages.map((item) => (
-                    <article
-                      key={item.id}
-                      className="dashboard-mobile-payment-item high-cancellation-mobile__package"
-                    >
-                      <div className="high-cancellation-mobile__package-head">
-                        <div className="high-cancellation-mobile__package-title">
-                          {item.packageName}
-                        </div>
-                        <Badge color={item.tone}>{item.cancellationRateLabel}</Badge>
-                      </div>
-
-                      <div className="dashboard-mobile-quick-grid high-cancellation-mobile__quick-grid">
-                        <div className="dashboard-mobile-quick-grid__item">
-                          <div className="dashboard-mobile-quick-grid__label">
-                            Total bookings
-                          </div>
-                          <div className="dashboard-mobile-quick-grid__value">
-                            {item.totalBookingsLabel}
-                          </div>
-                        </div>
-                        <div className="dashboard-mobile-quick-grid__item">
-                          <div className="dashboard-mobile-quick-grid__label">
-                            Cancelled
-                          </div>
-                          <div className="dashboard-mobile-quick-grid__value">
-                            {item.cancelledCountLabel}
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="dashboard-mobile-empty">
-                    {isLoading
-                      ? "Loading high cancellation packages..."
-                      : "No high cancellation package data available yet."}
-                  </div>
-                )}
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
+      <HighCancellationPackagesMobileView
+        boardDate={boardDate}
+        charts={charts}
+        copy={copy}
+        isLoading={isLoading}
+        metrics={metrics}
+        packages={packages}
+        summary={summary}
+      />
 
       <div className="d-none d-md-block">
         <div className="page-header d-print-none trip-performance-page-header">

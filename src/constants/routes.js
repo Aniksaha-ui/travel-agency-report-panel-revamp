@@ -14,9 +14,15 @@ export const APP_ROUTES = {
   overallSales: "/admin/account/overall-sales",
   profile: "/admin/account/profile",
   refundStatusReport: "/admin/refund-status-report",
+  routes: "/admin/routes",
   transactions: "/admin/transactions",
+  trips: "/admin/trips",
+  tripEdit: "/admin/trips/:tripId/edit",
   tripPerformance: "/admin/tripPerformance",
   userGrowthReport: "/admin/user-growth-report",
+  vehicleWiseSeatReport: "/admin/vehiclewiseseatreport",
   vehicleTrackingReport: "/admin/vehicletrackingreport",
   login: "/login",
 };
+
+export const getTripEditRoute = (tripId) => `/admin/trips/${tripId}/edit`;

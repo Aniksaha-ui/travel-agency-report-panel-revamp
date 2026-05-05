@@ -124,6 +124,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.refundStatusReport;
   }
 
+  if (path === "/admin/refund" || path === "/admin/refunds") {
+    return APP_ROUTES.refund;
+  }
+
   return null;
 };
 

@@ -35,6 +35,8 @@ export const API_URLS = {
     ticketUpdate: (ticketId) => `/admin/tickets/update/${ticketId}`,
     packages: "/admin/packages",
     packageCreate: "/admin/packages/create",
+    refunds: "/admin/refund",
+    refundDisburse: "/admin/refund/disburse",
     singleRoute: (routeId) => `/admin/routes/${routeId}`,
     singleTrip: (tripId) => `/admin/single/trip/${tripId}`,
     singlePackage: (packageId) => `/packages/${packageId}`,

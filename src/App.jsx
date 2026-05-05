@@ -26,6 +26,7 @@ import OverallSalesPage from "./features/overallSales/pages/OverallSalesPage";
 import PackageCreatePage from "./features/packages/pages/PackageCreatePage";
 import PackagesPage from "./features/packages/pages/PackagesPage";
 import RefundStatusReportPage from "./features/refundStatusReport/pages/RefundStatusReportPage";
+import RefundsPage from "./features/refunds/pages/RefundsPage";
 import RoutesPage from "./features/routes/pages/RoutesPage";
 import TransactionsPage from "./features/transactions/pages/TransactionsPage";
 import TicketsPage from "./features/tickets/pages/TicketsPage";
@@ -301,6 +302,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <LowPerformingPackagesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.refund}
+          element={
+            <ProtectedRoute>
+              <RefundsPage />
             </ProtectedRoute>
           }
         />

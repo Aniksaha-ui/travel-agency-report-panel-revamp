@@ -3536,6 +3536,99 @@
   gap: 0.65rem;
 }
 
+.refunds-hero {
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.1), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 48%, rgba(240, 253, 244, 0.98) 100%);
+}
+
+.refunds-table-card,
+.refunds-panel-card,
+.refunds-ops-card {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
+}
+
+.refunds-table-card .card-header,
+.refunds-panel-card .card-header,
+.refunds-ops-card .card-header {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
+}
+
+.refunds-ops-card__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.refunds-ops-card__metric {
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.refunds-ops-card__metric span,
+.refunds-ops-card__eyebrow {
+  display: block;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.refunds-ops-card__metric strong {
+  display: block;
+  margin-top: 0.4rem;
+  color: #0f172a;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.refunds-ops-card__focus {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(34, 197, 94, 0.12);
+  background: linear-gradient(135deg, rgba(240, 253, 244, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+}
+
+.refunds-ops-card__focus--soft {
+  border-color: rgba(14, 165, 233, 0.12);
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+}
+
+.refunds-ops-card__title {
+  margin-top: 0.45rem;
+  color: #0f172a;
+  font-size: 1.03rem;
+  font-weight: 700;
+}
+
+.refunds-ops-card__meta {
+  margin-top: 0.4rem;
+  color: #475569;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.refunds-mobile__hero {
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.16), transparent 32%),
+    linear-gradient(180deg, #0f172a 0%, #111827 100%);
+}
+
+.refunds-mobile__item {
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.refunds-mobile__reason {
+  margin-top: 0.9rem;
+  color: rgba(226, 232, 240, 0.82);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
 .tickets-modal {
   max-width: min(920px, calc(100vw - 2rem));
   border-radius: 1.25rem;
@@ -3676,6 +3769,10 @@
 
 @media (max-width: 1199px) {
   .tickets-ops-card__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .refunds-ops-card__metrics {
     grid-template-columns: 1fr;
   }
 

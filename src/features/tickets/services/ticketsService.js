@@ -383,8 +383,58 @@ const buildTicketsModel = ({ pagination, tickets }) => {
   };
 };
 
+const getTicketsSource = (payload) => {
+  const candidates = [payload?.data, payload];
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate?.data)) {
+      return candidate;
+    }
+  }
+
+  if (Array.isArray(payload?.data)) {
+    return {
+      data: payload.data,
+      current_page: 1,
+      last_page: 1,
+      total: payload.data.length,
+      from: payload.data.length ? 1 : 0,
+      to: payload.data.length,
+      per_page: payload.data.length,
+      prev_page_url: null,
+      next_page_url: null,
+    };
+  }
+
+  if (Array.isArray(payload)) {
+    return {
+      data: payload,
+      current_page: 1,
+      last_page: 1,
+      total: payload.length,
+      from: payload.length ? 1 : 0,
+      to: payload.length,
+      per_page: payload.length,
+      prev_page_url: null,
+      next_page_url: null,
+    };
+  }
+
+  return {
+    data: [],
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    from: 0,
+    to: 0,
+    per_page: 0,
+    prev_page_url: null,
+    next_page_url: null,
+  };
+};
+
 export const normalizeTickets = (payload) => {
-  const source = payload?.data ?? {};
+  const source = getTicketsSource(payload);
   const tickets = (source.data ?? []).map(normalizeTicket);
 
   return buildTicketsModel({
@@ -443,7 +493,7 @@ export const getTickets = async ({ page = 1, search = "" } = {}) => {
       },
     });
 
-    if (response.data?.data) {
+    if (response.data) {
       return normalizeTickets(response.data);
     }
   } catch (error) {

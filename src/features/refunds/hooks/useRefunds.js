@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { getTickets, updateTicketStatus } from "../services/ticketsService";
+import { disburseRefund, getRefunds } from "../services/refundsService";
 
-const EMPTY_TICKETS_STATE = {
+const EMPTY_REFUNDS_STATE = {
   data: null,
   error: null,
   isFetching: false,
   isLoading: true,
 };
 
-export default function useTickets(page, search) {
-  const [state, setState] = useState(EMPTY_TICKETS_STATE);
+export default function useRefunds(page, search) {
+  const [state, setState] = useState(EMPTY_REFUNDS_STATE);
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let isCancelled = false;
 
-    const loadTickets = async () => {
+    const loadRefunds = async () => {
       setState((currentState) => ({
         ...currentState,
         error: null,
@@ -26,7 +26,7 @@ export default function useTickets(page, search) {
       }));
 
       try {
-        const response = await getTickets({ page, search });
+        const response = await getRefunds({ page, search });
 
         if (isCancelled) {
           return;
@@ -52,7 +52,7 @@ export default function useTickets(page, search) {
       }
     };
 
-    loadTickets();
+    loadRefunds();
 
     return () => {
       isCancelled = true;
@@ -65,19 +65,14 @@ export default function useTickets(page, search) {
   };
 }
 
-export function useTicketStatusMutation() {
+export function useRefundDisburseMutation() {
   return useMutation({
-    mutationFn: ({ resolvedRemarks, resolvedStatus, status, ticketId }) =>
-      updateTicketStatus(ticketId, {
-        resolvedRemarks,
-        resolvedStatus,
-        status,
-      }),
+    mutationFn: (refundId) => disburseRefund(refundId),
     onSuccess: (response) => {
-      toast.success(response.message || "Ticket updated successfully.");
+      toast.success(response.message || "Refund disbursed successfully.");
     },
     onError: (error) => {
-      toast.error(error.message || "Unable to update the ticket.");
+      toast.error(error.message || "Unable to disburse the refund.");
     },
   });
 }

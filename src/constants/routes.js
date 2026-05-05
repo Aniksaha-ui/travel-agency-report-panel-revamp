@@ -19,6 +19,7 @@ export const APP_ROUTES = {
   packages: "/admin/packages",
   packageCreate: "/admin/packages/create",
   profile: "/admin/account/profile",
+  refund: "/admin/refund",
   refundStatusReport: "/admin/refund-status-report",
   routes: "/admin/routes",
   tickets: "/admin/tickets",

@@ -14,7 +14,10 @@ export default function TicketsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTicketState, setSelectedTicketState] = useState(null);
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 450);
-  const { data, error, isFetching, isLoading } = useTickets(page, debouncedSearchTerm);
+  const { data, error, isFetching, isLoading, refetch } = useTickets(
+    page,
+    debouncedSearchTerm,
+  );
   const ticketStatusMutation = useTicketStatusMutation();
   const copy = data?.copy ?? TICKETS_COPY;
   const metrics = data?.metrics ?? [];
@@ -65,6 +68,8 @@ export default function TicketsPage() {
       resolvedStatus: transition.resolvedStatus,
       resolvedRemarks: remarks.trim(),
     });
+
+    refetch();
 
     if (
       selectedTicketState?.ticketId &&

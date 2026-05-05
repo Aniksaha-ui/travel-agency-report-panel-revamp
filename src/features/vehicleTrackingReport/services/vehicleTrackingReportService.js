@@ -1,6 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
-import { formatTravelDate } from "../../../utils/dateUtils";
+import { formatShortDate, formatTravelDate, parseDateKey } from "../../../utils/dateUtils";
 import {
   VEHICLE_TRACKING_REPORT_COPY,
   VEHICLE_TRACKING_REPORT_FALLBACK_RESPONSE,
@@ -11,31 +11,15 @@ const toNumber = (value) => Number(value) || 0;
 const formatNumber = (value) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(toNumber(value));
 
-const parseDateKey = (value) => {
-  const [year, month, day] = String(value ?? "")
-    .split("-")
-    .map((part) => Number(part));
-
-  return Number.isFinite(year) && Number.isFinite(month) && Number.isFinite(day)
-    ? new Date(year, month - 1, day)
-    : new Date();
-};
-
-const formatShortDate = (value) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-  }).format(parseDateKey(value));
-
 const shortenLabel = (value, maxLength = 16) =>
   String(value ?? "").length > maxLength ? `${String(value).slice(0, maxLength - 1)}...` : String(value ?? "");
 
 const getTripDurationDays = (startDate, endDate) => {
   const start = parseDateKey(startDate);
   const end = parseDateKey(endDate);
-  const diff = end.getTime() - start.getTime();
+  const diff = end.startOf("day").diff(start.startOf("day"), "day");
 
-  return Math.max(1, Math.round(diff / 86400000) + 1);
+  return Math.max(1, diff + 1);
 };
 
 const getScheduleLabel = (startDate, endDate) => {
@@ -108,7 +92,7 @@ export const normalizeVehicleTrackingReport = (payload) => {
       label: date ? formatShortDate(date) : "N/A",
       assignments: count,
     }))
-    .sort((first, second) => parseDateKey(first.id).getTime() - parseDateKey(second.id).getTime());
+    .sort((first, second) => parseDateKey(first.id).valueOf() - parseDateKey(second.id).valueOf());
 
   return {
     copy: VEHICLE_TRACKING_REPORT_COPY,
@@ -182,7 +166,7 @@ export const normalizeVehicleTrackingReport = (payload) => {
   };
 };
 
-export const getVehicleTrackingReport = async ({ page = 1 } = {}) => {
+export const getVehicleTrackingReport = async () => {
   try {
     const response = await apiClient.post(API_URLS.reports.vehicleTrackingReport, "");
 

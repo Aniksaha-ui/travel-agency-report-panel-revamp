@@ -200,7 +200,7 @@ const filterFallbackTrips = (payload, search) => {
   };
 };
 
-export const getTripPerformance = async ({ page = 1, search = "" } = {}) => {
+export const getTripPerformance = async ({ search = "" } = {}) => {
   try {
     const response = await apiClient.get(API_URLS.reports.tripPerformance);
 

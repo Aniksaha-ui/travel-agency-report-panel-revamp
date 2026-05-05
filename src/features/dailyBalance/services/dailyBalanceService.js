@@ -1,7 +1,14 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
 import { APP_CONFIG } from "../../../services/config";
-import { formatTravelDate } from "../../../utils/dateUtils";
+import {
+  formatDateTime,
+  formatLongMonthLabel,
+  formatShortDate,
+  formatTravelDate,
+  parseDateKey,
+  toDateKey,
+} from "../../../utils/dateUtils";
 import {
   DAILY_BALANCE_COPY,
   DAILY_BALANCE_HISTORY_FALLBACK_RESPONSE,
@@ -16,27 +23,6 @@ const formatNumber = (value) =>
 const formatCurrency = (value) => `BDT ${formatNumber(value)}`;
 const shortenLabel = (value, maxLength = 14) =>
   String(value ?? "").length > maxLength ? `${String(value).slice(0, maxLength - 1)}...` : String(value ?? "");
-
-const formatShortDate = (value) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-  }).format(new Date(value));
-
-const formatMonth = (value) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    year: "numeric",
-  }).format(parseDateKey(value));
-
-const formatDateTime = (value) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(String(value ?? "").replace(" ", "T")));
 
 const buildReportFileUrl = (filePath) => {
   const normalizedPath = String(filePath ?? "").replace(/\\/g, "/").replace(/^\/+/, "");
@@ -54,33 +40,13 @@ const buildReportFileUrl = (filePath) => {
   return baseUrl ? `${baseUrl}/${normalizedPath}` : `/${normalizedPath}`;
 };
 
-const toDateKey = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-};
-
-const parseDateKey = (value) => {
-  const [year, month, day] = String(value ?? "")
-    .split("-")
-    .map((part) => Number(part));
-
-  return Number.isFinite(year) && Number.isFinite(month) && Number.isFinite(day)
-    ? new Date(year, month - 1, day)
-    : new Date();
-};
-
 const getMonthDateKeys = (rows) => {
   const firstDate = rows.find((item) => item.date)?.date;
-  const seedDate = firstDate ? parseDateKey(firstDate) : new Date();
-  const year = seedDate.getFullYear();
-  const month = seedDate.getMonth();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const seedDate = parseDateKey(firstDate);
+  const daysInMonth = seedDate.daysInMonth();
 
   return Array.from({ length: daysInMonth }, (_, index) =>
-    toDateKey(new Date(year, month, index + 1))
+    toDateKey(seedDate.date(index + 1))
   );
 };
 
@@ -239,7 +205,7 @@ export const normalizeDailyBalanceHistory = (payload) => {
       filePath: item.file_path ?? "",
       fileUrl,
       reportMonth: item.report_month,
-      reportMonthLabel: formatMonth(item.report_month),
+      reportMonthLabel: formatLongMonthLabel(item.report_month),
       createdAt: item.created_at,
       createdAtLabel: item.created_at ? formatDateTime(item.created_at) : "Not available",
       updatedAt: item.updated_at,
@@ -261,7 +227,7 @@ export const normalizeDailyBalanceHistory = (payload) => {
   };
 };
 
-export const getDailyBalance = async ({ page = 1 } = {}) => {
+export const getDailyBalance = async () => {
   try {
     const response = await apiClient.get(API_URLS.reports.dailyBalance);
 
@@ -277,7 +243,7 @@ export const getDailyBalance = async ({ page = 1 } = {}) => {
   return normalizeDailyBalance(DAILY_BALANCE_FALLBACK_RESPONSE);
 };
 
-export const getDailyBalanceHistory = async ({ page = 1 } = {}) => {
+export const getDailyBalanceHistory = async () => {
   try {
     const response = await apiClient.get(API_URLS.reports.dailyBalanceHistory);
 

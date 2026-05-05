@@ -6,6 +6,7 @@ import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../components/MetricsOverview";
 import { DASHBOARD_COPY } from "../constants/dashboard.constants";
 import useDashboard from "../hooks/useDashboard";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 const TONE_CLASS_MAP = {
   success: "dashboard-share__fill--success",
@@ -72,11 +73,7 @@ export default function DashboardPage() {
   const tripSales = data?.tripSales ?? { items: [], chartItems: [], monthLabel: "Current month" };
   const totals = data?.totals ?? {};
   const paymentCaptureRate = data?.paymentCaptureRate ?? 0;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>

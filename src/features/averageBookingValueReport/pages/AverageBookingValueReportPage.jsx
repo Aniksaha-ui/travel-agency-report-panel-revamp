@@ -5,6 +5,7 @@ import Table from "../../../components/ui/Table";
 import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import useAverageBookingValueReport from "../hooks/useAverageBookingValueReport";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 const averageBookingValueColumns = [
   {
@@ -27,11 +28,7 @@ export default function AverageBookingValueReportPage() {
   const bookingTypes = data?.bookingTypes ?? [];
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>

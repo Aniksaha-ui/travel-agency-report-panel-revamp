@@ -1,6 +1,7 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
 import { APP_CONFIG } from "../../../services/config";
+import { formatDateTime } from "../../../utils/dateUtils";
 import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import { TRIPS_COPY, TRIPS_FALLBACK_RESPONSE } from "../constants/trips.constants";
 
@@ -11,23 +12,9 @@ const formatNumber = (value) =>
 
 const formatCurrency = (value) => `BDT ${formatNumber(value)}`;
 
-const formatDateTime = (value) => {
-  if (!value) {
-    return "Not scheduled";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(String(value).replace(" ", "T")));
-};
-
 const formatDateRange = (departureTime, arrivalTime) => {
-  const departureLabel = formatDateTime(departureTime);
-  const arrivalLabel = formatDateTime(arrivalTime);
+  const departureLabel = formatDateTime(departureTime, "Not scheduled");
+  const arrivalLabel = formatDateTime(arrivalTime, "Not scheduled");
 
   return departureLabel === arrivalLabel ? departureLabel : `${departureLabel} - ${arrivalLabel}`;
 };
@@ -36,6 +23,8 @@ const normalizeFilterValue = (value) => String(value ?? "").trim();
 const normalizeDateValue = (value) => String(value ?? "").trim().split(" ")[0];
 const normalizeStringValue = (value) => String(value ?? "").trim();
 const normalizeNullableString = (value) => (value == null ? "" : String(value));
+const TIME_24_HOUR_PATTERN = /^([01]?\d|2[0-3]):([0-5]\d)$/;
+const TIME_12_HOUR_PATTERN = /^(0?\d|1[0-2]):([0-5]\d)\s*([AP]M)$/i;
 const buildImageUrl = (filePath) => {
   const normalizedPath = String(filePath ?? "").replace(/\\/g, "/").replace(/^\/+/, "");
 
@@ -56,6 +45,33 @@ const formatApiDate = (value) => {
   const normalizedValue = normalizeDateValue(value);
 
   return normalizedValue ? `${normalizedValue} 00:00:00` : "";
+};
+const formatApiTime = (value) => {
+  const normalizedValue = normalizeStringValue(value);
+
+  if (!normalizedValue) {
+    return "";
+  }
+
+  const twelveHourMatch = normalizedValue.match(TIME_12_HOUR_PATTERN);
+
+  if (twelveHourMatch) {
+    const [, hours, minutes, meridiem] = twelveHourMatch;
+    return `${String(Number(hours)).padStart(2, "0")}:${minutes} ${meridiem.toUpperCase()}`;
+  }
+
+  const twentyFourHourMatch = normalizedValue.match(TIME_24_HOUR_PATTERN);
+
+  if (!twentyFourHourMatch) {
+    return normalizedValue;
+  }
+
+  const [, hours, minutes] = twentyFourHourMatch;
+  const parsedHours = Number(hours);
+  const meridiem = parsedHours >= 12 ? "PM" : "AM";
+  const twelveHourValue = parsedHours % 12 || 12;
+
+  return `${String(twelveHourValue).padStart(2, "0")}:${minutes} ${meridiem}`;
 };
 const filterFallbackTrips = (payload, search) => {
   const normalizedSearch = normalizeFilterValue(search).toLowerCase();
@@ -96,8 +112,8 @@ export const normalizeTrips = (payload) => {
       tripName: item.trip_name ?? "Unnamed trip",
       departureTime: item.departure_time,
       arrivalTime: item.arrival_time,
-      departureLabel: formatDateTime(item.departure_time),
-      arrivalLabel: formatDateTime(item.arrival_time),
+      departureLabel: formatDateTime(item.departure_time, "Not scheduled"),
+      arrivalLabel: formatDateTime(item.arrival_time, "Not scheduled"),
       scheduleLabel: formatDateRange(item.departure_time, item.arrival_time),
       price,
       priceLabel: formatCurrency(price),
@@ -236,17 +252,18 @@ export const getTripDetails = async (tripId) => {
   throw new Error(response.data?.message || "Unable to load trip details.");
 };
 
-export const updateTrip = async (tripId, values) => {
-  const formData = new FormData();
+const appendTripFormData = (formData, values, tripId = "") => {
+  if (tripId) {
+    formData.append("id", normalizeNullableString(tripId));
+  }
 
-  formData.append("id", normalizeNullableString(tripId));
   formData.append("vehicle_id", normalizeStringValue(values.vehicleId));
   formData.append("route_id", normalizeStringValue(values.routeId));
   formData.append("trip_name", normalizeStringValue(values.tripName));
   formData.append("departure_time", formatApiDate(values.departureDate));
   formData.append("arrival_time", formatApiDate(values.arrivalDate));
-  formData.append("departure_at", normalizeStringValue(values.departureAt));
-  formData.append("arrival_at", normalizeStringValue(values.arrivalAt));
+  formData.append("departure_at", formatApiTime(values.departureAt));
+  formData.append("arrival_at", formatApiTime(values.arrivalAt));
   formData.append("price", normalizeStringValue(values.price));
   formData.append("is_active", values.isActive ? "1" : "0");
   formData.append("status", normalizeStringValue(values.status || "1"));
@@ -254,9 +271,42 @@ export const updateTrip = async (tripId, values) => {
 
   if (values.imageFile instanceof File) {
     formData.append("image", values.imageFile);
-  } else if (values.imagePath) {
+    return;
+  }
+
+  if (values.imagePath) {
     formData.append("image", normalizeNullableString(values.imagePath));
   }
+};
+
+export const createTrip = async (values) => {
+  const formData = new FormData();
+  appendTripFormData(formData, values);
+
+  try {
+    const response = await apiClient.post(API_URLS.reports.trips, formData);
+
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    const serverMessage = error.response?.data?.message;
+
+    if (serverMessage) {
+      throw new Error(serverMessage);
+    }
+
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+
+  throw new Error("Unable to create trip right now.");
+};
+
+export const updateTrip = async (tripId, values) => {
+  const formData = new FormData();
+  appendTripFormData(formData, values, tripId);
 
   try {
     const response = await apiClient.post(API_URLS.reports.tripUpdate(tripId), formData);

@@ -6,6 +6,7 @@ import TripPerformanceMobileView from "../component/TripPerformanceMobileView";
 import TripPerformanceTableFooter from "../component/TripPerformanceTableFooter";
 import { TRIP_PERFORMANCE_COPY } from "../constants/tripPerformance.constants";
 import useTripPerformance from "../hooks/useTripPerformance";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function TripPerformancePage() {
   const [page, setPage] = useState(1);
@@ -19,11 +20,7 @@ export default function TripPerformancePage() {
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
   const topTrip = summary.topTrip;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

@@ -9,6 +9,7 @@ import Card from "../../../components/ui/Card";
 import { APP_ROUTES } from "../../../constants/routes";
 import useApi from "../../../hooks/useApi";
 import AdminLayout from "../../../layouts/AdminLayout";
+import { formatBoardDate } from "../../../utils/dateUtils";
 import {
   createEmptyHotelPrice,
   createEmptyHotelRoom,
@@ -303,11 +304,7 @@ export default function HotelFormPage() {
     hotelMutation.mutate(formValues);
   };
 
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>

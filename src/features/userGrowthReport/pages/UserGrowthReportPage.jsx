@@ -6,6 +6,7 @@ import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import UserGrowthReportMobileView from "../component/UserGrowthReportMobileView";
 import useUserGrowthReport from "../hooks/useUserGrowthReport";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 const userGrowthColumns = [
   {
@@ -30,11 +31,7 @@ export default function UserGrowthReportPage() {
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
   const pagination = data?.pagination ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

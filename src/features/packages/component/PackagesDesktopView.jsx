@@ -17,7 +17,6 @@ export default function PackagesDesktopView({
   packages,
   pagination,
   searchTerm,
-  summary,
   tableFooter,
 }) {
   return (

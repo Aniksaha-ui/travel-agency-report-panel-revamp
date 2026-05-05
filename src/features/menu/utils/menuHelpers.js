@@ -64,6 +64,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.lowPerformingPackages;
   }
 
+  if (path === "/admin/monitoring") {
+    return APP_ROUTES.monitoring;
+  }
+
   if (path === "/admin/monthRunningBalance") {
     return APP_ROUTES.monthRunningBalance;
   }

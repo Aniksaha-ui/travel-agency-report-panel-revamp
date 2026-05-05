@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom";
 import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
 import SearchField from "../../../components/forms/SearchField";
+import { APP_ROUTES } from "../../../constants/routes";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import { tripColumns } from "./tripsView.config";
 
 export default function TripsDesktopView({
   boardDate,
   copy,
-  isFetching,
   isLoading,
   metrics,
   pagination,
@@ -62,11 +63,16 @@ export default function TripsDesktopView({
               bodyClassName="p-0"
               footer={tableFooter}
               actions={
-                <SearchField
-                  placeholder="Search trips"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
+                <div className="d-flex flex-column flex-lg-row gap-2">
+                  <SearchField
+                    placeholder="Search trips"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <Link to={APP_ROUTES.tripCreate} className="btn btn-primary">
+                    Add trip
+                  </Link>
+                </div>
               }
             >
               {isLoading && !trips.length ? (

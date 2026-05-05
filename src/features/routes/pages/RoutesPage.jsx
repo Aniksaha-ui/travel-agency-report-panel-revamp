@@ -9,6 +9,7 @@ import RoutesTableFooter from "../component/RoutesTableFooter";
 import { ROUTES_COPY } from "../constants/routes.constants";
 import useRoutes from "../hooks/useRoutes";
 import { getRouteDetails } from "../services/routesService";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function RoutesPage() {
   const [page, setPage] = useState(1);
@@ -30,11 +31,7 @@ export default function RoutesPage() {
   const routes = data?.routes ?? [];
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getTripEditRoute } from "../../../constants/routes";
+import { APP_ROUTES, getTripEditRoute } from "../../../constants/routes";
 import Button from "../../../components/common/Button";
 import Badge from "../../../components/common/Badge";
 import SearchField from "../../../components/forms/SearchField";
@@ -72,13 +72,16 @@ export default function TripsMobileView({
               </div>
             </div>
 
-            <div className="mb-3">
+            <div className="d-grid gap-2 mb-3">
               <SearchField
                 className="trip-performance-search"
                 placeholder="Search trips"
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
+              <Link to={APP_ROUTES.tripCreate} className="btn btn-primary">
+                Add trip
+              </Link>
             </div>
 
             <div className="trip-performance-mobile__list">

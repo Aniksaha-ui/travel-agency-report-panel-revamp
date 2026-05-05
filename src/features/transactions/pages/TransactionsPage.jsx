@@ -6,6 +6,7 @@ import TransactionsMobileView from "../component/TransactionsMobileView";
 import TransactionsTableFooter from "../component/TransactionsTableFooter";
 import { TRANSACTIONS_COPY } from "../constants/transactions.constants";
 import useTransactions from "../hooks/useTransactions";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function TransactionsPage() {
   const [page, setPage] = useState(1);
@@ -18,11 +19,7 @@ export default function TransactionsPage() {
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

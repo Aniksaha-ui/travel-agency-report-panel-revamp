@@ -9,6 +9,7 @@ import Card from "../../../components/ui/Card";
 import { APP_ROUTES } from "../../../constants/routes";
 import useApi from "../../../hooks/useApi";
 import AdminLayout from "../../../layouts/AdminLayout";
+import { formatBoardDate } from "../../../utils/dateUtils";
 import {
   createEmptyPackagePricing,
   createPackage,
@@ -216,11 +217,7 @@ export default function PackageCreatePage() {
 
   const tripOptions = formOptions?.tripOptions ?? [{ value: "", label: "Select a trip" }];
   const guideOptions = formOptions?.guideOptions ?? [{ value: "", label: "Select a guide" }];
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>

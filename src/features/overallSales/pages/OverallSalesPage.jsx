@@ -4,6 +4,7 @@ import OverallSalesDesktopView from "../component/OverallSalesDesktopView";
 import OverallSalesMobileView from "../component/OverallSalesMobileView";
 import { OVERALL_SALES_COPY } from "../constants/overallSales.constants";
 import useOverallSales from "../hooks/useOverallSales";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 const EMPTY_OVERALL = {
   sources: [],
@@ -22,11 +23,7 @@ export default function OverallSalesPage() {
   const metrics = data?.metrics ?? [];
   const overall = data?.overall ?? EMPTY_OVERALL;
   const routeWise = data?.routeWise ?? EMPTY_ROUTE_WISE;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const handleChangeReport = (reportId) => {
     startTransition(() => {

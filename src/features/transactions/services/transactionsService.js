@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { formatDate, formatDateTime, toDayjs } from "../../../utils/dateUtils";
 import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import {
   TRANSACTIONS_COPY,
@@ -20,32 +21,7 @@ const formatLabel = (value) =>
     .replace(/[_-]+/g, " ")
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-const formatDateTime = (value) => {
-  if (!value) {
-    return "Not available";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(String(value).replace(" ", "T")));
-};
-
-const formatShortDateTime = (value) => {
-  if (!value) {
-    return "N/A";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(String(value).replace(" ", "T")));
-};
+const formatShortDateTime = (value) => formatDate(value, "MMM D h:mm A", "N/A");
 
 const shortenLabel = (value, maxLength = 18) =>
   String(value ?? "").length > maxLength
@@ -125,8 +101,8 @@ export const normalizeTransactions = (payload) => {
   const amountTrend = [...transactions]
     .sort(
       (first, second) =>
-        new Date(first.createdAt).getTime() -
-        new Date(second.createdAt).getTime(),
+        (toDayjs(first.createdAt)?.valueOf() ?? 0) -
+        (toDayjs(second.createdAt)?.valueOf() ?? 0),
     )
     .map((transaction) => ({
       id: transaction.id,

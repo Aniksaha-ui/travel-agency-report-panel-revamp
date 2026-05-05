@@ -6,6 +6,7 @@ import TripsMobileView from "../component/TripsMobileView";
 import TripsTableFooter from "../component/TripsTableFooter";
 import { TRIPS_COPY } from "../constants/trips.constants";
 import useTrips from "../hooks/useTrips";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function TripsPage() {
   const [page, setPage] = useState(1);
@@ -17,11 +18,7 @@ export default function TripsPage() {
   const trips = data?.trips ?? [];
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

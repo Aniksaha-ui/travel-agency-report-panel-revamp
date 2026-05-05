@@ -8,6 +8,7 @@ import PackagesTableFooter from "../component/PackagesTableFooter";
 import { PACKAGES_COPY } from "../constants/packages.constants";
 import usePackages from "../hooks/usePackages";
 import { getPackageDetails } from "../services/packagesService";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function PackagesPage() {
   const [page, setPage] = useState(1);
@@ -28,11 +29,7 @@ export default function PackagesPage() {
   const packages = data?.packages ?? [];
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

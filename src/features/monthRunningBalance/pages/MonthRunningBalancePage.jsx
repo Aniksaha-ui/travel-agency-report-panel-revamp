@@ -5,6 +5,7 @@ import MonthRunningBalanceMobileView from "../component/MonthRunningBalanceMobil
 import MonthRunningBalanceTableFooter from "../component/MonthRunningBalanceTableFooter";
 import { MONTH_RUNNING_BALANCE_COPY } from "../constants/monthRunningBalance.constants";
 import useMonthRunningBalance from "../hooks/useMonthRunningBalance";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function MonthRunningBalancePage() {
   const [page, setPage] = useState(1);
@@ -16,11 +17,7 @@ export default function MonthRunningBalancePage() {
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
   const latestMonth = summary.latestMonth;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

@@ -6,6 +6,7 @@ import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import HighCancellationPackagesMobileView from "../component/HighCancellationPackagesMobileView";
 import useHighCancellationPackages from "../hooks/useHighCancellationPackages";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 const highCancellationPackagesColumns = [
   {
@@ -41,11 +42,7 @@ export default function HighCancellationPackagesPage() {
   const packages = data?.packages ?? [];
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>

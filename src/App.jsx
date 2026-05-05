@@ -20,6 +20,7 @@ import HotelFormPage from "./features/hotels/pages/HotelFormPage";
 import HotelsPage from "./features/hotels/pages/HotelsPage";
 import LowOccupancyReportPage from "./features/lowOccupancyReport/pages/LowOccupancyReportPage";
 import LowPerformingPackagesPage from "./features/lowPerformingPackages/pages/LowPerformingPackagesPage";
+import MonitoringPage from "./features/monitoring/pages/MonitoringPage";
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
 import OverallSalesPage from "./features/overallSales/pages/OverallSalesPage";
 import PackageCreatePage from "./features/packages/pages/PackageCreatePage";
@@ -143,6 +144,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.tripCreate}
+          element={
+            <ProtectedRoute>
+              <TripEditPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.tripEdit}
           element={
             <ProtectedRoute>
@@ -187,6 +196,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <OverallSalesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.monitoring}
+          element={
+            <ProtectedRoute>
+              <MonitoringPage />
             </ProtectedRoute>
           }
         />

@@ -6,6 +6,7 @@ import VehiclesMobileView from "../component/VehiclesMobileView";
 import VehiclesTableFooter from "../component/VehiclesTableFooter";
 import { VEHICLES_COPY } from "../constants/vehicles.constants";
 import useVehicles from "../hooks/useVehicles";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function VehiclesPage() {
   const [page, setPage] = useState(1);
@@ -17,11 +18,7 @@ export default function VehiclesPage() {
   const vehicles = data?.vehicles ?? [];
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

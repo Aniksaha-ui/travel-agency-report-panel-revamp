@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { formatDateTime } from "../../../utils/dateUtils";
 import { buildUrlWithQuery } from "../../../utils/urlUtils";
 import {
   ROUTES_COPY,
@@ -13,20 +14,6 @@ const normalizeString = (value) => String(value ?? "").trim();
 
 const formatNumber = (value) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(toNumber(value));
-
-const formatDateTime = (value) => {
-  if (!value) {
-    return "Not available";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(String(value).replace(" ", "T")));
-};
 
 const buildSearchPayload = (search) => {
   const normalizedSearch = normalizeString(search);

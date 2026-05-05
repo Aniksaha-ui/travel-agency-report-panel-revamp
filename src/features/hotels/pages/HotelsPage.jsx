@@ -8,6 +8,7 @@ import HotelsTableFooter from "../component/HotelsTableFooter";
 import { HOTELS_COPY } from "../constants/hotels.constants";
 import useHotels from "../hooks/useHotels";
 import { getHotelDetails } from "../services/hotelsService";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function HotelsPage() {
   const [page, setPage] = useState(1);
@@ -28,11 +29,7 @@ export default function HotelsPage() {
   const hotels = data?.hotels ?? [];
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

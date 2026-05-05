@@ -11,13 +11,16 @@ import {
 import { formatTooltipLabel, formatTooltipValue } from "./chartUtils";
 
 export default function RechartsRankingChart({
+  chartMargin,
   getCellColor,
   items,
   labelKey = "label",
+  tickFontSize = 11,
   tooltipLabel = "Value",
   valueKey = "value",
   height = 300,
   valueFormatter = (value) => value,
+  yAxisWidth = 100,
 }) {
   if (!items || items.length === 0) {
     return (
@@ -42,12 +45,14 @@ export default function RechartsRankingChart({
         <BarChart
           data={data}
           layout="vertical"
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
+          margin={
+            chartMargin ?? {
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }
+          }
         >
           <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f0f0f0" />
           <XAxis type="number" hide />
@@ -56,8 +61,8 @@ export default function RechartsRankingChart({
             dataKey={labelKey}
             axisLine={false}
             tickLine={false}
-            tick={{ fill: "#666", fontSize: 11 }}
-            width={100}
+            tick={{ fill: "#666", fontSize: tickFontSize }}
+            width={yAxisWidth}
           />
           <Tooltip
             contentStyle={{

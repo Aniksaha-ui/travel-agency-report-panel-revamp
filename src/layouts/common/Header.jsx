@@ -9,6 +9,7 @@ import { selectMenu } from "../../features/menu/store/menuSlice";
 import { getSupportedRoute, hasChildren } from "../../features/menu/utils/menuHelpers";
 import { MenuIcon } from "../../features/menu/utils/menuIcons";
 import { classNames } from "../../utils/classNames";
+import { formatBoardDate } from "../../utils/dateUtils";
 
 export default function Header({ onOpenDrawer }) {
   const { auth, logout } = useAuthContext();
@@ -20,11 +21,7 @@ export default function Header({ onOpenDrawer }) {
   const userInitial = auth.user?.name?.charAt(0)?.toUpperCase() ?? "A";
   const roleLabel = auth.user?.role ?? "Administrator";
   const accountSubtitle = auth.user?.email || roleLabel;
-  const headerDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const headerDate = formatBoardDate();
 
   useEffect(() => {
     if (!isAccountMenuOpen && !openDesktopMenu) {

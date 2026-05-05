@@ -1,5 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
+import { formatMonthLabel } from "../../../utils/dateUtils";
 import {
   USER_GROWTH_REPORT_COPY,
   USER_GROWTH_REPORT_FALLBACK_RESPONSE,
@@ -9,20 +10,6 @@ const toNumber = (value) => Number(value) || 0;
 
 const formatNumber = (value) =>
   new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(toNumber(value));
-
-const formatMonthLabel = (value) => {
-  if (!value) {
-    return "Unknown month";
-  }
-
-  const [year, month] = String(value).split("-");
-  const date = new Date(Number(year), Number(month) - 1, 1);
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    year: "numeric",
-  }).format(date);
-};
 
 export const normalizeUserGrowthReport = (payload) => {
   const source = payload?.data ?? {};

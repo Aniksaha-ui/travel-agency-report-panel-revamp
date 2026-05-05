@@ -203,7 +203,7 @@ const filterFallbackCustomers = (payload, search) => {
   };
 };
 
-export const getCustomerValue = async ({ page = 1, search = "" } = {}) => {
+export const getCustomerValue = async ({ search = "" } = {}) => {
   try {
     const response = await apiClient.get(API_URLS.reports.customerValue);
 

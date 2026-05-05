@@ -6,6 +6,7 @@ import GuideEfficiencyMobileView from "../component/GuideEfficiencyMobileView";
 import GuideEfficiencyTableFooter from "../component/GuideEfficiencyTableFooter";
 import { GUIDE_EFFICIENCY_COPY } from "../constants/guideEfficiency.constants";
 import useGuideEfficiency from "../hooks/useGuideEfficiency";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function GuideEfficiencyPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,11 +18,7 @@ export default function GuideEfficiencyPage() {
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
   const topGuide = summary.topPackageGuide;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const handleSearchChange = (event) => {
     const { value } = event.target;

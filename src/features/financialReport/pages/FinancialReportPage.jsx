@@ -5,6 +5,7 @@ import FinancialReportMobileView from "../component/FinancialReportMobileView";
 import FinancialReportTableFooter from "../component/FinancialReportTableFooter";
 import { FINANCIAL_REPORT_COPY } from "../constants/financialReport.constants";
 import useFinancialReport from "../hooks/useFinancialReport";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function FinancialReportPage() {
   const [page] = useState(1);
@@ -15,11 +16,7 @@ export default function FinancialReportPage() {
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const tableFooter = <FinancialReportTableFooter pagination={pagination} />;
 

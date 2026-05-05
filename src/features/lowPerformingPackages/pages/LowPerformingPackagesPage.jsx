@@ -4,6 +4,7 @@ import Table from "../../../components/ui/Table";
 import AdminLayout from "../../../layouts/AdminLayout";
 import MetricsOverview from "../../dashboard/components/MetricsOverview";
 import useLowPerformingPackages from "../hooks/useLowPerformingPackages";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 const lowPerformingPackagesColumns = [
   {
@@ -26,11 +27,7 @@ export default function LowPerformingPackagesPage() {
   const packages = data?.packages ?? [];
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>

@@ -3020,3 +3020,194 @@
     display: none;
   }
 }
+
+.monitoring-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.26), transparent 28%),
+    radial-gradient(circle at left center, rgba(34, 197, 94, 0.12), transparent 26%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 247, 255, 0.96) 100%);
+}
+
+.monitoring-hero__signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.monitoring-hero__signal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.72);
+  color: #334155;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.monitoring-hero__signal--live {
+  border-color: rgba(34, 197, 94, 0.22);
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
+}
+
+.monitoring-command-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 0.95fr;
+  gap: 1rem;
+}
+
+.monitoring-command-card {
+  position: relative;
+  min-height: 11.5rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 1.35rem;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.monitoring-command-card::before {
+  content: "";
+  position: absolute;
+  inset: auto -1.8rem -2.2rem auto;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  filter: blur(8px);
+}
+
+.monitoring-command-card--primary {
+  background: linear-gradient(135deg, #0f172a 0%, #172554 54%, #0ea5e9 100%);
+  color: #f8fbff;
+}
+
+.monitoring-command-card--secondary {
+  background: linear-gradient(135deg, #082f49 0%, #155e75 52%, #22c55e 100%);
+  color: #f8fffd;
+}
+
+.monitoring-command-card--neutral {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 251, 0.98) 100%);
+}
+
+.monitoring-command-card__eyebrow {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  opacity: 0.74;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.monitoring-command-card__title {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.8rem;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.25;
+  max-width: 24rem;
+}
+
+.monitoring-command-card__value {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.9rem;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.monitoring-command-card__meta {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.8rem;
+  color: inherit;
+  opacity: 0.78;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.monitoring-command-card__list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.monitoring-command-card__list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.72rem 0.82rem;
+  border-radius: 0.9rem;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.monitoring-command-card__list-item span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.monitoring-panel-card,
+.monitoring-table-card {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+}
+
+.monitoring-panel-card .card-header,
+.monitoring-table-card .card-header {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
+}
+
+.monitoring-panel-card--green {
+  background: linear-gradient(180deg, rgba(240, 253, 244, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+}
+
+.monitoring-panel-card--blue {
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%);
+}
+
+.monitoring-table-card .table thead th {
+  background: rgba(248, 250, 252, 0.92);
+}
+
+.monitoring-mobile-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.95rem 0 0.2rem;
+}
+
+.monitoring-mobile-ribbon__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.36rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+@media (max-width: 1199px) {
+  .monitoring-command-grid {
+    grid-template-columns: 1fr;
+  }
+}

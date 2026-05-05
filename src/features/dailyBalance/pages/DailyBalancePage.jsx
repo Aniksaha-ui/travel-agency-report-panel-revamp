@@ -7,6 +7,7 @@ import DailyBalanceTableFooter from "../component/DailyBalanceTableFooter";
 import { DAILY_BALANCE_COPY } from "../constants/dailyBalance.constants";
 import useDailyBalance from "../hooks/useDailyBalance";
 import useDailyBalanceHistory from "../hooks/useDailyBalanceHistory";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function DailyBalancePage() {
   const [page, setPage] = useState(1);
@@ -26,11 +27,7 @@ export default function DailyBalancePage() {
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
   const latestDay = summary.latestDay;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

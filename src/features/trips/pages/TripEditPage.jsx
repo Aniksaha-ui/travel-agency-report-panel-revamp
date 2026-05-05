@@ -9,7 +9,9 @@ import Card from "../../../components/ui/Card";
 import useApi from "../../../hooks/useApi";
 import AdminLayout from "../../../layouts/AdminLayout";
 import { APP_ROUTES } from "../../../constants/routes";
+import { formatBoardDate } from "../../../utils/dateUtils";
 import {
+  createTrip,
   getTripDetails,
   getTripFormOptions,
   updateTrip,
@@ -41,7 +43,7 @@ const ACTIVE_OPTIONS = [
   { value: "0", label: "Inactive" },
 ];
 
-const validateForm = (values) => {
+const validateForm = (values, isEditMode) => {
   const nextErrors = {};
 
   if (!String(values.tripName).trim()) {
@@ -76,11 +78,16 @@ const validateForm = (values) => {
     nextErrors.price = "Price is required.";
   }
 
+  if (!isEditMode && !(values.imageFile instanceof File)) {
+    nextErrors.imageFile = "Trip image is required.";
+  }
+
   return nextErrors;
 };
 
 export default function TripEditPage() {
   const { tripId = "" } = useParams();
+  const isEditMode = Boolean(tripId);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [formValues, setFormValues] = useState(INITIAL_FORM_STATE);
@@ -93,7 +100,7 @@ export default function TripEditPage() {
   } = useApi({
     queryKey: ["reports", "trip-details", tripId],
     queryFn: () => getTripDetails(tripId),
-    enabled: Boolean(tripId),
+    enabled: isEditMode,
   });
 
   const {
@@ -106,6 +113,12 @@ export default function TripEditPage() {
   });
 
   useEffect(() => {
+    if (!isEditMode) {
+      setFormValues(INITIAL_FORM_STATE);
+      setFormErrors({});
+      return;
+    }
+
     if (!tripDetails) {
       return;
     }
@@ -126,18 +139,22 @@ export default function TripEditPage() {
       imageFile: null,
     });
     setFormErrors({});
-  }, [tripDetails]);
+  }, [isEditMode, tripDetails]);
 
   const updateTripMutation = useMutation({
-    mutationFn: (values) => updateTrip(tripId, values),
+    mutationFn: (values) => (isEditMode ? updateTrip(tripId, values) : createTrip(values)),
     onSuccess: (response) => {
-      toast.success(response?.message || "Trip updated successfully.");
+      toast.success(response?.message || (isEditMode ? "Trip updated successfully." : "Trip created successfully."));
       queryClient.invalidateQueries({ queryKey: ["reports", "trips"] });
-      queryClient.invalidateQueries({ queryKey: ["reports", "trip-details", tripId] });
+
+      if (isEditMode) {
+        queryClient.invalidateQueries({ queryKey: ["reports", "trip-details", tripId] });
+      }
+
       navigate(APP_ROUTES.trips, { replace: true });
     },
     onError: (error) => {
-      toast.error(error.message || "Unable to update the trip.");
+      toast.error(error.message || `Unable to ${isEditMode ? "update" : "create"} the trip.`);
     },
   });
 
@@ -170,12 +187,16 @@ export default function TripEditPage() {
       ...currentValues,
       imageFile: nextFile,
     }));
+    setFormErrors((currentErrors) => ({
+      ...currentErrors,
+      imageFile: undefined,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const nextErrors = validateForm(formValues);
+    const nextErrors = validateForm(formValues, isEditMode);
 
     if (Object.keys(nextErrors).length) {
       setFormErrors(nextErrors);
@@ -188,11 +209,7 @@ export default function TripEditPage() {
 
   const routeOptions = formOptions?.routeOptions ?? [{ value: "", label: "Select a route" }];
   const vehicleOptions = formOptions?.vehicleOptions ?? [{ value: "", label: "Select a vehicle" }];
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   return (
     <AdminLayout>
@@ -200,17 +217,21 @@ export default function TripEditPage() {
         <div className="container-xl">
           <div className="trip-performance-hero">
             <div className="trip-performance-hero__copy">
-              <span className="trip-performance-hero__eyebrow">/admin/trips/{tripId}/edit</span>
-              <h2 className="page-title">Edit trip</h2>
+              <span className="trip-performance-hero__eyebrow">
+                {isEditMode ? `/admin/trips/${tripId}/edit` : APP_ROUTES.tripCreate}
+              </span>
+              <h2 className="page-title">{isEditMode ? "Edit trip" : "Create trip"}</h2>
               <p className="text-secondary mb-0">
-                Update trip scheduling, route assignment, vehicle booking, pricing, and media.
+                {isEditMode
+                  ? "Update trip scheduling, route assignment, vehicle booking, pricing, and media."
+                  : "Add a new trip with the same route, vehicle, schedule, pricing, and image fields used in the legacy admin."}
               </p>
             </div>
 
             <div className="trip-performance-hero__meta">
               <div className="trip-performance-hero__meta-item">
-                <span className="trip-performance-hero__meta-label">Trip ID</span>
-                <strong>#{tripId}</strong>
+                <span className="trip-performance-hero__meta-label">{isEditMode ? "Trip ID" : "Mode"}</span>
+                <strong>{isEditMode ? `#${tripId}` : "Add flow"}</strong>
               </div>
               <div className="trip-performance-hero__meta-item">
                 <span className="trip-performance-hero__meta-label">Route</span>
@@ -230,15 +251,20 @@ export default function TripEditPage() {
           <div className="row g-3">
             <div className="col-12 col-xl-8">
               <Card
-                title="Trip form"
-                subtitle="This screen loads route and vehicle dropdown data, hydrates the current trip, and submits the update payload."
+                title={isEditMode ? "Trip form" : "New trip form"}
+                subtitle={
+                  isEditMode
+                    ? "This screen loads route and vehicle dropdown data, hydrates the current trip, and submits the update payload."
+                    : "This screen loads the route and vehicle dropdowns, captures the trip payload, and submits the create request."
+                }
                 className="trip-performance-card border-0"
               >
-                {isTripLoading || areOptionsLoading ? (
-                  <div className="text-secondary">Loading trip editor...</div>
+                {((isEditMode && isTripLoading) || areOptionsLoading) ? (
+                  <div className="text-secondary">{isEditMode ? "Loading trip editor..." : "Loading trip creator..."}</div>
                 ) : tripError || optionsError ? (
                   <div className="text-danger">
-                    {(tripError || optionsError)?.message || "Unable to load trip editing data."}
+                    {(tripError || optionsError)?.message ||
+                      `Unable to load trip ${isEditMode ? "editing" : "creation"} data.`}
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit}>
@@ -358,7 +384,7 @@ export default function TripEditPage() {
 
                       <div className="col-12">
                         <label className="form-label" htmlFor="trip-image">
-                          Replace image
+                          {isEditMode ? "Replace image" : "Trip image"}
                         </label>
                         <input
                           id="trip-image"
@@ -368,15 +394,20 @@ export default function TripEditPage() {
                           accept="image/*"
                           onChange={handleImageChange}
                         />
+                        {formErrors.imageFile ? (
+                          <div className="text-danger small mt-1">{formErrors.imageFile}</div>
+                        ) : null}
                         <div className="form-hint mt-2">
-                          Leave this empty to keep the current image path.
+                          {isEditMode
+                            ? "Leave this empty to keep the current image path."
+                            : "Upload the trip cover image before saving the new trip."}
                         </div>
                       </div>
                     </div>
 
                     <div className="d-flex flex-column flex-sm-row gap-2 mt-4">
                       <Button type="submit" isLoading={updateTripMutation.isPending}>
-                        Save changes
+                        {isEditMode ? "Save changes" : "Create trip"}
                       </Button>
                       <Link to={APP_ROUTES.trips} className="btn btn-outline-primary">
                         Cancel
@@ -389,8 +420,12 @@ export default function TripEditPage() {
 
             <div className="col-12 col-xl-4">
               <Card
-                title="Current trip snapshot"
-                subtitle="Quick confirmation of the loaded trip detail payload before you save."
+                title={isEditMode ? "Current trip snapshot" : "Pending trip snapshot"}
+                subtitle={
+                  isEditMode
+                    ? "Quick confirmation of the loaded trip detail payload before you save."
+                    : "Quick confirmation of the fields that will be sent with the new trip request."
+                }
                 className="trip-performance-card border-0 h-100"
               >
                 <div className="trip-performance-summary-grid">
@@ -421,21 +456,24 @@ export default function TripEditPage() {
                 </div>
 
                 <div className="mt-4">
-                  <div className="text-secondary small mb-2">Current image</div>
-                  {tripDetails?.imageUrl ? (
-                    <a href={tripDetails.imageUrl} target="_blank" rel="noreferrer" className="text-decoration-none">
+                  <div className="text-secondary small mb-2">{isEditMode ? "Current image" : "Selected image"}</div>
+                  {isEditMode && tripDetails?.imageUrl ? (
+                    <a
+                      href={tripDetails.imageUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-decoration-none"
+                    >
                       {tripDetails.imagePath}
                     </a>
+                  ) : formValues.imageFile ? (
+                    <div>{formValues.imageFile.name}</div>
                   ) : (
-                    <div className="text-secondary">No image attached.</div>
+                    <div className="text-secondary">
+                      {isEditMode ? "No image attached." : "No image selected yet."}
+                    </div>
                   )}
                 </div>
-
-                {formValues.imageFile ? (
-                  <div className="mt-3 text-secondary small">
-                    Replacement selected: {formValues.imageFile.name}
-                  </div>
-                ) : null}
               </Card>
             </div>
           </div>

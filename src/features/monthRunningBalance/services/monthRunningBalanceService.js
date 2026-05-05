@@ -137,7 +137,7 @@ export const normalizeMonthRunningBalance = (payload) => {
   };
 };
 
-export const getMonthRunningBalance = async ({ page = 1 } = {}) => {
+export const getMonthRunningBalance = async () => {
   try {
     const response = await apiClient.get(API_URLS.reports.monthRunningBalance);
 

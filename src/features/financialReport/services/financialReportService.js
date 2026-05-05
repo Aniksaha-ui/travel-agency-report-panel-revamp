@@ -1,6 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
-import { formatTravelDate } from "../../../utils/dateUtils";
+import { formatTravelDate, formatYearLabel } from "../../../utils/dateUtils";
 import {
   FINANCIAL_REPORT_COPY,
   FINANCIAL_REPORT_FALLBACK_RESPONSE,
@@ -33,7 +33,7 @@ export const normalizeFinancialReport = (payload) => {
       fyStart: item.fy_start,
       fyEnd: item.fy_end,
       fiscalYearLabel: formatFiscalYear(item.fy_start, item.fy_end),
-      shortFiscalYearLabel: `${new Date(item.fy_start).getFullYear()}-${new Date(item.fy_end).getFullYear()}`,
+      shortFiscalYearLabel: `${formatYearLabel(item.fy_start)}-${formatYearLabel(item.fy_end)}`,
       paymentAmount,
       refund,
       costing,
@@ -140,7 +140,7 @@ export const normalizeFinancialReport = (payload) => {
   };
 };
 
-export const getFinancialReport = async ({ page = 1 } = {}) => {
+export const getFinancialReport = async () => {
   try {
     const response = await apiClient.get(API_URLS.reports.financialReport);
 

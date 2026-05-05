@@ -4,6 +4,7 @@ export const API_URLS = {
   },
   admin: {
     menu: "/admin/menu",
+    monitoring: "/admin/monitoring",
   },
   dashboard: {
     overview: "/admin/dashboard",

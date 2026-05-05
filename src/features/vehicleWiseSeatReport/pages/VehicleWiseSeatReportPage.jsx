@@ -4,6 +4,7 @@ import VehicleWiseSeatReportDesktopView from "../component/VehicleWiseSeatReport
 import VehicleWiseSeatReportMobileView from "../component/VehicleWiseSeatReportMobileView";
 import { VEHICLE_WISE_SEAT_REPORT_COPY } from "../constants/vehicleWiseSeatReport.constants";
 import useVehicleWiseSeatReport from "../hooks/useVehicleWiseSeatReport";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function VehicleWiseSeatReportPage() {
   const [page, setPage] = useState(1);
@@ -14,11 +15,7 @@ export default function VehicleWiseSeatReportPage() {
   const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

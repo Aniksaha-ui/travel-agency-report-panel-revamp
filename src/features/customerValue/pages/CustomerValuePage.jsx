@@ -6,6 +6,7 @@ import CustomerValueMobileView from "../component/CustomerValueMobileView";
 import CustomerValueTableFooter from "../component/CustomerValueTableFooter";
 import { CUSTOMER_VALUE_COPY } from "../constants/customerValue.constants";
 import useCustomerValue from "../hooks/useCustomerValue";
+import { formatBoardDate } from "../../../utils/dateUtils";
 
 export default function CustomerValuePage() {
   const [page, setPage] = useState(1);
@@ -19,11 +20,7 @@ export default function CustomerValuePage() {
   const summary = data?.summary ?? {};
   const charts = data?.charts ?? {};
   const topCustomer = summary.topCustomer;
-  const boardDate = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(new Date());
+  const boardDate = formatBoardDate();
 
   const changePage = (nextPage) => {
     startTransition(() => {

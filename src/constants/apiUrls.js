@@ -31,6 +31,8 @@ export const API_URLS = {
     routes: "/admin/routes",
     routeWiseSalesSummary: "/admin/route-wise-sales-summary",
     routeDropdown: "/admin/routes/dropdown",
+    tickets: "/admin/tickets",
+    ticketUpdate: (ticketId) => `/admin/tickets/update/${ticketId}`,
     packages: "/admin/packages",
     packageCreate: "/admin/packages/create",
     singleRoute: (routeId) => `/admin/routes/${routeId}`,

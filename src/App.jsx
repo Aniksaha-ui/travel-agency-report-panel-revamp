@@ -28,6 +28,7 @@ import PackagesPage from "./features/packages/pages/PackagesPage";
 import RefundStatusReportPage from "./features/refundStatusReport/pages/RefundStatusReportPage";
 import RoutesPage from "./features/routes/pages/RoutesPage";
 import TransactionsPage from "./features/transactions/pages/TransactionsPage";
+import TicketsPage from "./features/tickets/pages/TicketsPage";
 import TripEditPage from "./features/trips/pages/TripEditPage";
 import TripsPage from "./features/trips/pages/TripsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
@@ -124,6 +125,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <TransactionsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.tickets}
+          element={
+            <ProtectedRoute>
+              <TicketsPage />
             </ProtectedRoute>
           }
         />

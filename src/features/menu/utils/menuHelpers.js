@@ -84,6 +84,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.routes;
   }
 
+  if (path === "/admin/tickets") {
+    return APP_ROUTES.tickets;
+  }
+
   if (path === "/admin/trips" || path === "/admin/trip") {
     return APP_ROUTES.trips;
   }

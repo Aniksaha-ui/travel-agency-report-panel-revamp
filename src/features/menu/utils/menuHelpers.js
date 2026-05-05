@@ -48,6 +48,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.financialReport;
   }
 
+  if (path === "/admin/hotel" || path === "/admin/hotels") {
+    return APP_ROUTES.hotel;
+  }
+
   if (path === "/admin/high-cancellation-packages") {
     return APP_ROUTES.highCancellationPackages;
   }
@@ -68,6 +72,10 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.overallSales;
   }
 
+  if (path === "/admin/packages" || path === "/admin/package") {
+    return APP_ROUTES.packages;
+  }
+
   if (path === "/admin/routes") {
     return APP_ROUTES.routes;
   }
@@ -82,6 +90,10 @@ export const getSupportedRoute = (path) => {
 
   if (path === "/admin/transactions") {
     return APP_ROUTES.transactions;
+  }
+
+  if (path === "/admin/vehicles" || path === "/admin/vehicle") {
+    return APP_ROUTES.vehicles;
   }
 
   if (path === "/admin/vehicletrackingreport") {

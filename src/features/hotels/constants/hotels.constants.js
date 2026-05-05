@@ -1,0 +1,131 @@
+export const HOTELS_COPY = {
+  pageTitle: "Hotels",
+  pageSubtitle:
+    "Manage hotel inventory, review accommodation details, and keep room pricing aligned with the admin catalog.",
+};
+
+export const HOTELS_FALLBACK_RESPONSE = {
+  isExecture: "success",
+  data: {
+    current_page: 1,
+    data: [
+      {
+        id: 3,
+        name: "Htel 2",
+        contact_number: null,
+        email: "aniksaha@gmail.com",
+        website: "www.occonview.com",
+        location: "Cox's Bazar",
+        star_rating: 5,
+        city: "cox's bazer",
+        country: "Bangladesh",
+        address: null,
+        description: "A luxurious beachfront hotel.",
+        facilities: "Pool, Spa, WiFi, Parking",
+        status: "0",
+        created_at: "2026-05-04 09:09:21",
+        updated_at: "2026-05-04 09:09:21",
+      },
+      {
+        id: 2,
+        name: "Test Hotel",
+        contact_number: null,
+        email: "sahaanik1045@gmail.com",
+        website: "www.anik.infinitycodehubltd.com",
+        location: "Cox's Bazer",
+        star_rating: 0,
+        city: "Cox's Bazer",
+        country: "Bangladesh",
+        address: null,
+        description:
+          "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum",
+        facilities: "TV,AC,Freeze",
+        status: "",
+        created_at: "2026-01-29 05:52:14",
+        updated_at: "2026-03-04 06:45:36",
+      },
+      {
+        id: 1,
+        name: "Sea place hotel",
+        contact_number: null,
+        email: "sahaanik1045@gmail.com",
+        website: "www.anik.infinitycodehubltd.com",
+        location: "Cox's Bazer",
+        star_rating: 0,
+        city: "Cox's Bazer",
+        country: "Bangladesh",
+        address: null,
+        description:
+          "Sea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsum",
+        facilities: "TV,AC,Freeze",
+        status: "",
+        created_at: "2026-01-29 05:30:01",
+        updated_at: "2026-03-04 06:45:54",
+      },
+    ],
+    first_page_url: "http://127.0.0.1:8000/api/admin/hotel?page=1",
+    from: 1,
+    last_page: 1,
+    last_page_url: "http://127.0.0.1:8000/api/admin/hotel?page=1",
+    next_page_url: null,
+    path: "http://127.0.0.1:8000/api/admin/hotel",
+    per_page: 10,
+    prev_page_url: null,
+    to: 3,
+    total: 3,
+  },
+  message: "Hotels list retrived successfully",
+};
+
+export const HOTEL_DETAIL_FALLBACK_RESPONSE = {
+  isExecture: "success",
+  data: {
+    hotel: {
+      id: 1,
+      name: "Sea place hotel",
+      email: "sahaanik1045@gmail.com",
+      city: "Cox's Bazer",
+      website: "www.anik.infinitycodehubltd.com",
+      description:
+        "Sea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsumSea place hotel is lorem ipsum",
+      location: "Cox's Bazer",
+      star_rating: 0,
+      facilities: "TV,AC,Freeze",
+      photos: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHVMh99S1D8hsk-OuiMdTBlkaxKb3HRZ_SVw&s",
+      ],
+      rooms: [
+        {
+          room_id: 1,
+          room_size: "350 sqft",
+          max_occupancy: 2,
+          amenities: "Tv,freeze",
+          total_rooms: 1,
+          prices: [
+            {
+              id: 83,
+              hotel_room_id: 1,
+              season_start: "2025-01-01",
+              season_end: "2025-04-30",
+              price_per_night: "1400.00",
+              created_at: "2026-03-04 06:45:54",
+              updated_at: "2026-03-04 06:45:54",
+              type_name: "Single",
+            },
+            {
+              id: 84,
+              hotel_room_id: 1,
+              season_start: "2025-05-01",
+              season_end: "2025-08-31",
+              price_per_night: "1600.00",
+              created_at: "2026-03-04 06:45:54",
+              updated_at: "2026-03-04 06:45:54",
+              type_name: "Single",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  message: "success",
+};

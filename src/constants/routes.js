@@ -8,10 +8,15 @@ export const APP_ROUTES = {
   financialReport: "/admin/financialReport",
   guideEfficiency: "/admin/guideEfficency",
   highCancellationPackages: "/admin/high-cancellation-packages",
+  hotel: "/admin/hotel",
+  hotelCreate: "/admin/hotel/create",
+  hotelEdit: "/admin/hotel/:hotelId/edit",
   lowOccupancyReport: "/admin/low-occupancy-report",
   lowPerformingPackages: "/admin/low-performing-packages",
   monthRunningBalance: "/admin/monthRunningBalance",
   overallSales: "/admin/account/overall-sales",
+  packages: "/admin/packages",
+  packageCreate: "/admin/packages/create",
   profile: "/admin/account/profile",
   refundStatusReport: "/admin/refund-status-report",
   routes: "/admin/routes",
@@ -20,9 +25,11 @@ export const APP_ROUTES = {
   tripEdit: "/admin/trips/:tripId/edit",
   tripPerformance: "/admin/tripPerformance",
   userGrowthReport: "/admin/user-growth-report",
+  vehicles: "/admin/vehicles",
   vehicleWiseSeatReport: "/admin/vehiclewiseseatreport",
   vehicleTrackingReport: "/admin/vehicletrackingreport",
   login: "/login",
 };
 
 export const getTripEditRoute = (tripId) => `/admin/trips/${tripId}/edit`;
+export const getHotelEditRoute = (hotelId) => `/admin/hotel/${hotelId}/edit`;

@@ -11,13 +11,11 @@ const defaultState = {
   cachedAt: null,
 };
 
-export const getPersistedMenuState = () => {
-  const rawValue =
-    window.localStorage.getItem("menuItems") ??
-    window.localStorage.getItem(APP_CONFIG.menuStorageKey);
+const LEGACY_MENU_STORAGE_KEY = "menuItems";
 
+const restoreMenuStateFromStorage = (rawValue) => {
   if (!rawValue) {
-    return defaultState;
+    return null;
   }
 
   try {
@@ -31,10 +29,37 @@ export const getPersistedMenuState = () => {
       status: hasCachedMenu ? "succeeded" : "idle",
       error: null,
       cachedAt: parsedValue.cachedAt ?? null,
+      hasCachedMenu,
     };
   } catch {
+    return null;
+  }
+};
+
+export const getPersistedMenuState = () => {
+  const primaryStoredMenuState = restoreMenuStateFromStorage(
+    window.localStorage.getItem(APP_CONFIG.menuStorageKey)
+  );
+  const legacyStoredMenuState = restoreMenuStateFromStorage(
+    window.localStorage.getItem(LEGACY_MENU_STORAGE_KEY)
+  );
+  const storedMenuState = primaryStoredMenuState?.hasCachedMenu
+    ? primaryStoredMenuState
+    : legacyStoredMenuState?.hasCachedMenu
+      ? legacyStoredMenuState
+      : primaryStoredMenuState ?? legacyStoredMenuState;
+
+  if (!storedMenuState) {
     return defaultState;
   }
+
+  return {
+    mainMenuItems: storedMenuState.mainMenuItems,
+    bottomMenuItems: storedMenuState.bottomMenuItems,
+    status: storedMenuState.status,
+    error: null,
+    cachedAt: storedMenuState.cachedAt,
+  };
 };
 
 export const persistMenuState = (menuState) => {
@@ -42,6 +67,7 @@ export const persistMenuState = (menuState) => {
 
   if (!hasCachedMenu) {
     window.localStorage.removeItem(APP_CONFIG.menuStorageKey);
+    window.localStorage.removeItem(LEGACY_MENU_STORAGE_KEY);
     return;
   }
 
@@ -53,10 +79,12 @@ export const persistMenuState = (menuState) => {
       cachedAt: menuState.cachedAt,
     })
   );
+  window.localStorage.removeItem(LEGACY_MENU_STORAGE_KEY);
 };
 
 export const clearPersistedMenuState = () => {
   window.localStorage.removeItem(APP_CONFIG.menuStorageKey);
+  window.localStorage.removeItem(LEGACY_MENU_STORAGE_KEY);
 };
 
 export const fetchMenu = createAsyncThunk("menu/fetchMenu", async (_, { rejectWithValue }) => {

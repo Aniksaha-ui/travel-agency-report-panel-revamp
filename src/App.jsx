@@ -16,10 +16,14 @@ import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import FinancialReportPage from "./features/financialReport/pages/FinancialReportPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
 import HighCancellationPackagesPage from "./features/highCancellationPackages/pages/HighCancellationPackagesPage";
+import HotelFormPage from "./features/hotels/pages/HotelFormPage";
+import HotelsPage from "./features/hotels/pages/HotelsPage";
 import LowOccupancyReportPage from "./features/lowOccupancyReport/pages/LowOccupancyReportPage";
 import LowPerformingPackagesPage from "./features/lowPerformingPackages/pages/LowPerformingPackagesPage";
 import MonthRunningBalancePage from "./features/monthRunningBalance/pages/MonthRunningBalancePage";
 import OverallSalesPage from "./features/overallSales/pages/OverallSalesPage";
+import PackageCreatePage from "./features/packages/pages/PackageCreatePage";
+import PackagesPage from "./features/packages/pages/PackagesPage";
 import RefundStatusReportPage from "./features/refundStatusReport/pages/RefundStatusReportPage";
 import RoutesPage from "./features/routes/pages/RoutesPage";
 import TransactionsPage from "./features/transactions/pages/TransactionsPage";
@@ -27,6 +31,7 @@ import TripEditPage from "./features/trips/pages/TripEditPage";
 import TripsPage from "./features/trips/pages/TripsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import UserGrowthReportPage from "./features/userGrowthReport/pages/UserGrowthReportPage";
+import VehiclesPage from "./features/vehicles/pages/VehiclesPage";
 import VehicleWiseSeatReportPage from "./features/vehicleWiseSeatReport/pages/VehicleWiseSeatReportPage";
 import VehicleTrackingReportPage from "./features/vehicleTrackingReport/pages/VehicleTrackingReportPage";
 import { store } from "./store/store";
@@ -122,6 +127,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.vehicles}
+          element={
+            <ProtectedRoute>
+              <VehiclesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.trips}
           element={
             <ProtectedRoute>
@@ -186,6 +199,22 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.packages}
+          element={
+            <ProtectedRoute>
+              <PackagesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.packageCreate}
+          element={
+            <ProtectedRoute>
+              <PackageCreatePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.financialReport}
           element={
             <ProtectedRoute>
@@ -198,6 +227,30 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <GuideEfficiencyPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.hotel}
+          element={
+            <ProtectedRoute>
+              <HotelsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.hotelCreate}
+          element={
+            <ProtectedRoute>
+              <HotelFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.hotelEdit}
+          element={
+            <ProtectedRoute>
+              <HotelFormPage />
             </ProtectedRoute>
           }
         />

@@ -10,11 +10,14 @@ import ProfilePage from "./features/account/pages/ProfilePage";
 import AverageBookingValueReportPage from "./features/averageBookingValueReport/pages/AverageBookingValueReportPage";
 import LoginPage from "./features/auth/pages/LoginPage";
 import BookingSummaryPage from "./features/bookingSummary/pages/BookingSummaryPage";
+import BookingsPage from "./features/bookings/pages/BookingsPage";
 import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
 import DailyBalancePage from "./features/dailyBalance/pages/DailyBalancePage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import FinancialReportPage from "./features/financialReport/pages/FinancialReportPage";
 import GuideEfficiencyPage from "./features/guideEfficiency/pages/GuideEfficiencyPage";
+import GuideFormPage from "./features/guides/pages/GuideFormPage";
+import GuidesPage from "./features/guides/pages/GuidesPage";
 import HighCancellationPackagesPage from "./features/highCancellationPackages/pages/HighCancellationPackagesPage";
 import HotelFormPage from "./features/hotels/pages/HotelFormPage";
 import HotelsPage from "./features/hotels/pages/HotelsPage";
@@ -90,6 +93,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path={APP_ROUTES.bookings}
+          element={
+            <ProtectedRoute>
+              <BookingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.dashboard}
           element={
             <ProtectedRoute>
@@ -134,6 +145,30 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <TicketsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.guide}
+          element={
+            <ProtectedRoute>
+              <GuidesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.guideCreate}
+          element={
+            <ProtectedRoute>
+              <GuideFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.guideEdit}
+          element={
+            <ProtectedRoute>
+              <GuideFormPage />
             </ProtectedRoute>
           }
         />

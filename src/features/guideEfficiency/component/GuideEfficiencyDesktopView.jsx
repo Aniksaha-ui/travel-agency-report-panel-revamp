@@ -14,6 +14,7 @@ export default function GuideEfficiencyDesktopView({
   boardDate,
   charts,
   copy,
+  error,
   guides,
   handleSearchChange,
   isLoading,
@@ -54,6 +55,19 @@ export default function GuideEfficiencyDesktopView({
 
       <div className="page-body">
         <div className="container-xl">
+          {error ? (
+            <section className="dashboard-section">
+              <Card
+                title="Guide report unavailable"
+                className="trip-performance-card border-0"
+              >
+                <div className="text-danger">
+                  {error.message || "Unable to load guide efficiency information."}
+                </div>
+              </Card>
+            </section>
+          ) : null}
+
           <section className="dashboard-section">
             <MetricsOverview metrics={metrics} />
           </section>

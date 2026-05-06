@@ -1,9 +1,6 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
-import {
-  GUIDE_EFFICIENCY_COPY,
-  GUIDE_EFFICIENCY_FALLBACK_RESPONSE,
-} from "../constants/guideEfficiency.constants";
+import { GUIDE_EFFICIENCY_COPY } from "../constants/guideEfficiency.constants";
 
 const toNumber = (value) => Number(value) || 0;
 
@@ -199,11 +196,18 @@ export const getGuideEfficiency = async ({ search = "" } = {}) => {
     if (response.data) {
       return normalizeGuideEfficiency(filterGuideRows(response.data, search));
     }
-  } catch {
-    await new Promise((resolve) => {
-      window.setTimeout(resolve, 300);
-    });
+  } catch (error) {
+    const serverMessage =
+      error.response?.data?.message ?? error.response?.data?.data?.message;
+
+    if (serverMessage) {
+      throw new Error(serverMessage);
+    }
+
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 
-  return normalizeGuideEfficiency(filterGuideRows(GUIDE_EFFICIENCY_FALLBACK_RESPONSE, search));
+  throw new Error("Unable to load guide efficiency right now.");
 };

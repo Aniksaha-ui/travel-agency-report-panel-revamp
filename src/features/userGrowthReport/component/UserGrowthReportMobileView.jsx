@@ -1,18 +1,15 @@
 import RechartsRankingChart from "../../../components/charts/RechartsRankingChart";
-import Button from "../../../components/common/Button";
+import { growthDeltaFormatter } from "./userGrowthReportView.config";
 
 export default function UserGrowthReportMobileView({
   boardDate,
-  changePage,
+  charts,
   copy,
+  error,
   growthRows,
-  isFetching,
   isLoading,
   metrics,
-  page,
-  pagination,
   summary,
-  charts,
 }) {
   return (
     <div className="d-md-none trip-performance-mobile">
@@ -26,7 +23,8 @@ export default function UserGrowthReportMobileView({
                   {copy?.pageTitle ?? "User growth report"}
                 </h2>
                 <p className="trip-performance-mobile__subtitle">
-                  {copy?.pageSubtitle ?? "Track newly registered users by month from the report API."}
+                  {copy?.pageSubtitle ??
+                    "Track newly registered users by month from the report API."}
                 </p>
               </div>
               <span className="trip-performance-mobile__date">{boardDate}</span>
@@ -59,6 +57,14 @@ export default function UserGrowthReportMobileView({
             </div>
           </section>
 
+          {error ? (
+            <section className="trip-performance-mobile__card">
+              <div className="text-danger">
+                {error.message || "Unable to load the user growth report."}
+              </div>
+            </section>
+          ) : null}
+
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
@@ -87,14 +93,12 @@ export default function UserGrowthReportMobileView({
                   Monthly registration totals from the report API
                 </div>
               </div>
-              <div className="trip-performance-mobile__pill">
-                Page {pagination.currentPage ?? 1}/{pagination.lastPage ?? 1}
-              </div>
+              <div className="trip-performance-mobile__pill">{growthRows.length} months</div>
             </div>
 
             <div className="trip-performance-mobile__list">
               {growthRows.length ? (
-                growthRows.map((row) => (
+                [...growthRows].reverse().map((row) => (
                   <article key={row.id} className="trip-performance-mobile__item">
                     <div className="trip-performance-mobile__item-top">
                       <div>
@@ -103,16 +107,30 @@ export default function UserGrowthReportMobileView({
                           {row.newUsersLabel} newly registered users
                         </div>
                       </div>
-                      <div className="trip-performance-mobile__item-profit">{row.newUsersLabel}</div>
+                      <div className="trip-performance-mobile__item-profit">
+                        {row.newUsersLabel}
+                      </div>
                     </div>
                     <div className="trip-performance-mobile__item-grid">
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">{row.newUsersLabel}</div>
+                        <div className="trip-performance-mobile__item-grid-value">
+                          {row.newUsersLabel}
+                        </div>
                         <div className="trip-performance-mobile__item-grid-label">New users</div>
                       </div>
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">{summary.totalNewUsersLabel ?? "0"}</div>
-                        <div className="trip-performance-mobile__item-grid-label">Total visible</div>
+                        <div
+                          className={`trip-performance-mobile__item-grid-value ${
+                            row.growthDirection === "up"
+                              ? "text-success"
+                              : row.growthDirection === "down"
+                                ? "text-danger"
+                                : "text-secondary"
+                          }`}
+                        >
+                          {row.growthLabel}
+                        </div>
+                        <div className="trip-performance-mobile__item-grid-label">Trend</div>
                       </div>
                     </div>
                   </article>
@@ -123,24 +141,33 @@ export default function UserGrowthReportMobileView({
                 </div>
               )}
             </div>
+          </section>
 
-            <div className="trip-performance-mobile__pager">
-              <Button
-                variant="outline"
-                fullWidthOnMobile
-                disabled={!pagination.hasPrev || isFetching}
-                onClick={() => changePage(page - 1)}
-              >
-                Previous
-              </Button>
-              <Button
-                fullWidthOnMobile
-                disabled={!pagination.hasNext || isFetching}
-                onClick={() => changePage(page + 1)}
-              >
-                Next
-              </Button>
+          <section className="trip-performance-mobile__card">
+            <div className="trip-performance-mobile__card-header">
+              <div>
+                <div className="trip-performance-mobile__card-title">Growth delta</div>
+                <div className="trip-performance-mobile__card-subtle">
+                  Month-over-month movement in registrations
+                </div>
+              </div>
             </div>
+
+            <RechartsRankingChart
+              items={charts.growthDelta ?? []}
+              labelKey="label"
+              valueKey="value"
+              height={250}
+              tooltipLabel="Growth delta"
+              valueFormatter={growthDeltaFormatter}
+              getCellColor={(entry) =>
+                Number(entry.value) > 0
+                  ? "#22c55e"
+                  : Number(entry.value) < 0
+                    ? "#ef4444"
+                    : "#94a3b8"
+              }
+            />
           </section>
         </div>
       </div>

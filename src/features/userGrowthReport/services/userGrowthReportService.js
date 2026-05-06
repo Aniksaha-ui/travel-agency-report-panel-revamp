@@ -1,10 +1,7 @@
 import { API_URLS } from "../../../constants/apiUrls";
 import apiClient from "../../../services/apiClient";
 import { formatMonthLabel } from "../../../utils/dateUtils";
-import {
-  USER_GROWTH_REPORT_COPY,
-  USER_GROWTH_REPORT_FALLBACK_RESPONSE,
-} from "../constants/userGrowthReport.constants";
+import { USER_GROWTH_REPORT_COPY } from "../constants/userGrowthReport.constants";
 
 const toNumber = (value) => Number(value) || 0;
 
@@ -16,6 +13,8 @@ export const normalizeUserGrowthReport = (payload) => {
   const rows = source.data ?? payload?.data ?? payload ?? [];
   const growthRows = rows.map((item, index) => {
     const newUsers = toNumber(item.new_users);
+    const previousMonthUsers = index > 0 ? toNumber(rows[index - 1]?.new_users) : 0;
+    const growth = index > 0 ? newUsers - previousMonthUsers : 0;
 
     return {
       id: `${item.month}-${index}`,
@@ -23,6 +22,9 @@ export const normalizeUserGrowthReport = (payload) => {
       monthLabel: formatMonthLabel(item.month),
       newUsers,
       newUsersLabel: formatNumber(newUsers),
+      growth,
+      growthDirection: growth > 0 ? "up" : growth < 0 ? "down" : "flat",
+      growthLabel: `${growth >= 0 ? "+" : ""}${formatNumber(growth)}`,
     };
   });
 
@@ -54,6 +56,16 @@ export const normalizeUserGrowthReport = (payload) => {
         change: highestMonth ? `${highestMonth.newUsersLabel} users added` : "No monthly growth data",
         changeTone: "warning",
       },
+      {
+        id: "latest-shift",
+        label: "Latest shift",
+        value: growthRows[growthRows.length - 1]?.growthLabel ?? "0",
+        change: growthRows[growthRows.length - 1]
+          ? `${growthRows[growthRows.length - 1].monthLabel} vs previous month`
+          : "No month-over-month trend yet",
+        changeTone:
+          growthRows[growthRows.length - 1]?.growthDirection === "down" ? "danger" : "info",
+      },
     ],
     growthRows,
     pagination: {
@@ -77,6 +89,11 @@ export const normalizeUserGrowthReport = (payload) => {
         label: row.monthLabel,
         value: row.newUsers,
       })),
+      growthDelta: growthRows.map((row) => ({
+        id: `${row.id}-delta`,
+        label: row.monthLabel,
+        value: row.growth,
+      })),
     },
   };
 };
@@ -88,11 +105,18 @@ export const getUserGrowthReport = async () => {
     if (response.data) {
       return normalizeUserGrowthReport(response.data);
     }
-  } catch {
-    await new Promise((resolve) => {
-      window.setTimeout(resolve, 300);
-    });
+  } catch (error) {
+    const serverMessage =
+      error.response?.data?.message ?? error.response?.data?.data?.message;
+
+    if (serverMessage) {
+      throw new Error(serverMessage);
+    }
+
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 
-  return normalizeUserGrowthReport(USER_GROWTH_REPORT_FALLBACK_RESPONSE);
+  throw new Error("Unable to load user growth report right now.");
 };

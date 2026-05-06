@@ -1,69 +1,90 @@
 import { startTransition, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useDebouncedValue from "../../../hooks/useDebouncedValue";
 import AdminLayout from "../../../layouts/AdminLayout";
-import GuideEfficiencyDesktopView from "../component/GuideEfficiencyDesktopView";
-import GuideEfficiencyMobileView from "../component/GuideEfficiencyMobileView";
-import GuideEfficiencyTableFooter from "../component/GuideEfficiencyTableFooter";
-import { GUIDE_EFFICIENCY_COPY } from "../constants/guideEfficiency.constants";
-import useGuideEfficiency from "../hooks/useGuideEfficiency";
+import { APP_ROUTES } from "../../../constants/routes";
 import { formatBoardDate } from "../../../utils/dateUtils";
+import GuidesDesktopView from "../component/GuidesDesktopView";
+import GuidesMobileView from "../component/GuidesMobileView";
+import GuidesTableFooter from "../component/GuidesTableFooter";
+import { GUIDES_COPY } from "../constants/guides.constants";
+import useGuides from "../hooks/useGuides";
 
-export default function GuideEfficiencyPage() {
+export default function GuidesPage() {
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 450);
-  const { data, error, isLoading } = useGuideEfficiency(debouncedSearchTerm);
-  const copy = data?.copy ?? GUIDE_EFFICIENCY_COPY;
+  const { data, error, isFetching, isLoading } = useGuides(page, debouncedSearchTerm);
+  const copy = data?.copy ?? GUIDES_COPY;
   const metrics = data?.metrics ?? [];
   const guides = data?.guides ?? [];
+  const pagination = data?.pagination ?? {};
   const summary = data?.summary ?? {};
-  const charts = data?.charts ?? {};
-  const topGuide = summary.topPackageGuide;
   const boardDate = formatBoardDate();
+
+  const changePage = (nextPage) => {
+    startTransition(() => {
+      setPage(nextPage);
+    });
+  };
 
   const handleSearchChange = (event) => {
     const { value } = event.target;
 
     startTransition(() => {
+      setPage(1);
       setSearchTerm(value);
     });
   };
 
+  const handleEditGuide = (guide) => {
+    navigate(APP_ROUTES.guideEdit.replace(":guideId", String(guide.id)), {
+      state: { guide },
+    });
+  };
+
   const tableFooter = (
-    <GuideEfficiencyTableFooter
+    <GuidesTableFooter
+      changePage={changePage}
       debouncedSearchTerm={debouncedSearchTerm}
-      guides={guides}
-      summary={summary}
+      isFetching={isFetching}
+      page={page}
+      pagination={pagination}
     />
   );
 
   return (
     <AdminLayout>
-      <GuideEfficiencyMobileView
+      <GuidesMobileView
         boardDate={boardDate}
-        charts={charts}
+        changePage={changePage}
         copy={copy}
         error={error}
         guides={guides}
         handleSearchChange={handleSearchChange}
+        isFetching={isFetching}
         isLoading={isLoading}
         metrics={metrics}
+        onEditGuide={handleEditGuide}
+        page={page}
+        pagination={pagination}
         searchTerm={searchTerm}
         summary={summary}
-        topGuide={topGuide}
       />
-      <GuideEfficiencyDesktopView
+      <GuidesDesktopView
         boardDate={boardDate}
-        charts={charts}
         copy={copy}
         error={error}
         guides={guides}
         handleSearchChange={handleSearchChange}
         isLoading={isLoading}
         metrics={metrics}
+        onEditGuide={handleEditGuide}
+        pagination={pagination}
         searchTerm={searchTerm}
         summary={summary}
         tableFooter={tableFooter}
-        topGuide={topGuide}
       />
     </AdminLayout>
   );

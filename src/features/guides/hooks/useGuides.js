@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import { getGuideEfficiency } from "../services/guideEfficiencyService";
+import { getGuides } from "../services/guidesService";
 
-const EMPTY_GUIDE_EFFICIENCY_STATE = {
+const EMPTY_GUIDES_STATE = {
   data: null,
   error: null,
   isFetching: false,
   isLoading: true,
 };
 
-export default function useGuideEfficiency(search) {
-  const [state, setState] = useState(EMPTY_GUIDE_EFFICIENCY_STATE);
+export default function useGuides(page, search) {
+  const [state, setState] = useState(EMPTY_GUIDES_STATE);
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let isCancelled = false;
 
-    const loadGuideEfficiency = async () => {
+    const loadGuides = async () => {
       setState((currentState) => ({
         ...currentState,
         error: null,
@@ -24,7 +24,7 @@ export default function useGuideEfficiency(search) {
       }));
 
       try {
-        const response = await getGuideEfficiency({ search });
+        const response = await getGuides({ page, search });
 
         if (isCancelled) {
           return;
@@ -50,12 +50,12 @@ export default function useGuideEfficiency(search) {
       }
     };
 
-    loadGuideEfficiency();
+    loadGuides();
 
     return () => {
       isCancelled = true;
     };
-  }, [reloadKey, search]);
+  }, [page, reloadKey, search]);
 
   return {
     ...state,

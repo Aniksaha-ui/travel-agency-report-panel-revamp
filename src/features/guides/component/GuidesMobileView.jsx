@@ -1,24 +1,23 @@
-import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
-import RechartsRankingChart from "../../../components/charts/RechartsRankingChart";
-import {
-  guideCurrencyFormatter,
-  guideRatingFormatter,
-  packageTrendSeries,
-  renderPackageShare,
-} from "./guideEfficiencyView.config";
+import { Link } from "react-router-dom";
+import Badge from "../../../components/common/Badge";
+import Button from "../../../components/common/Button";
+import { APP_ROUTES } from "../../../constants/routes";
 
-export default function GuideEfficiencyMobileView({
+export default function GuidesMobileView({
   boardDate,
-  charts,
+  changePage,
   copy,
   error,
   guides,
   handleSearchChange,
+  isFetching,
   isLoading,
   metrics,
+  onEditGuide,
+  page,
+  pagination,
   searchTerm,
   summary,
-  topGuide,
 }) {
   return (
     <div className="d-md-none trip-performance-mobile">
@@ -27,7 +26,7 @@ export default function GuideEfficiencyMobileView({
           <section className="trip-performance-mobile__hero">
             <div className="trip-performance-mobile__hero-top">
               <div>
-                <div className="trip-performance-mobile__eyebrow">/admin/guideEfficency</div>
+                <div className="trip-performance-mobile__eyebrow">/admin/guide</div>
                 <h2 className="trip-performance-mobile__title">{copy.pageTitle}</h2>
                 <p className="trip-performance-mobile__subtitle">{copy.pageSubtitle}</p>
               </div>
@@ -36,19 +35,17 @@ export default function GuideEfficiencyMobileView({
 
             <div className="trip-performance-mobile__spotlight">
               <div>
-                <div className="trip-performance-mobile__spotlight-label">Most assigned guide</div>
+                <div className="trip-performance-mobile__spotlight-label">Top rated guide</div>
                 <div className="trip-performance-mobile__spotlight-value">
-                  {topGuide?.totalPackagesLabel ?? "0"} packages
+                  {summary.topRatedGuide?.ratingLabel ?? "Unrated"}
                 </div>
                 <div className="trip-performance-mobile__spotlight-meta">
-                  {topGuide
-                    ? `${topGuide.guideName} - ${topGuide.avgRatingLabel}`
-                    : "No guide efficiency records yet."}
+                  {summary.topRatedGuide?.name ?? "No guide ratings available yet."}
                 </div>
               </div>
               <div className="trip-performance-mobile__spotlight-stack">
-                <span>{summary.averageRatingLabel ?? "Unrated"}</span>
-                <span>{summary.totalTripCostLabel ?? "BDT 0"}</span>
+                <span>{summary.totalGuidesLabel ?? "0"} total</span>
+                <span>{summary.completeProfilesLabel ?? "0"} complete</span>
               </div>
             </div>
 
@@ -66,7 +63,7 @@ export default function GuideEfficiencyMobileView({
           {error ? (
             <section className="trip-performance-mobile__card">
               <div className="text-danger">
-                {error.message || "Unable to load guide efficiency information."}
+                {error.message || "Unable to load guide information."}
               </div>
             </section>
           ) : null}
@@ -74,54 +71,14 @@ export default function GuideEfficiencyMobileView({
           <section className="trip-performance-mobile__card">
             <div className="trip-performance-mobile__card-header">
               <div>
-                <div className="trip-performance-mobile__card-title">Packages and ratings</div>
+                <div className="trip-performance-mobile__card-title">Guide roster</div>
                 <div className="trip-performance-mobile__card-subtle">
-                  Unrated guides are shown as 0 on the chart
+                  Search and update the guide list from mobile
                 </div>
               </div>
-            </div>
-
-            <RechartsAreaChart
-              data={charts.packageTrend ?? []}
-              series={packageTrendSeries}
-              height={210}
-              labelKey="label"
-              valueFormatter={guideRatingFormatter}
-            />
-          </section>
-
-          <section className="trip-performance-mobile__card">
-            <div className="trip-performance-mobile__card-header">
-              <div>
-                <div className="trip-performance-mobile__card-title">Trip cost leaders</div>
-                <div className="trip-performance-mobile__card-subtle">
-                  Highest visible trip cost across the guide list
-                </div>
-              </div>
-            </div>
-
-            <RechartsRankingChart
-              items={charts.costRanking ?? []}
-              labelKey="label"
-              valueKey="value"
-              height={250}
-              tooltipLabel="Trip cost"
-              valueFormatter={guideCurrencyFormatter}
-              getCellColor={(entry) => (Number(entry.value) > 0 ? "#38bdf8" : "#64748b")}
-            />
-          </section>
-
-          <section className="trip-performance-mobile__card">
-            <div className="trip-performance-mobile__card-header">
-              <div>
-                <div className="trip-performance-mobile__card-title">Guide ledger</div>
-                <div className="trip-performance-mobile__card-subtle">
-                  Search by guide name and review the visible assignments
-                </div>
-              </div>
-              <div className="trip-performance-mobile__pill">
-                {summary.totalGuidesLabel ?? "0"} total
-              </div>
+              <Link to={APP_ROUTES.guideCreate} className="btn btn-primary btn-sm">
+                Add new
+              </Link>
             </div>
 
             <div className="trip-performance-mobile__search">
@@ -156,43 +113,57 @@ export default function GuideEfficiencyMobileView({
                   <article key={guide.id} className="trip-performance-mobile__item">
                     <div className="trip-performance-mobile__item-top">
                       <div>
-                        <div className="trip-performance-mobile__item-title">{guide.guideName}</div>
+                        <div className="trip-performance-mobile__item-title">{guide.name}</div>
                         <div className="trip-performance-mobile__item-meta">
-                          ID #{guide.guideId} - {guide.signalLabel}
+                          #{guide.guideId} • {guide.email}
                         </div>
                       </div>
-                      <div className="trip-performance-mobile__item-profit">{guide.totalTripCostLabel}</div>
+                      <Badge color={guide.signalTone}>{guide.ratingLabel}</Badge>
                     </div>
-                    {renderPackageShare(guide)}
+
                     <div className="trip-performance-mobile__item-grid">
                       <div>
-                        <div className="trip-performance-mobile__item-grid-value">
-                          {guide.totalPackagesLabel}
-                        </div>
-                        <div className="trip-performance-mobile__item-grid-label">Packages</div>
-                      </div>
-                      <div>
-                        <div className="trip-performance-mobile__item-grid-value">{guide.avgRatingLabel}</div>
-                        <div className="trip-performance-mobile__item-grid-label">Rating</div>
+                        <div className="trip-performance-mobile__item-grid-value">{guide.phone}</div>
+                        <div className="trip-performance-mobile__item-grid-label">Phone</div>
                       </div>
                       <div>
                         <div className="trip-performance-mobile__item-grid-value">
-                          {guide.tripCostShareLabel}
+                          {guide.signalLabel}
                         </div>
-                        <div className="trip-performance-mobile__item-grid-label">Cost share</div>
-                      </div>
-                      <div>
-                        <div className="trip-performance-mobile__item-grid-value">{guide.signalLabel}</div>
                         <div className="trip-performance-mobile__item-grid-label">Signal</div>
                       </div>
                     </div>
+
+                    <div className="text-secondary small mb-3">{guide.bioPreview}</div>
+
+                    <Button fullWidthOnMobile variant="outline" onClick={() => onEditGuide(guide)}>
+                      Edit guide
+                    </Button>
                   </article>
                 ))
               ) : (
                 <div className="trip-performance-mobile__empty">
-                  {isLoading ? "Loading guide efficiency..." : "No guide efficiency data available."}
+                  {isLoading ? "Loading guides..." : "No guide rows available."}
                 </div>
               )}
+            </div>
+
+            <div className="trip-performance-mobile__pager">
+              <Button
+                variant="outline"
+                fullWidthOnMobile
+                disabled={!pagination.hasPrev || isFetching}
+                onClick={() => changePage(page - 1)}
+              >
+                Previous
+              </Button>
+              <Button
+                fullWidthOnMobile
+                disabled={!pagination.hasNext || isFetching}
+                onClick={() => changePage(page + 1)}
+              >
+                Next
+              </Button>
             </div>
           </section>
         </div>

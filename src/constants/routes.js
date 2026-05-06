@@ -1,5 +1,10 @@
 export const APP_ROUTES = {
+  accountBalance: "/admin/account/balance",
+  accountHistory: "/admin/account/history",
   averageBookingValueReport: "/admin/avg-booking-value-report",
+  blogList: "/admin/blog-list",
+  blogCreate: "/admin/blog/add",
+  blogEdit: "/admin/blog/update/:blogId",
   bookings: "/admin/bookings",
   bookingInvoice: "/admin/bookinginvoice/:bookingId",
   bookingSummary: "/admin/bookings/summary",
@@ -43,3 +48,4 @@ export const APP_ROUTES = {
 export const getTripEditRoute = (tripId) => `/admin/trips/${tripId}/edit`;
 export const getHotelEditRoute = (hotelId) => `/admin/hotel/${hotelId}/edit`;
 export const getBookingInvoiceRoute = (bookingId) => `/admin/bookinginvoice/${bookingId}`;
+export const getBlogEditRoute = (blogId) => `/admin/blog/update/${blogId}`;

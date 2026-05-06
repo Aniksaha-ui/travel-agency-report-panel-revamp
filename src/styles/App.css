@@ -3629,6 +3629,368 @@
   line-height: 1.55;
 }
 
+.account-balance-spotlight {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.account-balance-spotlight__label,
+.account-balance-modal__eyebrow {
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.account-balance-spotlight__value {
+  color: #0f172a;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.account-balance-spotlight__meta,
+.account-balance-modal__meta {
+  color: #475569;
+  line-height: 1.6;
+}
+
+.account-balance-spotlight__grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0.35rem;
+}
+
+.account-balance-spotlight__grid-item,
+.account-balance-modal__summary-item {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.96));
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 18px;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.95rem 1rem;
+}
+
+.account-balance-spotlight__grid-item span,
+.account-balance-modal__summary-item span {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.account-balance-spotlight__grid-item strong,
+.account-balance-modal__summary-item strong,
+.account-balance-modal__title {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.account-balance-mobile__hero {
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.16), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+}
+
+.account-balance-mobile__item {
+  gap: 1rem;
+}
+
+.account-history-mobile__hero {
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.16), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+}
+
+.account-history-filter {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-history-filter__field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.account-history-filter .form-label {
+  color: inherit;
+  font-weight: 600;
+}
+
+.account-history-filter .form-control {
+  min-height: 2.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.98);
+  color: #0f172a;
+  color-scheme: light;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.account-history-filter .form-control:focus {
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow:
+    0 0 0 0.2rem rgba(37, 99, 235, 0.14),
+    0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.account-history-filter input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  color: #0f172a;
+}
+
+.account-history-filter input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.account-history-filter__button,
+.account-history-filter__submit .btn {
+  min-height: 2.85rem;
+}
+
+.account-history-filter--mobile {
+  gap: 0.85rem;
+}
+
+.account-history-mobile__item {
+  gap: 1rem;
+}
+
+.account-history-mobile__reference {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.blogs-cover-thumb,
+.blogs-mobile__cover {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.95rem;
+  object-fit: cover;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(241, 245, 249, 0.92);
+}
+
+.blogs-cover-thumb--placeholder,
+.blogs-mobile__cover--placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.blogs-mobile__hero {
+  background:
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(22, 40, 78, 0.98) 0%, rgba(11, 20, 46, 0.98) 100%);
+}
+
+.blogs-mobile__item {
+  gap: 1rem;
+}
+
+.blogs-mobile__cover-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.blog-builder-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.85rem;
+}
+
+.blog-builder-tool {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.blog-builder-tool:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.08);
+}
+
+.blog-builder-tool span {
+  color: #2563eb;
+  font-weight: 800;
+}
+
+.blog-builder-tool strong {
+  color: #0f172a;
+}
+
+.blog-builder-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.blog-builder-block {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 1.15rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+}
+
+.blog-builder-block__header,
+.blog-builder-block__title,
+.blog-builder-block__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.blog-builder-block__header {
+  justify-content: space-between;
+}
+
+.blog-builder-block__title span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 0.8rem;
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+  font-weight: 800;
+}
+
+.blog-builder-block__settings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.blog-builder-block__settings label {
+  display: grid;
+  gap: 0.35rem;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.blog-builder-code {
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.blog-builder-empty {
+  padding: 1rem;
+  border: 1px dashed rgba(148, 163, 184, 0.32);
+  border-radius: 1rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.blog-preview-card .card-body {
+  padding-top: 1.25rem;
+}
+
+.blog-preview-frame {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1.4rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  max-height: 76vh;
+  overflow: auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.blog-preview-frame--mobile {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.blog-preview-header {
+  display: grid;
+  gap: 0.45rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  margin-bottom: 1.2rem;
+}
+
+.blog-preview-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+
+.blog-preview-header p,
+.blog-preview-header span,
+.blog-preview-meta {
+  color: #64748b;
+  margin: 0;
+}
+
+.blog-preview-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.blog-preview-cover {
+  width: 100%;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  margin-bottom: 1rem;
+}
+
+.blog-preview-body {
+  color: #0f172a;
+}
+
+.blog-preview-body > * + * {
+  margin-top: 1rem;
+}
+
+.account-balance-modal {
+  max-width: min(1120px, calc(100vw - 1.5rem));
+}
+
+.account-balance-modal__body {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-balance-modal__header {
+  align-items: start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.account-balance-modal__summary {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.account-balance-modal__empty {
+  color: #64748b;
+  padding: 0.75rem 0;
+  text-align: center;
+}
+
 .tickets-modal {
   max-width: min(920px, calc(100vw - 2rem));
   border-radius: 1.25rem;
@@ -3779,6 +4141,15 @@
   .tickets-modal__details {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .account-balance-spotlight__grid,
+  .account-balance-modal__summary {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-builder-block__settings {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 767px) {
@@ -3795,6 +4166,11 @@
   .tickets-modal__details,
   .tickets-modal__content-grid {
     grid-template-columns: 1fr;
+  }
+
+  .account-balance-modal__header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

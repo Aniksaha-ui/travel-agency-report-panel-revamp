@@ -24,8 +24,20 @@ export const normalizeMenuResponse = (payload) => {
 };
 
 export const getSupportedRoute = (path) => {
+  if (path === "/admin/account/balance") {
+    return APP_ROUTES.accountBalance;
+  }
+
+  if (path === "/admin/account/history") {
+    return APP_ROUTES.accountHistory;
+  }
+
   if (path === "/admin/avg-booking-value-report") {
     return APP_ROUTES.averageBookingValueReport;
+  }
+
+  if (path === "/admin/blog-list") {
+    return APP_ROUTES.blogList;
   }
 
   if (path === "/admin/dashboard") {

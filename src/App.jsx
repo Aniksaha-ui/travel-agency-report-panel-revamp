@@ -6,9 +6,13 @@ import { APP_ROUTES } from "./constants/routes";
 import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import ChangePasswordPage from "./features/account/pages/ChangePasswordPage";
+import AccountBalancePage from "./features/accountBalance/pages/AccountBalancePage";
+import AccountHistoryPage from "./features/accountHistory/pages/AccountHistoryPage";
 import ProfilePage from "./features/account/pages/ProfilePage";
 import AverageBookingValueReportPage from "./features/averageBookingValueReport/pages/AverageBookingValueReportPage";
 import LoginPage from "./features/auth/pages/LoginPage";
+import BlogEditorPage from "./features/blogs/pages/BlogEditorPage";
+import BlogsPage from "./features/blogs/pages/BlogsPage";
 import BookingSummaryPage from "./features/bookingSummary/pages/BookingSummaryPage";
 import BookingInvoicePage from "./features/bookings/pages/BookingInvoicePage";
 import BookingsPage from "./features/bookings/pages/BookingsPage";
@@ -86,10 +90,50 @@ function AppRoutes() {
     <>
       <Routes>
         <Route
+          path={APP_ROUTES.accountBalance}
+          element={
+            <ProtectedRoute>
+              <AccountBalancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.accountHistory}
+          element={
+            <ProtectedRoute>
+              <AccountHistoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={APP_ROUTES.averageBookingValueReport}
           element={
             <ProtectedRoute>
               <AverageBookingValueReportPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.blogList}
+          element={
+            <ProtectedRoute>
+              <BlogsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.blogCreate}
+          element={
+            <ProtectedRoute>
+              <BlogEditorPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.blogEdit}
+          element={
+            <ProtectedRoute>
+              <BlogEditorPage />
             </ProtectedRoute>
           }
         />

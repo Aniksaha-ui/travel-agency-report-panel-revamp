@@ -12,7 +12,11 @@ export const API_URLS = {
     packageProfitMargin: "/admin/package-profit-margin",
   },
   reports: {
+    accountBalance: "/admin/accountBalance",
+    accountHistory: (type) => `/admin/accountHistory/${type}`,
+    accountHistorySearch: "/admin/account-history",
     averageBookingValueReport: "/admin/avg-booking-value-report",
+    blogs: "/admin/blogs",
     bookings: "/admin/booking",
     bookingInvoice: "/admin/booking-invoice",
     bookingSummary: "/admin/booking-summary",

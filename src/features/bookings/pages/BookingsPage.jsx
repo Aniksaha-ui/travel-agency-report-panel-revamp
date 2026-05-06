@@ -3,23 +3,16 @@ import useDebouncedValue from "../../../hooks/useDebouncedValue";
 import AdminLayout from "../../../layouts/AdminLayout";
 import { formatBoardDate } from "../../../utils/dateUtils";
 import BookingsDesktopView from "../component/BookingsDesktopView";
-import BookingInvoiceModal from "../component/BookingInvoiceModal";
 import BookingsMobileView from "../component/BookingsMobileView";
 import BookingsTableFooter from "../component/BookingsTableFooter";
 import { BOOKINGS_COPY } from "../constants/bookings.constants";
-import useBookings, { useBookingInvoice } from "../hooks/useBookings";
+import useBookings from "../hooks/useBookings";
 
 export default function BookingsPage() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedBookingId, setSelectedBookingId] = useState(null);
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 450);
   const { data, error, isFetching, isLoading } = useBookings(page, debouncedSearchTerm);
-  const {
-    data: invoice,
-    error: invoiceError,
-    isLoading: isInvoiceLoading,
-  } = useBookingInvoice(selectedBookingId);
   const copy = data?.copy ?? BOOKINGS_COPY;
   const metrics = data?.metrics ?? [];
   const bookings = data?.bookings ?? [];
@@ -40,14 +33,6 @@ export default function BookingsPage() {
       setPage(1);
       setSearchTerm(value);
     });
-  };
-
-  const handleOpenInvoice = (bookingId) => {
-    setSelectedBookingId(bookingId);
-  };
-
-  const handleCloseInvoice = () => {
-    setSelectedBookingId(null);
   };
 
   const tableFooter = (
@@ -72,7 +57,6 @@ export default function BookingsPage() {
         isFetching={isFetching}
         isLoading={isLoading}
         metrics={metrics}
-        onOpenInvoice={handleOpenInvoice}
         page={page}
         pagination={pagination}
         searchTerm={searchTerm}
@@ -86,21 +70,11 @@ export default function BookingsPage() {
         handleSearchChange={handleSearchChange}
         isLoading={isLoading}
         metrics={metrics}
-        onOpenInvoice={handleOpenInvoice}
         pagination={pagination}
         searchTerm={searchTerm}
         summary={summary}
         tableFooter={tableFooter}
       />
-      <BookingInvoiceModal
-        bookingId={selectedBookingId}
-        error={invoiceError}
-        invoice={invoice}
-        isLoading={isInvoiceLoading}
-        isOpen={Boolean(selectedBookingId)}
-        onClose={handleCloseInvoice}
-      />
     </AdminLayout>
   );
 }
-

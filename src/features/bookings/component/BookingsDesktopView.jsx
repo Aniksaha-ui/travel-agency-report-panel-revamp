@@ -12,7 +12,6 @@ export default function BookingsDesktopView({
   handleSearchChange,
   isLoading,
   metrics,
-  onOpenInvoice,
   pagination,
   searchTerm,
   summary,
@@ -84,7 +83,7 @@ export default function BookingsDesktopView({
                 <div className="p-4 text-center text-secondary">Loading bookings...</div>
               ) : (
                 <Table
-                  columns={getBookingColumns({ onOpenInvoice })}
+                  columns={getBookingColumns()}
                   data={bookings}
                   emptyTitle="No bookings found"
                   emptyDescription="No booking rows matched the current search."
@@ -97,4 +96,3 @@ export default function BookingsDesktopView({
     </div>
   );
 }
-

@@ -1,6 +1,7 @@
 export const APP_ROUTES = {
   averageBookingValueReport: "/admin/avg-booking-value-report",
   bookings: "/admin/bookings",
+  bookingInvoice: "/admin/bookinginvoice/:bookingId",
   bookingSummary: "/admin/bookings/summary",
   changePassword: "/admin/account/change-password",
   customerValue: "/admin/customerValueReport",
@@ -41,3 +42,4 @@ export const APP_ROUTES = {
 
 export const getTripEditRoute = (tripId) => `/admin/trips/${tripId}/edit`;
 export const getHotelEditRoute = (hotelId) => `/admin/hotel/${hotelId}/edit`;
+export const getBookingInvoiceRoute = (bookingId) => `/admin/bookinginvoice/${bookingId}`;

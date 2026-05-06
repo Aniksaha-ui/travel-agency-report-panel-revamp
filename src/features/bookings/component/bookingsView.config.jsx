@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
-import Button from "../../../components/common/Button";
+import { getBookingInvoiceRoute } from "../../../constants/routes";
 
-export const getBookingColumns = ({ onOpenInvoice }) => [
+export const getBookingColumns = () => [
   {
     key: "bookingId",
     header: "Booking ID",
@@ -53,10 +54,12 @@ export const getBookingColumns = ({ onOpenInvoice }) => [
     headerClassName: "text-end",
     cellClassName: "text-end",
     render: (booking) => (
-      <Button variant="outline" className="btn-sm" onClick={() => onOpenInvoice(booking.id)}>
+      <Link
+        to={getBookingInvoiceRoute(booking.bookingId)}
+        className="btn btn-outline-primary btn-sm"
+      >
         Invoice
-      </Button>
+      </Link>
     ),
   },
 ];
-

@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { getBookingInvoiceRoute } from "../../../constants/routes";
 
 export default function BookingsMobileView({
   boardDate,
@@ -11,7 +13,6 @@ export default function BookingsMobileView({
   isFetching,
   isLoading,
   metrics,
-  onOpenInvoice,
   page,
   pagination,
   searchTerm,
@@ -134,9 +135,12 @@ export default function BookingsMobileView({
 
                     <div className="text-secondary small mb-3">{booking.createdAtLabel}</div>
 
-                    <Button fullWidthOnMobile variant="outline" onClick={() => onOpenInvoice(booking.id)}>
+                    <Link
+                      to={getBookingInvoiceRoute(booking.bookingId)}
+                      className="btn btn-outline-primary btn-mobile-full"
+                    >
                       Invoice
-                    </Button>
+                    </Link>
                   </article>
                 ))
               ) : (
@@ -169,4 +173,3 @@ export default function BookingsMobileView({
     </div>
   );
 }
-

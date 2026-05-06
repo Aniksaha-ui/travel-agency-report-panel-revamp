@@ -10,6 +10,7 @@ import ProfilePage from "./features/account/pages/ProfilePage";
 import AverageBookingValueReportPage from "./features/averageBookingValueReport/pages/AverageBookingValueReportPage";
 import LoginPage from "./features/auth/pages/LoginPage";
 import BookingSummaryPage from "./features/bookingSummary/pages/BookingSummaryPage";
+import BookingInvoicePage from "./features/bookings/pages/BookingInvoicePage";
 import BookingsPage from "./features/bookings/pages/BookingsPage";
 import CustomerValuePage from "./features/customerValue/pages/CustomerValuePage";
 import DailyBalancePage from "./features/dailyBalance/pages/DailyBalancePage";
@@ -97,6 +98,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <BookingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.bookingInvoice}
+          element={
+            <ProtectedRoute>
+              <BookingInvoicePage />
             </ProtectedRoute>
           }
         />

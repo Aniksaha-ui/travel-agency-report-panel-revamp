@@ -53,9 +53,12 @@ const normalizeSeats = (value) => {
   return normalizeString(value, "No seats");
 };
 
-const normalizeBooking = (item) => ({
-  id: item?.id,
-  bookingId: item?.id,
+const normalizeBooking = (item) => {
+  const bookingId = item?.id ?? item?.booking_id ?? item?.bookingId ?? "";
+
+  return {
+  id: bookingId,
+  bookingId,
   tripName: normalizeString(item?.trip_name, "N/A"),
   bookingType: normalizeString(item?.booking_type, "N/A"),
   packageName: normalizeString(item?.package_name, "N/A"),
@@ -71,7 +74,8 @@ const normalizeBooking = (item) => ({
     .filter(Boolean).length,
   createdAt: item?.created_at ?? "",
   createdAtLabel: formatDateTime(item?.created_at, "Not available"),
-});
+  };
+};
 
 export const normalizeBookings = (payload) => {
   const source = payload?.data ?? {};

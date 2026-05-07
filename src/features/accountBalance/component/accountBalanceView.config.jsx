@@ -1,5 +1,6 @@
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 
 export const accountBalanceCurrencyFormatter = (value) =>
   `BDT ${new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Number(value) || 0)}`;
@@ -32,9 +33,14 @@ export const getAccountBalanceColumns = (onViewHistory) => [
     header: "Action",
     mobileLabel: "Action",
     render: (row) => (
-      <Button variant="outline" onClick={() => onViewHistory(row)}>
-        View history
-      </Button>
+      <Button
+        variant="outline"
+        className="btn-icon"
+        aria-label={`View history for ${row.accountName}`}
+        title={`View history for ${row.accountName}`}
+        icon={<ViewIcon />}
+        onClick={() => onViewHistory(row)}
+      />
     ),
   },
 ];

@@ -308,7 +308,50 @@ export default function HotelFormPage() {
 
   return (
     <AdminLayout>
-      <div className="page-header d-print-none trip-performance-page-header">
+      <div className="hotel-form-page">
+        <div className="d-md-none trip-performance-mobile hotel-form-mobile">
+          <div className="container-xl">
+            <div className="trip-performance-mobile__screen">
+              <section className="trip-performance-mobile__hero">
+                <div className="trip-performance-mobile__hero-top">
+                  <div>
+                    <div className="trip-performance-mobile__eyebrow">
+                      {isEditMode ? `/admin/hotel/${hotelId}/edit` : "/admin/hotel/create"}
+                    </div>
+                    <h2 className="trip-performance-mobile__title">
+                      {isEditMode ? "Edit hotel" : "Create hotel"}
+                    </h2>
+                    <p className="trip-performance-mobile__subtitle">
+                      Manage hotel profile details, photo links, room types, and seasonal room prices.
+                    </p>
+                  </div>
+                  <span className="trip-performance-mobile__date">{boardDate}</span>
+                </div>
+
+                <div className="trip-performance-mobile__metric-grid hotel-form-mobile__meta-grid">
+                  <article className="trip-performance-mobile__metric">
+                    <div className="trip-performance-mobile__metric-label">Mode</div>
+                    <div className="trip-performance-mobile__metric-value">
+                      {isEditMode ? "Update" : "Create"}
+                    </div>
+                    <div className="trip-performance-mobile__metric-meta">
+                      {isEditMode ? "Existing hotel" : "New hotel"}
+                    </div>
+                  </article>
+                  <article className="trip-performance-mobile__metric">
+                    <div className="trip-performance-mobile__metric-label">Hotel ID</div>
+                    <div className="trip-performance-mobile__metric-value">
+                      {isEditMode ? `#${hotelId}` : "Draft"}
+                    </div>
+                    <div className="trip-performance-mobile__metric-meta">Working payload</div>
+                  </article>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div className="page-header d-print-none trip-performance-page-header d-none d-md-block">
         <div className="container-xl">
           <div className="trip-performance-hero">
             <div className="trip-performance-hero__copy">
@@ -715,6 +758,7 @@ export default function HotelFormPage() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </AdminLayout>
   );

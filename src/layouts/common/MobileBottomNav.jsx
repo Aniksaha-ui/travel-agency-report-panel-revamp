@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { selectMenu } from "../../features/menu/store/menuSlice";
 import { getBottomNavItems, getSupportedRoute } from "../../features/menu/utils/menuHelpers";
 import { MenuIcon } from "../../features/menu/utils/menuIcons";
+import { APP_ROUTES } from "../../constants/routes";
 
 function MoreIcon() {
   return (
@@ -35,23 +36,55 @@ export default function MobileBottomNav({ onOpenDrawer }) {
     return null;
   }
 
-  const renderItem = (item, index) => {
+  const getItemLabel = (item, supportedRoute) => {
+    if (supportedRoute === APP_ROUTES.packages) {
+      return "Packages";
+    }
+
+    if (supportedRoute === APP_ROUTES.bookings) {
+      return "Booking";
+    }
+
+    if (supportedRoute === APP_ROUTES.transactions) {
+      return "Txn";
+    }
+
+    return item.title?.replace(" Management", "") ?? "";
+  };
+
+  const isItemActive = (supportedRoute) => {
+    if (!supportedRoute) {
+      return false;
+    }
+
+    if (supportedRoute === APP_ROUTES.dashboard) {
+      return location.pathname === APP_ROUTES.dashboard || location.pathname === "/admin/dashboard";
+    }
+
+    return location.pathname === supportedRoute || location.pathname.startsWith(`${supportedRoute}/`);
+  };
+
+  const renderItem = (item, index, variant = "") => {
     if (!item) {
       return <span key={`placeholder-${index}`} className="mobile-bottom-nav__item is-placeholder" />;
     }
 
     const supportedRoute = getSupportedRoute(item.path);
-    const itemClasses = `mobile-bottom-nav__item${
-      supportedRoute && location.pathname === supportedRoute ? " is-active" : ""
-    }`;
+    const itemClasses = [
+      "mobile-bottom-nav__item",
+      variant === "center" ? "mobile-bottom-nav__item--center" : "",
+      isItemActive(supportedRoute) ? "is-active" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const label = supportedRoute ? getItemLabel(item, supportedRoute) : item.title;
 
     if (supportedRoute) {
       return (
-        <Link key={item.id} to={supportedRoute} className={itemClasses}>
+        <Link key={item.id} to={supportedRoute} className={itemClasses} aria-label={label} title={label}>
           <span className="mobile-bottom-nav__icon">
             <MenuIcon name={item.icon} size={22} />
           </span>
-          <span className="mobile-bottom-nav__label">{item.title}</span>
         </Link>
       );
     }
@@ -61,18 +94,20 @@ export default function MobileBottomNav({ onOpenDrawer }) {
         key={item.id}
         type="button"
         className={itemClasses}
+        aria-label={label}
+        title={label}
         onClick={() => toast.info(`${item.title} page is not available yet.`)}
       >
         <span className="mobile-bottom-nav__icon">
           <MenuIcon name={item.icon} size={22} />
         </span>
-        <span className="mobile-bottom-nav__label">{item.title}</span>
       </button>
     );
   };
 
   const leftItems = [bottomNavItems[0], bottomNavItems[1]];
-  const rightItems = [bottomNavItems[2]];
+  const centerItem = bottomNavItems[2];
+  const rightItems = [bottomNavItems[3]];
 
   return (
     <nav className="mobile-bottom-nav d-md-none" aria-label="Mobile navigation">
@@ -80,41 +115,20 @@ export default function MobileBottomNav({ onOpenDrawer }) {
         <div className="mobile-bottom-nav__row">
           {leftItems.map(renderItem)}
 
-          <button
-            type="button"
-            className="mobile-bottom-nav__fab"
-            aria-label="Open all menus"
-            onClick={onOpenDrawer}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M4 8l16 0" />
-              <path d="M4 12l16 0" />
-              <path d="M4 16l16 0" />
-            </svg>
-          </button>
+          {renderItem(centerItem, 2, "center")}
 
           {rightItems.map(renderItem)}
 
           <button
             type="button"
             className="mobile-bottom-nav__item mobile-bottom-nav__item--drawer"
+            aria-label="More"
+            title="More"
             onClick={onOpenDrawer}
           >
             <span className="mobile-bottom-nav__icon">
               <MoreIcon />
             </span>
-            <span className="mobile-bottom-nav__label">More</span>
           </button>
         </div>
       </div>

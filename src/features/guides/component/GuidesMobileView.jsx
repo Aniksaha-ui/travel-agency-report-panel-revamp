@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { EditIcon } from "../../../components/common/ActionIcons";
 import { APP_ROUTES } from "../../../constants/routes";
 
 export default function GuidesMobileView({
@@ -136,9 +137,14 @@ export default function GuidesMobileView({
 
                     <div className="text-secondary small mb-3">{guide.bioPreview}</div>
 
-                    <Button fullWidthOnMobile variant="outline" onClick={() => onEditGuide(guide)}>
-                      Edit guide
-                    </Button>
+                    <Button
+                      variant="outline"
+                      className="btn-icon"
+                      aria-label={`Edit ${guide.name}`}
+                      title={`Edit ${guide.name}`}
+                      icon={<EditIcon />}
+                      onClick={() => onEditGuide(guide)}
+                    />
                   </article>
                 ))
               ) : (

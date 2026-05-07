@@ -1,4 +1,5 @@
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 import Card from "../../../components/ui/Card";
 import Table from "../../../components/ui/Table";
 
@@ -31,10 +32,12 @@ const buildHistoryColumns = ({ onViewReport, selectedReport }) => [
     render: (report) => (
       <Button
         variant={selectedReport?.id === report.id ? "secondary" : "outline"}
+        className="btn-icon"
+        aria-label={`View ${report.reportName}`}
+        title={`View ${report.reportName}`}
+        icon={<ViewIcon />}
         onClick={() => onViewReport(report)}
-      >
-        View
-      </Button>
+      />
     ),
   },
 ];

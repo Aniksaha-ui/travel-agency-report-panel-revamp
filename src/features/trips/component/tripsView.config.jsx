@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { getTripEditRoute } from "../../../constants/routes";
+import { EditIcon } from "../../../components/common/ActionIcons";
 import Badge from "../../../components/common/Badge";
 
 const getStatusColor = (isActive) => (isActive ? "success" : "neutral");
@@ -54,8 +55,13 @@ export const tripColumns = [
     headerClassName: "text-end",
     cellClassName: "text-end",
     render: (trip) => (
-      <Link to={getTripEditRoute(trip.tripId)} className="btn btn-outline-primary btn-sm">
-        Edit
+      <Link
+        to={getTripEditRoute(trip.tripId)}
+        className="btn btn-outline-primary btn-sm btn-icon"
+        aria-label={`Edit ${trip.tripName}`}
+        title={`Edit ${trip.tripName}`}
+      >
+        <EditIcon />
       </Link>
     ),
   },

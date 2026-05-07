@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
+import { InvoiceIcon } from "../../../components/common/ActionIcons";
 import { getBookingInvoiceRoute } from "../../../constants/routes";
 
 export const getBookingColumns = () => [
@@ -56,9 +57,11 @@ export const getBookingColumns = () => [
     render: (booking) => (
       <Link
         to={getBookingInvoiceRoute(booking.bookingId)}
-        className="btn btn-outline-primary btn-sm"
+        className="btn btn-outline-primary btn-sm btn-icon"
+        aria-label={`Open invoice for booking ${booking.bookingId}`}
+        title={`Open invoice for booking ${booking.bookingId}`}
       >
-        Invoice
+        <InvoiceIcon />
       </Link>
     ),
   },

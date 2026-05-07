@@ -1,4 +1,5 @@
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 
 export default function DailyBalanceMobileHistory({
   changeHistoryPage,
@@ -38,10 +39,12 @@ export default function DailyBalanceMobileHistory({
                 </div>
                 <Button
                   variant={selectedReport?.id === report.id ? "secondary" : "outline"}
+                  className="btn-icon"
+                  aria-label={`View ${report.reportName}`}
+                  title={`View ${report.reportName}`}
+                  icon={<ViewIcon />}
                   onClick={() => onViewReport(report)}
-                >
-                  View
-                </Button>
+                />
               </div>
             </article>
           ))

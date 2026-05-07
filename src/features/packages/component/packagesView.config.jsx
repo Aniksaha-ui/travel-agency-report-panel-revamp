@@ -1,5 +1,6 @@
 import Button from "../../../components/common/Button";
 import Badge from "../../../components/common/Badge";
+import ViewIcon from "../../../components/common/ViewIcon";
 
 const COVERAGE_TONE_MAP = {
   Meal: "warning",
@@ -62,9 +63,14 @@ export const getPackageColumns = (onViewDetails) => [
     headerClassName: "text-end",
     cellClassName: "text-end",
     render: (pkg) => (
-      <Button variant="outline" className="btn-sm" onClick={() => onViewDetails(pkg.packageId)}>
-        View
-      </Button>
+      <Button
+        variant="outline"
+        className="btn-sm btn-icon"
+        aria-label={`View ${pkg.name}`}
+        title={`View ${pkg.name}`}
+        icon={<ViewIcon />}
+        onClick={() => onViewDetails(pkg.packageId)}
+      />
     ),
   },
 ];

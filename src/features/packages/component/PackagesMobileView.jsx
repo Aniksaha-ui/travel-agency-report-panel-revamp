@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 import SearchField from "../../../components/forms/SearchField";
 import { APP_ROUTES } from "../../../constants/routes";
 
@@ -127,9 +128,14 @@ export default function PackagesMobileView({
                     </div>
 
                     <div className="mt-3">
-                      <Button fullWidthOnMobile variant="outline" onClick={() => onViewDetails(pkg.packageId)}>
-                        View details
-                      </Button>
+                      <Button
+                        variant="outline"
+                        className="btn-icon"
+                        aria-label={`View ${pkg.name}`}
+                        title={`View ${pkg.name}`}
+                        icon={<ViewIcon />}
+                        onClick={() => onViewDetails(pkg.packageId)}
+                      />
                     </div>
                   </article>
                 ))

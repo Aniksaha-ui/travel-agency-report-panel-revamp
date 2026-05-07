@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { InvoiceIcon } from "../../../components/common/ActionIcons";
 import { getBookingInvoiceRoute } from "../../../constants/routes";
 
 export default function BookingsMobileView({
@@ -137,9 +138,11 @@ export default function BookingsMobileView({
 
                     <Link
                       to={getBookingInvoiceRoute(booking.bookingId)}
-                      className="btn btn-outline-primary btn-mobile-full"
+                      className="btn btn-outline-primary btn-icon"
+                      aria-label={`Open invoice for booking ${booking.bookingId}`}
+                      title={`Open invoice for booking ${booking.bookingId}`}
                     >
-                      Invoice
+                      <InvoiceIcon />
                     </Link>
                   </article>
                 ))

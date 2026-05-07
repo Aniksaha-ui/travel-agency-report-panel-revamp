@@ -1,5 +1,6 @@
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { EditIcon } from "../../../components/common/ActionIcons";
 
 export const getGuideColumns = ({ onEditGuide }) => [
   {
@@ -49,9 +50,14 @@ export const getGuideColumns = ({ onEditGuide }) => [
     headerClassName: "text-end",
     cellClassName: "text-end",
     render: (guide) => (
-      <Button variant="outline" className="btn-sm" onClick={() => onEditGuide(guide)}>
-        Edit
-      </Button>
+      <Button
+        variant="outline"
+        className="btn-sm btn-icon"
+        aria-label={`Edit ${guide.name}`}
+        title={`Edit ${guide.name}`}
+        icon={<EditIcon />}
+        onClick={() => onEditGuide(guide)}
+      />
     ),
   },
 ];

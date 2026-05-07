@@ -1,4 +1,5 @@
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 import SearchField from "../../../components/forms/SearchField";
 
 export default function RoutesMobileView({
@@ -110,9 +111,14 @@ export default function RoutesMobileView({
                       </div>
                     </div>
                     <div className="mt-3">
-                      <Button fullWidthOnMobile variant="outline" onClick={() => onViewDetails(route.routeId)}>
-                        View details
-                      </Button>
+                      <Button
+                        variant="outline"
+                        className="btn-icon"
+                        aria-label={`View ${route.routeName}`}
+                        title={`View ${route.routeName}`}
+                        icon={<ViewIcon />}
+                        onClick={() => onViewDetails(route.routeId)}
+                      />
                     </div>
                   </article>
                 ))

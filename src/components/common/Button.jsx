@@ -30,7 +30,9 @@ export default function Button({
       disabled={isLoading || props.disabled}
       {...props}
     >
-      {isLoading ? <span className="spinner-border spinner-border-sm me-2" /> : null}
+      {isLoading ? (
+        <span className={classNames("spinner-border spinner-border-sm", children && "me-2")} />
+      ) : null}
       {!isLoading && icon ? (
         <span className={classNames("d-inline-flex align-items-center", children && "me-2")}>
           {icon}

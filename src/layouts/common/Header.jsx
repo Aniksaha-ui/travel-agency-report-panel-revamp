@@ -18,6 +18,9 @@ export default function Header({ onOpenDrawer }) {
   const { auth, logout } = useAuthContext();
   const { mainMenuItems, bottomMenuItems, status } = useSelector(selectMenu);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [isDesktopNavCollapsed, setIsDesktopNavCollapsed] = useState(() =>
+    window.localStorage.getItem("adminDesktopNavCollapsed") === "true"
+  );
   const [openDesktopMenu, setOpenDesktopMenu] = useState(null);
   const accountMenuRef = useRef(null);
   const desktopNavRef = useRef(null);
@@ -62,6 +65,17 @@ export default function Header({ onOpenDrawer }) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isAccountMenuOpen, openDesktopMenu]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "adminDesktopNavCollapsed",
+      String(isDesktopNavCollapsed)
+    );
+
+    if (isDesktopNavCollapsed) {
+      setOpenDesktopMenu(null);
+    }
+  }, [isDesktopNavCollapsed]);
 
   const closeAccountMenu = () => {
     setIsAccountMenuOpen(false);
@@ -300,6 +314,42 @@ export default function Header({ onOpenDrawer }) {
           </div>
 
           <div className="navbar-nav flex-row order-md-last app-header__actions">
+            <button
+              type="button"
+              className="btn btn-outline-secondary app-header__desktop-collapse d-none d-md-inline-flex"
+              onClick={() => setIsDesktopNavCollapsed((isCollapsed) => !isCollapsed)}
+              aria-label={isDesktopNavCollapsed ? "Expand navigation menu" : "Collapse navigation menu"}
+              title={isDesktopNavCollapsed ? "Expand navigation menu" : "Collapse navigation menu"}
+              aria-pressed={isDesktopNavCollapsed}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={17}
+                height={17}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                {isDesktopNavCollapsed ? (
+                  <>
+                    <path d="M4 7h16" />
+                    <path d="M4 12h16" />
+                    <path d="M4 17h16" />
+                  </>
+                ) : (
+                  <>
+                    <path d="M4 6h16" />
+                    <path d="M4 12h10" />
+                    <path d="M4 18h16" />
+                    <path d="m17 9 3 3-3 3" />
+                  </>
+                )}
+              </svg>
+            </button>
             <div className="app-header__role-copy d-none d-md-flex">
               {roleLabel.toLowerCase()}
             </div>
@@ -398,7 +448,10 @@ export default function Header({ onOpenDrawer }) {
 
         <nav
           ref={desktopNavRef}
-          className="app-header__desktop-nav d-none d-md-flex"
+          className={classNames(
+            "app-header__desktop-nav d-none d-md-flex",
+            isDesktopNavCollapsed && "is-collapsed"
+          )}
           aria-label="Primary navigation"
         >
           {status === "loading" ? (

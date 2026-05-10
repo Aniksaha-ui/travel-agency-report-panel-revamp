@@ -16,6 +16,16 @@ export default function BookingInvoicePage() {
   const invoiceRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const { data: invoice, error, isLoading } = useBookingInvoice(bookingId);
+  const invoiceItemDescription = invoice?.tripName || invoice?.packageName || "Travel booking";
+  const showHotel = Boolean(invoice?.hotelName);
+  const showSeats = Boolean(invoice?.seatNumbers);
+  const hasPaymentDetails = Boolean(
+    invoice?.paymentMethod ||
+      invoice?.transactionReference ||
+      invoice?.bkash ||
+      invoice?.nagad ||
+      invoice?.card
+  );
 
   const handleDownloadPdf = async () => {
     const element = invoiceRef.current;
@@ -116,136 +126,127 @@ export default function BookingInvoicePage() {
                 </div>
               ) : invoice ? (
                 <div ref={invoiceRef} className="booking-invoice">
-                  <div className="booking-invoice__watermark" aria-hidden="true">
-                    {invoice.bookingStatus.toUpperCase()}
-                  </div>
-
-                  <div className="booking-invoice__topbar">
-                    <div className="booking-invoice__document-title">INVOICE</div>
-                    <div className="booking-invoice__document-meta">
-                      Travel Booking Confirmation
-                    </div>
-                  </div>
-
-                  <div className="booking-invoice__header">
-                    <div className="booking-invoice__header-block">
-                      <div className="booking-invoice__section-kicker">Company information</div>
-                      <div className="booking-invoice__brand">{APP_COMPANY.agencyName}</div>
-                      <div className="booking-invoice__brand-meta">{APP_COMPANY.address}</div>
-                      <div className="booking-invoice__brand-meta">Phone: {APP_COMPANY.phone}</div>
-                      <div className="booking-invoice__brand-meta">Email: {APP_COMPANY.email}</div>
-                    </div>
-
-                    <div className="booking-invoice__header-block booking-invoice__header-block--customer">
-                      <div className="booking-invoice__section-kicker">Customer information</div>
-                      <div className="booking-invoice__customer-name">{invoice.userName}</div>
-                      <div className="booking-invoice__brand-meta">{invoice.userEmail}</div>
-                      <div className="booking-invoice__brand-meta">
-                        Booking ID: #{invoice.bookingId}
+                  <header className="booking-invoice__masthead">
+                    <h1>INVOICE</h1>
+                    <div className="booking-invoice__top-fields">
+                      <div>
+                        <span>Date</span>
+                        <strong>{boardDate}</strong>
                       </div>
-                      <div className="booking-invoice__brand-meta">Booking type: {invoice.bookingType}</div>
+                      <div>
+                        <span>Invoice No.</span>
+                        <strong>#{invoice.bookingId}</strong>
+                      </div>
                     </div>
+                  </header>
+
+                  <section className="booking-invoice__parties">
+                    <div className="booking-invoice__party">
+                      <div className="booking-invoice__section-kicker">Bill to</div>
+                      <strong>{invoice.userName}</strong>
+                      {invoice.userEmail ? <span>{invoice.userEmail}</span> : null}
+                      {invoice.bookingType ? <span>Booking type: {invoice.bookingType}</span> : null}
+                      {invoice.bookingStatus ? <span>Status: {invoice.bookingStatus}</span> : null}
+                    </div>
+
+                    <div className="booking-invoice__party">
+                      <div className="booking-invoice__section-kicker">From</div>
+                      <strong>{APP_COMPANY.agencyName}</strong>
+                      <span>{APP_COMPANY.address}</span>
+                      <span>Contact: 01628781323</span>
+                      {APP_COMPANY.email ? <span>{APP_COMPANY.email}</span> : null}
+                    </div>
+                  </section>
+
+                  <section className="booking-invoice__route-box">
+                    <div>
+                      <span>Departure</span>
+                      <strong>{invoice.departureTimeLabel}</strong>
+                    </div>
+                    <div>
+                      <span>Arrival</span>
+                      <strong>{invoice.arrivalTimeLabel}</strong>
+                    </div>
+                  </section>
+
+                  <div className="booking-invoice__table-wrap">
+                    <table className="booking-invoice__table">
+                      <thead>
+                        <tr>
+                          <th>Description</th>
+                          <th>Qty</th>
+                          <th>Unit price</th>
+                          <th className="text-end">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <strong>
+                              {invoiceItemDescription}
+                              {invoice.tripId ? ` (#${invoice.tripId})` : ""}
+                            </strong>
+                            {showHotel ? (
+                              <span>
+                                Hotel: {invoice.hotelName}
+                                {invoice.hotelCity ? `, ${invoice.hotelCity}` : ""}
+                                {invoice.hotelCountry ? `, ${invoice.hotelCountry}` : ""}
+                              </span>
+                            ) : null}
+                            {showSeats ? <span>Seats: {invoice.seatNumbers}</span> : null}
+                          </td>
+                          <td>1</td>
+                          <td>{invoice.priceLabel}</td>
+                          <td className="text-end">{invoice.totalPaymentAmountLabel}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
 
-                  <div className="booking-invoice__meta-strip">
-                    <div className="booking-invoice__meta-item">
-                      <span>Status</span>
-                      <strong>{invoice.bookingStatus}</strong>
-                    </div>
-                    <div className="booking-invoice__meta-item">
-                      <span>Invoice date</span>
-                      <strong>{boardDate}</strong>
-                    </div>
-                    <div className="booking-invoice__meta-item">
-                      <span>Payment method</span>
-                      <strong>{invoice.paymentMethod}</strong>
-                    </div>
-                    <div className="booking-invoice__meta-item">
-                      <span>Reference</span>
-                      <strong>{invoice.transactionReference}</strong>
-                    </div>
-                  </div>
-
-                  <div className="booking-invoice__grid">
-                    <section className="booking-invoice__panel">
-                      <div className="booking-invoice__section-title">Trip summary</div>
-                      <div className="booking-invoice__data-grid">
-                        <div className="booking-invoice__data-item">
-                          <span>Trip</span>
-                          <strong>
-                            {invoice.tripName ? `${invoice.tripName}${invoice.tripId ? ` (#${invoice.tripId})` : ""}` : "N/A"}
-                          </strong>
-                        </div>
-                        <div className="booking-invoice__data-item">
-                          <span>Package</span>
-                          <strong>{invoice.packageName || "N/A"}</strong>
-                        </div>
-                        <div className="booking-invoice__data-item">
-                          <span>Hotel</span>
-                          <strong>
-                            {invoice.hotelName
-                              ? `${invoice.hotelName}, ${invoice.hotelCity}, ${invoice.hotelCountry}`
-                              : "N/A"}
-                          </strong>
-                        </div>
-                        <div className="booking-invoice__data-item">
-                          <span>Booking type</span>
-                          <strong>{invoice.bookingType}</strong>
-                        </div>
-                        <div className="booking-invoice__data-item">
-                          <span>Departure</span>
-                          <strong>{invoice.departureTimeLabel}</strong>
-                        </div>
-                        <div className="booking-invoice__data-item">
-                          <span>Arrival</span>
-                          <strong>{invoice.arrivalTimeLabel}</strong>
-                        </div>
-                        <div className="booking-invoice__data-item booking-invoice__data-item--wide">
-                          <span>Seats</span>
-                          <strong>{invoice.seatNumbers}</strong>
-                        </div>
-                      </div>
-                    </section>
-
-                    <section className="booking-invoice__panel">
-                      <div className="booking-invoice__section-title">Payment summary</div>
-                      <div className="booking-invoice__totals">
-                        <div className="booking-invoice__total-row">
-                          <span>Price</span>
-                          <strong>{invoice.priceLabel}</strong>
-                        </div>
-                        <div className="booking-invoice__total-row booking-invoice__total-row--highlight">
-                          <span>Total amount</span>
-                          <strong>{invoice.totalPaymentAmountLabel}</strong>
-                        </div>
-                      </div>
-
-                      <div className="booking-invoice__data-grid booking-invoice__data-grid--compact">
-                        {invoice.bkash ? (
-                          <div className="booking-invoice__data-item">
-                            <span>bKash</span>
-                            <strong>{invoice.bkash}</strong>
+                  <section className="booking-invoice__bottom">
+                    <div className="booking-invoice__remarks">
+                      {hasPaymentDetails ? (
+                        <>
+                          <div className="booking-invoice__section-kicker">Payment details</div>
+                          <div>
+                            {invoice.paymentMethod ? <span>Method: {invoice.paymentMethod}</span> : null}
+                            {invoice.transactionReference ? (
+                              <span>Reference: {invoice.transactionReference}</span>
+                            ) : null}
+                            {invoice.bkash ? <span>bKash: {invoice.bkash}</span> : null}
+                            {invoice.nagad ? <span>Nagad: {invoice.nagad}</span> : null}
+                            {invoice.card ? <span>Card: {invoice.card}</span> : null}
                           </div>
-                        ) : null}
-                        {invoice.nagad ? (
-                          <div className="booking-invoice__data-item">
-                            <span>Nagad</span>
-                            <strong>{invoice.nagad}</strong>
-                          </div>
-                        ) : null}
-                        {invoice.card ? (
-                          <div className="booking-invoice__data-item">
-                            <span>Card</span>
-                            <strong>{invoice.card}</strong>
-                          </div>
-                        ) : null}
-                      </div>
-                    </section>
-                  </div>
+                        </>
+                      ) : null}
+                    </div>
 
-                  <div className="booking-invoice__footer-note">
-                    Thank you for choosing {APP_COMPANY.agencyName}.
-                  </div>
+                    <div className="booking-invoice__totals">
+                      <div className="booking-invoice__total-row">
+                        <span>Subtotal</span>
+                        <strong>{invoice.priceLabel}</strong>
+                      </div>
+                      <div className="booking-invoice__total-row">
+                        <span>Paid amount</span>
+                        <strong>{invoice.totalPaymentAmountLabel}</strong>
+                      </div>
+                      <div className="booking-invoice__total-row booking-invoice__total-row--highlight">
+                        <span>Total amount</span>
+                        <strong>{invoice.totalPaymentAmountLabel}</strong>
+                      </div>
+                    </div>
+                  </section>
+
+                  <footer className="booking-invoice__footer">
+                    <div className="booking-invoice__signature">
+                      <span />
+                      Company Signature
+                    </div>
+                    <div className="booking-invoice__signature">
+                      <span />
+                      Client Signature
+                    </div>
+                  </footer>
                 </div>
               ) : null}
             </Card>

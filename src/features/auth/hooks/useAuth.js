@@ -1,9 +1,14 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { APP_ROUTES } from "../../../constants/routes";
+import {
+  AUTH_SESSION_TIMEOUT_EVENT,
+  AUTH_SESSION_TIMEOUT_MESSAGE,
+  resetSessionTimeoutState,
+} from "../../../services/apiClient";
 import {
   clearMenu,
   clearPersistedMenuState,
@@ -25,6 +30,14 @@ export default function useAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const logout = useCallback(() => {
+    clearPersistedAuthSession();
+    clearPersistedMenuState();
+    dispatch(clearCredentials());
+    dispatch(clearMenu());
+    navigate(APP_ROUTES.login, { replace: true });
+  }, [dispatch, navigate]);
+
   useEffect(() => {
     if (!auth.isAuthenticated || menu.status !== "idle") {
       return;
@@ -35,9 +48,23 @@ export default function useAuth() {
     });
   }, [auth.isAuthenticated, dispatch, menu.status]);
 
+  useEffect(() => {
+    const handleSessionTimeout = (event) => {
+      toast.error(event.detail?.message || AUTH_SESSION_TIMEOUT_MESSAGE);
+      logout();
+    };
+
+    window.addEventListener(AUTH_SESSION_TIMEOUT_EVENT, handleSessionTimeout);
+
+    return () => {
+      window.removeEventListener(AUTH_SESSION_TIMEOUT_EVENT, handleSessionTimeout);
+    };
+  }, [logout]);
+
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (session) => {
+      resetSessionTimeoutState();
       persistAuthSession(session);
       dispatch(setCredentials(session));
       dispatch(clearMenu());
@@ -50,14 +77,6 @@ export default function useAuth() {
       toast.error(error.message || "Unable to sign in.");
     },
   });
-
-  const logout = () => {
-    clearPersistedAuthSession();
-    clearPersistedMenuState();
-    dispatch(clearCredentials());
-    dispatch(clearMenu());
-    navigate(APP_ROUTES.login, { replace: true });
-  };
 
   return {
     auth,

@@ -1,5 +1,7 @@
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { CheckIcon, DeclineIcon, ResolveIcon } from "../../../components/common/ActionIcons";
+import ViewIcon from "../../../components/common/ViewIcon";
 
 export const ticketsTrendSeries = [
   {
@@ -22,6 +24,18 @@ export const renderWorkflowBadge = (ticket) => (
     </span>
   </div>
 );
+
+export const getTransitionIcon = (transition) => {
+  if (transition.key === "decline-ticket") {
+    return <DeclineIcon />;
+  }
+
+  if (transition.key === "resolve-ticket") {
+    return <ResolveIcon />;
+  }
+
+  return <CheckIcon />;
+};
 
 export const createTicketColumns = ({ onOpenDetails, onQuickAction }) => [
   {
@@ -80,18 +94,24 @@ export const createTicketColumns = ({ onOpenDetails, onQuickAction }) => [
     cellClassName: "text-end",
     render: (ticket) => (
       <div className="tickets-row-actions">
-        <Button variant="outline" className="btn-sm" onClick={() => onOpenDetails(ticket)}>
-          View
-        </Button>
+        <Button
+          variant="outline"
+          className="btn-sm btn-icon"
+          aria-label={`View ticket ${ticket.ticketId}`}
+          title={`View ticket ${ticket.ticketId}`}
+          icon={<ViewIcon />}
+          onClick={() => onOpenDetails(ticket)}
+        />
         {ticket.availableTransitions.map((transition) => (
           <Button
             key={transition.key}
             variant={transition.tone === "danger" ? "danger" : "primary"}
-            className="btn-sm"
+            className="btn-sm btn-icon"
+            aria-label={`${transition.label} for ticket ${ticket.ticketId}`}
+            title={`${transition.label} for ticket ${ticket.ticketId}`}
+            icon={getTransitionIcon(transition)}
             onClick={() => onQuickAction(ticket, transition)}
-          >
-            {transition.label}
-          </Button>
+          />
         ))}
       </div>
     ),

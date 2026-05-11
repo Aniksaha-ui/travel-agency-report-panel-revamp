@@ -256,6 +256,21 @@ export const getBottomNavItems = ({ bottomMenuItems = [], mainMenuItems = [] }) 
       (item) => item.title?.toLowerCase().includes("package")
     ) ?? mainMenuItems[1];
 
+  const bookingItem =
+    findMenuItemByMatcher(
+      bottomMenuItems,
+      (item) => item.path === "/admin/bookings" || item.title?.toLowerCase().includes("booking")
+    ) ??
+    findMenuItemByMatcher(
+      mainMenuItems,
+      (item) => item.path === "/admin/bookings" || item.title?.toLowerCase().includes("booking")
+    ) ?? {
+      id: "mobile-booking-route",
+      title: "Booking",
+      path: "/admin/bookings",
+      icon: "BookingManagementIcon",
+    };
+
   const transactionsItem =
     findMenuItemByMatcher(
       bottomMenuItems,
@@ -267,5 +282,5 @@ export const getBottomNavItems = ({ bottomMenuItems = [], mainMenuItems = [] }) 
     findMenuItemByMatcher(bottomMenuItems, (item) => item.title?.toLowerCase().includes("report")) ??
     bottomMenuItems[1];
 
-  return [dashboardItem, packageItem, transactionsItem, settingsItem].filter(Boolean);
+  return [dashboardItem, packageItem, bookingItem, transactionsItem, settingsItem].filter(Boolean);
 };

@@ -221,34 +221,67 @@ export default function PackageCreatePage() {
 
   return (
     <AdminLayout>
-      <div className="page-header d-print-none trip-performance-page-header">
-        <div className="container-xl">
-          <div className="trip-performance-hero">
-            <div className="trip-performance-hero__copy">
-              <span className="trip-performance-hero__eyebrow">/admin/packages/create</span>
-              <h2 className="page-title">Create package</h2>
-              <p className="text-secondary mb-0">
-                Bundle trip inventory into a sellable package with guide assignment, coverage flags, and pricing.
-              </p>
-            </div>
+      <div className="hotel-form-page package-form-page">
+        <div className="d-md-none trip-performance-mobile hotel-form-mobile package-form-mobile">
+          <div className="container-xl">
+            <div className="trip-performance-mobile__screen">
+              <section className="trip-performance-mobile__hero">
+                <div className="trip-performance-mobile__hero-top">
+                  <div>
+                    <div className="trip-performance-mobile__eyebrow">/admin/packages/create</div>
+                    <h2 className="trip-performance-mobile__title">Create package</h2>
+                    <p className="trip-performance-mobile__subtitle">
+                      Bundle trip inventory into a sellable package with guide assignment, coverage flags, and pricing.
+                    </p>
+                  </div>
+                  <span className="trip-performance-mobile__date">{boardDate}</span>
+                </div>
 
-            <div className="trip-performance-hero__meta">
-              <div className="trip-performance-hero__meta-item">
-                <span className="trip-performance-hero__meta-label">Mode</span>
-                <strong>Create new</strong>
+                <div className="trip-performance-mobile__metric-grid hotel-form-mobile__meta-grid">
+                  <article className="trip-performance-mobile__metric">
+                    <div className="trip-performance-mobile__metric-label">Mode</div>
+                    <div className="trip-performance-mobile__metric-value">Create</div>
+                    <div className="trip-performance-mobile__metric-meta">New package</div>
+                  </article>
+                  <article className="trip-performance-mobile__metric">
+                    <div className="trip-performance-mobile__metric-label">Pricing rows</div>
+                    <div className="trip-performance-mobile__metric-value">{formValues.pricing.length}</div>
+                    <div className="trip-performance-mobile__metric-meta">Working payload</div>
+                  </article>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div className="page-header d-print-none trip-performance-page-header d-none d-md-block">
+          <div className="container-xl">
+            <div className="trip-performance-hero">
+              <div className="trip-performance-hero__copy">
+                <span className="trip-performance-hero__eyebrow">/admin/packages/create</span>
+                <h2 className="page-title">Create package</h2>
+                <p className="text-secondary mb-0">
+                  Bundle trip inventory into a sellable package with guide assignment, coverage flags, and pricing.
+                </p>
               </div>
-              <div className="trip-performance-hero__meta-item">
-                <span className="trip-performance-hero__meta-label">Pricing rows</span>
-                <strong>{formValues.pricing.length}</strong>
-              </div>
-              <div className="trip-performance-hero__meta-item">
-                <span className="trip-performance-hero__meta-label">Board date</span>
-                <strong>{boardDate}</strong>
+
+              <div className="trip-performance-hero__meta">
+                <div className="trip-performance-hero__meta-item">
+                  <span className="trip-performance-hero__meta-label">Mode</span>
+                  <strong>Create new</strong>
+                </div>
+                <div className="trip-performance-hero__meta-item">
+                  <span className="trip-performance-hero__meta-label">Pricing rows</span>
+                  <strong>{formValues.pricing.length}</strong>
+                </div>
+                <div className="trip-performance-hero__meta-item">
+                  <span className="trip-performance-hero__meta-label">Board date</span>
+                  <strong>{boardDate}</strong>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
       <div className="page-body">
         <div className="container-xl">
@@ -545,6 +578,7 @@ export default function PackageCreatePage() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </AdminLayout>
   );

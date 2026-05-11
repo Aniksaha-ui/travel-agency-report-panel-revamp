@@ -2,11 +2,14 @@ import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
 import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 import {
+  getTransitionIcon,
   renderWorkflowBadge,
   ticketNumberFormatter,
   ticketsTrendSeries,
 } from "./ticketsView.config";
+import { OpenIcon } from "../../../components/common/ActionIcons";
 
 export default function TicketsMobileView({
   boardDate,
@@ -157,20 +160,22 @@ export default function TicketsMobileView({
                     <div className="tickets-mobile__actions tickets-mobile__actions--stack">
                       <Button
                         variant="outline"
-                        fullWidthOnMobile
+                        className="btn-icon"
+                        aria-label={`View ticket ${ticket.ticketId}`}
+                        title={`View ticket ${ticket.ticketId}`}
+                        icon={<ViewIcon />}
                         onClick={() => onOpenDetails(ticket)}
-                      >
-                        View details
-                      </Button>
+                      />
                       {ticket.availableTransitions.map((transition) => (
                         <Button
                           key={transition.key}
                           variant={transition.tone === "danger" ? "danger" : "primary"}
-                          fullWidthOnMobile
+                          className="btn-icon"
+                          aria-label={`${transition.label} for ticket ${ticket.ticketId}`}
+                          title={`${transition.label} for ticket ${ticket.ticketId}`}
+                          icon={getTransitionIcon(transition)}
                           onClick={() => onQuickAction(ticket, transition)}
-                        >
-                          {transition.label}
-                        </Button>
+                        />
                       ))}
                     </div>
                   </article>
@@ -242,11 +247,12 @@ export default function TicketsMobileView({
             {summary.oldestPendingTicket ? (
               <div className="tickets-mobile__actions">
                 <Button
-                  fullWidthOnMobile
+                  className="btn-icon"
+                  aria-label={`Open oldest pending ticket ${summary.oldestPendingTicket.ticketId}`}
+                  title={`Open oldest pending ticket ${summary.oldestPendingTicket.ticketId}`}
+                  icon={<OpenIcon />}
                   onClick={() => onOpenDetails(summary.oldestPendingTicket)}
-                >
-                  Open oldest pending
-                </Button>
+                />
               </div>
             ) : null}
           </section>

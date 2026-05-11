@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
+import { EditIcon } from "../../../components/common/ActionIcons";
+import ViewIcon from "../../../components/common/ViewIcon";
 import { getHotelEditRoute } from "../../../constants/routes";
 
 const getStatusColor = (isActive) => (isActive ? "success" : "neutral");
@@ -57,17 +59,21 @@ export const getHotelColumns = (onViewDetails) => [
       <div className="d-inline-flex gap-2">
         <button
           type="button"
-          className="btn btn-outline-primary btn-sm"
+          className="btn btn-outline-primary btn-sm btn-icon"
+          aria-label={`View ${hotel.name}`}
+          title={`View ${hotel.name}`}
           onClick={() => onViewDetails(hotel.hotelId)}
         >
-          View
+          <ViewIcon />
         </button>
         <Link
           to={getHotelEditRoute(hotel.hotelId)}
           state={{ hotel }}
-          className="btn btn-outline-primary btn-sm"
+          className="btn btn-outline-primary btn-sm btn-icon"
+          aria-label={`Edit ${hotel.name}`}
+          title={`Edit ${hotel.name}`}
         >
-          Edit
+          <EditIcon />
         </Link>
       </div>
     ),

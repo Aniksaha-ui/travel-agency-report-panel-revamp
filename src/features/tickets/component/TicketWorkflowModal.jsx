@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { DeclineIcon, ResolveIcon, CheckIcon } from "../../../components/common/ActionIcons";
+import ViewIcon from "../../../components/common/ViewIcon";
 import Modal from "../../../components/ui/Modal";
 
 export default function TicketWorkflowModal({
@@ -42,15 +44,44 @@ export default function TicketWorkflowModal({
         <div className="tickets-modal__stack">
           <section className="tickets-modal__summary">
             <div className="tickets-modal__summary-main">
-              <div className="tickets-modal__summary-kicker">{ticket.statusDisplayLabel}</div>
+              <div className="tickets-modal__summary-kicker">Ticket workflow</div>
               <div className="tickets-modal__summary-title">{ticket.title}</div>
               <div className="tickets-modal__summary-meta">{ticket.workflowDescription}</div>
             </div>
             <div className="tickets-modal__summary-badges">
-              <Badge color={ticket.workflowTone}>{ticket.statusDisplayLabel}</Badge>
-              <Badge color={ticket.status === 2 ? "neutral" : "info"}>
+              <Badge color={ticket.workflowTone} className="tickets-modal__status-badge">
+                {ticket.statusDisplayLabel}
+              </Badge>
+              <Badge
+                color={ticket.status === 2 ? "neutral" : "info"}
+                className="tickets-modal__status-badge"
+              >
                 {ticket.resolvedStatusLabel}
               </Badge>
+            </div>
+          </section>
+
+          <section className="tickets-modal__status-board">
+            <div className="tickets-modal__status-card">
+              <span className="tickets-modal__summary-label">Workflow status</span>
+              <Badge color={ticket.workflowTone} className="tickets-modal__status-badge">
+                {ticket.statusDisplayLabel}
+              </Badge>
+              <p>{ticket.workflowDescription}</p>
+            </div>
+            <div className="tickets-modal__status-card">
+              <span className="tickets-modal__summary-label">Decision status</span>
+              <Badge
+                color={ticket.status === 2 ? "neutral" : "info"}
+                className="tickets-modal__status-badge"
+              >
+                {ticket.resolvedStatusLabel}
+              </Badge>
+              <p>
+                {ticket.resolvedByName === "Unassigned"
+                  ? "No resolver assigned yet."
+                  : `Resolved by ${ticket.resolvedByName}.`}
+              </p>
             </div>
           </section>
 
@@ -82,9 +113,11 @@ export default function TicketWorkflowModal({
                   href={ticket.attachmentUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="btn btn-outline-primary btn-sm mt-1"
+                  className="btn btn-outline-primary btn-sm btn-icon mt-1"
+                  aria-label="View attachment"
+                  title="View attachment"
                 >
-                  View attachment
+                  <ViewIcon />
                 </a>
               ) : (
                 <strong>No attachment</strong>
@@ -141,30 +174,36 @@ export default function TicketWorkflowModal({
             {approveTransition ? (
               <Button
                 variant="primary"
+                className="btn-icon"
+                aria-label="Approve ticket"
+                title="Approve ticket"
+                icon={<CheckIcon />}
                 isLoading={isSubmitting}
                 onClick={() => onQuickAction(ticket, approveTransition)}
-              >
-                Approve
-              </Button>
+              />
             ) : null}
             {declineTransition ? (
               <Button
                 variant="danger"
+                className="btn-icon"
+                aria-label="Decline ticket"
+                title="Decline ticket"
+                icon={<DeclineIcon />}
                 isLoading={isSubmitting}
                 onClick={() => onQuickAction(ticket, declineTransition)}
-              >
-                Decline
-              </Button>
+              />
             ) : null}
             {resolveTransition ? (
               <Button
                 variant="primary"
+                className="btn-icon"
+                aria-label="Mark ticket as resolved"
+                title="Mark ticket as resolved"
+                icon={<ResolveIcon />}
                 isLoading={isSubmitting}
                 disabled={!canResolve}
                 onClick={() => onQuickAction(ticket, resolveTransition, remarks)}
-              >
-                Mark as resolved
-              </Button>
+              />
             ) : null}
             <Button variant="ghost" onClick={onClose}>
               Close

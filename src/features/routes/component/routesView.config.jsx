@@ -1,3 +1,5 @@
+import ViewIcon from "../../../components/common/ViewIcon";
+
 export const getRouteColumns = (onViewDetails) => [
   {
     key: "routeName",
@@ -37,10 +39,12 @@ export const getRouteColumns = (onViewDetails) => [
     render: (route) => (
       <button
         type="button"
-        className="btn btn-outline-primary btn-sm"
+        className="btn btn-outline-primary btn-sm btn-icon"
+        aria-label={`View ${route.routeName}`}
+        title={`View ${route.routeName}`}
         onClick={() => onViewDetails(route.routeId)}
       >
-        View
+        <ViewIcon />
       </button>
     ),
   },

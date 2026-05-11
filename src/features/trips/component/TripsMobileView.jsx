@@ -3,6 +3,7 @@ import { APP_ROUTES, getTripEditRoute } from "../../../constants/routes";
 import Button from "../../../components/common/Button";
 import Badge from "../../../components/common/Badge";
 import SearchField from "../../../components/forms/SearchField";
+import { EditIcon } from "../../../components/common/ActionIcons";
 
 export default function TripsMobileView({
   boardDate,
@@ -121,8 +122,13 @@ export default function TripsMobileView({
                     </div>
 
                     <div className="mt-3">
-                      <Link to={getTripEditRoute(trip.tripId)} className="btn btn-outline-primary w-100">
-                        Edit trip
+                      <Link
+                        to={getTripEditRoute(trip.tripId)}
+                        className="btn btn-outline-primary btn-icon"
+                        aria-label={`Edit ${trip.tripName}`}
+                        title={`Edit ${trip.tripName}`}
+                      >
+                        <EditIcon />
                       </Link>
                     </div>
                   </article>

@@ -1,5 +1,6 @@
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import ViewIcon from "../../../components/common/ViewIcon";
 import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import { accountBalanceCurrencyFormatter } from "./accountBalanceView.config";
 
@@ -130,9 +131,14 @@ export default function AccountBalanceMobileView({
                       </div>
                     </div>
 
-                    <Button fullWidthOnMobile variant="outline" onClick={() => onViewHistory(account)}>
-                      View history
-                    </Button>
+                    <Button
+                      variant="outline"
+                      className="btn-icon"
+                      aria-label={`View history for ${account.accountName}`}
+                      title={`View history for ${account.accountName}`}
+                      icon={<ViewIcon />}
+                      onClick={() => onViewHistory(account)}
+                    />
                   </article>
                 ))
               ) : (

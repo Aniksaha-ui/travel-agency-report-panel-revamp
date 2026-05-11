@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { EditIcon } from "../../../components/common/ActionIcons";
+import ViewIcon from "../../../components/common/ViewIcon";
 import SearchField from "../../../components/forms/SearchField";
 import { APP_ROUTES, getHotelEditRoute } from "../../../constants/routes";
 
@@ -122,17 +124,20 @@ export default function HotelsMobileView({
                     <div className="d-flex gap-2 mt-3">
                       <Button
                         variant="outline"
-                        fullWidthOnMobile
+                        className="btn-icon"
+                        aria-label={`View ${hotel.name}`}
+                        title={`View ${hotel.name}`}
+                        icon={<ViewIcon />}
                         onClick={() => onViewDetails(hotel.hotelId)}
-                      >
-                        View
-                      </Button>
+                      />
                       <Link
                         to={getHotelEditRoute(hotel.hotelId)}
                         state={{ hotel }}
-                        className="btn btn-outline-primary btn-mobile-full"
+                        className="btn btn-outline-primary btn-icon"
+                        aria-label={`Edit ${hotel.name}`}
+                        title={`Edit ${hotel.name}`}
                       >
-                        Edit
+                        <EditIcon />
                       </Link>
                     </div>
                   </article>

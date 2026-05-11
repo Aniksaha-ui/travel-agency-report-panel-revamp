@@ -1,5 +1,6 @@
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { CheckIcon, DisburseIcon } from "../../../components/common/ActionIcons";
 
 export const refundTrendSeries = [{ key: "bookings", label: "Refunds", color: "#38bdf8" }];
 
@@ -68,14 +69,17 @@ export const createRefundColumns = ({ disbursingRefundId, isDisbursing, onDisbur
     render: (refund) =>
       refund.isPending ? (
         <Button
-          className="btn-sm"
+          className="btn-sm btn-icon"
+          aria-label={`Disburse refund for ${refund.tripName}`}
+          title={`Disburse refund for ${refund.tripName}`}
+          icon={<DisburseIcon />}
           isLoading={isDisbursing && String(disbursingRefundId) === String(refund.id)}
           onClick={() => onDisburseRefund(refund)}
-        >
-          Disburse
-        </Button>
+        />
       ) : (
-        <span className="text-secondary small">Completed</span>
+        <span className="btn btn-outline-primary btn-sm btn-icon disabled" title="Completed">
+          <CheckIcon />
+        </span>
       ),
   },
 ];

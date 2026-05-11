@@ -2,6 +2,7 @@ import RechartsAreaChart from "../../../components/charts/RechartsAreaChart";
 import RechartsPieChart from "../../../components/charts/RechartsPieChart";
 import Badge from "../../../components/common/Badge";
 import Button from "../../../components/common/Button";
+import { CheckIcon, DisburseIcon } from "../../../components/common/ActionIcons";
 import { refundCountFormatter, refundTrendSeries } from "./refundsView.config";
 
 export default function RefundsMobileView({
@@ -137,16 +138,22 @@ export default function RefundsMobileView({
                     <div className="tickets-mobile__actions">
                       {refund.isPending ? (
                         <Button
-                          fullWidthOnMobile
+                          className="btn-icon"
+                          aria-label={`Disburse refund for ${refund.tripName}`}
+                          title={`Disburse refund for ${refund.tripName}`}
+                          icon={<DisburseIcon />}
                           isLoading={isDisbursing && String(disbursingRefundId) === String(refund.id)}
                           onClick={() => onDisburseRefund(refund)}
-                        >
-                          Disburse refund
-                        </Button>
+                        />
                       ) : (
-                        <Button variant="outline" fullWidthOnMobile disabled>
-                          Already disbursed
-                        </Button>
+                        <Button
+                          variant="outline"
+                          className="btn-icon"
+                          aria-label="Already disbursed"
+                          title="Already disbursed"
+                          icon={<CheckIcon />}
+                          disabled
+                        />
                       )}
                     </div>
                   </article>

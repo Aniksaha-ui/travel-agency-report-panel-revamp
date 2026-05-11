@@ -6,7 +6,10 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { APP_BRAND } from "../../constants/brand";
 import { APP_ROUTES } from "../../constants/routes";
 import { selectMenu } from "../../features/menu/store/menuSlice";
-import { getSupportedRoute, hasChildren } from "../../features/menu/utils/menuHelpers";
+import {
+  getSupportedRoute,
+  hasChildren,
+} from "../../features/menu/utils/menuHelpers";
 import { MenuIcon } from "../../features/menu/utils/menuIcons";
 import { classNames } from "../../utils/classNames";
 import { formatBoardDate } from "../../utils/dateUtils";
@@ -15,6 +18,9 @@ export default function Header({ onOpenDrawer }) {
   const { auth, logout } = useAuthContext();
   const { mainMenuItems, bottomMenuItems, status } = useSelector(selectMenu);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [isDesktopNavCollapsed, setIsDesktopNavCollapsed] = useState(() =>
+    window.localStorage.getItem("adminDesktopNavCollapsed") === "true"
+  );
   const [openDesktopMenu, setOpenDesktopMenu] = useState(null);
   const accountMenuRef = useRef(null);
   const desktopNavRef = useRef(null);
@@ -29,11 +35,17 @@ export default function Header({ onOpenDrawer }) {
     }
 
     const handlePointerDown = (event) => {
-      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target)
+      ) {
         setIsAccountMenuOpen(false);
       }
 
-      if (desktopNavRef.current && !desktopNavRef.current.contains(event.target)) {
+      if (
+        desktopNavRef.current &&
+        !desktopNavRef.current.contains(event.target)
+      ) {
         setOpenDesktopMenu(null);
       }
     };
@@ -53,6 +65,17 @@ export default function Header({ onOpenDrawer }) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isAccountMenuOpen, openDesktopMenu]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "adminDesktopNavCollapsed",
+      String(isDesktopNavCollapsed)
+    );
+
+    if (isDesktopNavCollapsed) {
+      setOpenDesktopMenu(null);
+    }
+  }, [isDesktopNavCollapsed]);
 
   const closeAccountMenu = () => {
     setIsAccountMenuOpen(false);
@@ -84,12 +107,24 @@ export default function Header({ onOpenDrawer }) {
 
     const navRect = desktopNavRef.current.getBoundingClientRect();
     const triggerRect = event.currentTarget.getBoundingClientRect();
+    const rootFontSize =
+      parseFloat(window.getComputedStyle(document.documentElement).fontSize) ||
+      16;
+    const flyoutWidth = Math.min(
+      rootFontSize * 44,
+      window.innerWidth - rootFontSize * 2,
+    );
+    const triggerLeft = triggerRect.left - navRect.left;
+    const maxLeft = Math.max(
+      0,
+      window.innerWidth - navRect.left - flyoutWidth - rootFontSize,
+    );
 
     setOpenDesktopMenu({
       id: item.id,
       title: item.title,
       children: item.children ?? [],
-      left: Math.max(0, triggerRect.left - navRect.left),
+      left: Math.min(Math.max(0, triggerLeft), maxLeft),
       top: triggerRect.bottom - navRect.top + 8,
     });
   };
@@ -104,7 +139,10 @@ export default function Header({ onOpenDrawer }) {
             key={`${item.id}-${supportedRoute}`}
             to={supportedRoute}
             className={({ isActive }) =>
-              classNames("app-header__desktop-dropdown-item", isActive && "active")
+              classNames(
+                "app-header__desktop-dropdown-item",
+                isActive && "active",
+              )
             }
             onClick={closeDesktopMenu}
           >
@@ -143,8 +181,9 @@ export default function Header({ onOpenDrawer }) {
             type="button"
             className={classNames(
               "app-header__desktop-item",
-              rowVariant === "secondary" && "app-header__desktop-item--secondary",
-              isOpen && "is-open"
+              rowVariant === "secondary" &&
+                "app-header__desktop-item--secondary",
+              isOpen && "is-open",
             )}
             onClick={(event) => toggleDesktopMenu(item, event)}
             aria-expanded={isOpen}
@@ -183,8 +222,9 @@ export default function Header({ onOpenDrawer }) {
           className={({ isActive }) =>
             classNames(
               "app-header__desktop-item",
-              rowVariant === "secondary" && "app-header__desktop-item--secondary",
-              isActive && "active"
+              rowVariant === "secondary" &&
+                "app-header__desktop-item--secondary",
+              isActive && "active",
             )
           }
         >
@@ -202,7 +242,7 @@ export default function Header({ onOpenDrawer }) {
         type="button"
         className={classNames(
           "app-header__desktop-item",
-          rowVariant === "secondary" && "app-header__desktop-item--secondary"
+          rowVariant === "secondary" && "app-header__desktop-item--secondary",
         )}
         onClick={() => handleUnavailableMenu(item.title)}
       >
@@ -247,7 +287,10 @@ export default function Header({ onOpenDrawer }) {
             </button>
 
             <h1 className="navbar-brand navbar-brand-autodark mb-0 app-header__brand">
-              <Link to="/" className="text-decoration-none app-header__brand-link">
+              <Link
+                to="/"
+                className="text-decoration-none app-header__brand-link"
+              >
                 <img
                   src={APP_BRAND.logo}
                   width={110}
@@ -256,8 +299,12 @@ export default function Header({ onOpenDrawer }) {
                   className="navbar-brand-image"
                 />
                 <span className="d-md-none app-header__brand-copy">
-                  <span className="app-header__brand-name">{APP_BRAND.shortName}</span>
-                  <span className="app-header__brand-subtitle">Travel control</span>
+                  <span className="app-header__brand-name">
+                    {APP_BRAND.shortName}
+                  </span>
+                  <span className="app-header__brand-subtitle">
+                    Travel control
+                  </span>
                 </span>
               </Link>
             </h1>
@@ -267,7 +314,45 @@ export default function Header({ onOpenDrawer }) {
           </div>
 
           <div className="navbar-nav flex-row order-md-last app-header__actions">
-            <div className="app-header__role-copy d-none d-md-flex">{roleLabel.toLowerCase()}</div>
+            <button
+              type="button"
+              className="btn btn-outline-secondary app-header__desktop-collapse d-none d-md-inline-flex"
+              onClick={() => setIsDesktopNavCollapsed((isCollapsed) => !isCollapsed)}
+              aria-label={isDesktopNavCollapsed ? "Expand navigation menu" : "Collapse navigation menu"}
+              title={isDesktopNavCollapsed ? "Expand navigation menu" : "Collapse navigation menu"}
+              aria-pressed={isDesktopNavCollapsed}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={17}
+                height={17}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                {isDesktopNavCollapsed ? (
+                  <>
+                    <path d="M4 7h16" />
+                    <path d="M4 12h16" />
+                    <path d="M4 17h16" />
+                  </>
+                ) : (
+                  <>
+                    <path d="M4 6h16" />
+                    <path d="M4 12h10" />
+                    <path d="M4 18h16" />
+                    <path d="m17 9 3 3-3 3" />
+                  </>
+                )}
+              </svg>
+            </button>
+            <div className="app-header__role-copy d-none d-md-flex">
+              {roleLabel.toLowerCase()}
+            </div>
             <div className="nav-item app-header__profile" ref={accountMenuRef}>
               <button
                 type="button"
@@ -276,10 +361,16 @@ export default function Header({ onOpenDrawer }) {
                 aria-expanded={isAccountMenuOpen}
                 aria-haspopup="menu"
               >
-                <span className="avatar avatar-sm app-header__avatar">{userInitial}</span>
+                <span className="avatar avatar-sm app-header__avatar">
+                  {userInitial}
+                </span>
                 <span className="app-header__user-copy">
-                  <span className="app-header__user-name">{auth.user?.name ?? "Admin User"}</span>
-                  <span className="app-header__user-email">{accountSubtitle}</span>
+                  <span className="app-header__user-name">
+                    {auth.user?.name ?? "Admin User"}
+                  </span>
+                  <span className="app-header__user-email">
+                    {accountSubtitle}
+                  </span>
                 </span>
                 <span className="app-header__account-caret" aria-hidden="true">
                   <svg
@@ -301,11 +392,19 @@ export default function Header({ onOpenDrawer }) {
               {isAccountMenuOpen ? (
                 <div className="app-header__account-menu" role="menu">
                   <div className="app-header__account-card">
-                    <span className="avatar avatar-sm app-header__avatar">{userInitial}</span>
+                    <span className="avatar avatar-sm app-header__avatar">
+                      {userInitial}
+                    </span>
                     <div>
-                      <div className="app-header__account-name">{auth.user?.name ?? "Admin User"}</div>
-                      <div className="app-header__account-email">{auth.user?.email ?? ""}</div>
-                      <div className="app-header__account-role">{roleLabel}</div>
+                      <div className="app-header__account-name">
+                        {auth.user?.name ?? "Admin User"}
+                      </div>
+                      <div className="app-header__account-email">
+                        {auth.user?.email ?? ""}
+                      </div>
+                      <div className="app-header__account-role">
+                        {roleLabel}
+                      </div>
                     </div>
                   </div>
 
@@ -349,7 +448,10 @@ export default function Header({ onOpenDrawer }) {
 
         <nav
           ref={desktopNavRef}
-          className="app-header__desktop-nav d-none d-md-flex"
+          className={classNames(
+            "app-header__desktop-nav d-none d-md-flex",
+            isDesktopNavCollapsed && "is-collapsed"
+          )}
           aria-label="Primary navigation"
         >
           {status === "loading" ? (
@@ -359,7 +461,9 @@ export default function Header({ onOpenDrawer }) {
               {mainMenuItems.length ? (
                 <div className="app-header__desktop-nav-scroll">
                   <div className="app-header__desktop-nav-row">
-                    {mainMenuItems.map((item) => renderDesktopMenuItem(item, "primary"))}
+                    {mainMenuItems.map((item) =>
+                      renderDesktopMenuItem(item, "primary"),
+                    )}
                   </div>
                 </div>
               ) : null}
@@ -367,7 +471,9 @@ export default function Header({ onOpenDrawer }) {
               {bottomMenuItems.length ? (
                 <div className="app-header__desktop-nav-scroll">
                   <div className="app-header__desktop-nav-row app-header__desktop-nav-row--secondary">
-                    {bottomMenuItems.map((item) => renderDesktopMenuItem(item, "secondary"))}
+                    {bottomMenuItems.map((item) =>
+                      renderDesktopMenuItem(item, "secondary"),
+                    )}
                   </div>
                 </div>
               ) : null}
@@ -387,7 +493,9 @@ export default function Header({ onOpenDrawer }) {
               ) : null}
 
               {!mainMenuItems.length && !bottomMenuItems.length ? (
-                <div className="app-header__desktop-nav-state">Menu items will appear here once available.</div>
+                <div className="app-header__desktop-nav-state">
+                  Menu items will appear here once available.
+                </div>
               ) : null}
             </>
           )}

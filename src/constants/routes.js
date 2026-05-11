@@ -39,6 +39,17 @@ export const APP_ROUTES = {
   tripEdit: "/admin/trips/:tripId/edit",
   tripPerformance: "/admin/tripPerformance",
   userGrowthReport: "/admin/user-growth-report",
+  visaApplications: "/admin/visa/applications",
+  visaApplicationDetails: "/admin/visa/applications/:applicationId",
+  visaCountries: "/admin/visa/countries",
+  visaCountryCreate: "/admin/visa/countries/add",
+  visaCountryEdit: "/admin/visa/countries/update/:countryId",
+  visaRequirements: "/admin/visa/requirements",
+  visaRequirementCreate: "/admin/visa/requirements/add",
+  visaRequirementEdit: "/admin/visa/requirements/update/:requirementId",
+  visaTypes: "/admin/visa/types",
+  visaTypeCreate: "/admin/visa/types/add",
+  visaTypeEdit: "/admin/visa/types/update/:visaTypeId",
   vehicles: "/admin/vehicles",
   vehicleWiseSeatReport: "/admin/vehiclewiseseatreport",
   vehicleTrackingReport: "/admin/vehicletrackingreport",
@@ -49,3 +60,8 @@ export const getTripEditRoute = (tripId) => `/admin/trips/${tripId}/edit`;
 export const getHotelEditRoute = (hotelId) => `/admin/hotel/${hotelId}/edit`;
 export const getBookingInvoiceRoute = (bookingId) => `/admin/bookinginvoice/${bookingId}`;
 export const getBlogEditRoute = (blogId) => `/admin/blog/update/${blogId}`;
+export const getVisaApplicationDetailsRoute = (applicationId) => `/admin/visa/applications/${applicationId}`;
+export const getVisaCountryEditRoute = (countryId) => `/admin/visa/countries/update/${countryId}`;
+export const getVisaRequirementEditRoute = (requirementId) =>
+  `/admin/visa/requirements/update/${requirementId}`;
+export const getVisaTypeEditRoute = (visaTypeId) => `/admin/visa/types/update/${visaTypeId}`;

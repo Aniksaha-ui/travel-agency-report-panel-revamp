@@ -116,6 +116,22 @@ export const getSupportedRoute = (path) => {
     return APP_ROUTES.transactions;
   }
 
+  if (path === "/admin/visa" || path === "/admin/visa/type" || path === "/admin/visa/types") {
+    return APP_ROUTES.visaTypes;
+  }
+
+  if (path === "/admin/visa/countries") {
+    return APP_ROUTES.visaCountries;
+  }
+
+  if (path === "/admin/visa/requirements") {
+    return APP_ROUTES.visaRequirements;
+  }
+
+  if (path === "/admin/visa/applications") {
+    return APP_ROUTES.visaApplications;
+  }
+
   if (path === "/admin/vehicles" || path === "/admin/vehicle") {
     return APP_ROUTES.vehicles;
   }

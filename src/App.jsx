@@ -42,6 +42,14 @@ import TripEditPage from "./features/trips/pages/TripEditPage";
 import TripsPage from "./features/trips/pages/TripsPage";
 import TripPerformancePage from "./features/tripPerformance/pages/TripPerformancePage";
 import UserGrowthReportPage from "./features/userGrowthReport/pages/UserGrowthReportPage";
+import VisaApplicationDetailsPage from "./features/visaApplications/pages/VisaApplicationDetailsPage";
+import VisaApplicationsPage from "./features/visaApplications/pages/VisaApplicationsPage";
+import VisaCountryFormPage from "./features/visaCountries/pages/VisaCountryFormPage";
+import VisaCountriesPage from "./features/visaCountries/pages/VisaCountriesPage";
+import VisaRequirementFormPage from "./features/visaRequirements/pages/VisaRequirementFormPage";
+import VisaRequirementsPage from "./features/visaRequirements/pages/VisaRequirementsPage";
+import VisaTypeFormPage from "./features/visaTypes/pages/VisaTypeFormPage";
+import VisaTypesPage from "./features/visaTypes/pages/VisaTypesPage";
 import VehiclesPage from "./features/vehicles/pages/VehiclesPage";
 import VehicleWiseSeatReportPage from "./features/vehicleWiseSeatReport/pages/VehicleWiseSeatReportPage";
 import VehicleTrackingReportPage from "./features/vehicleTrackingReport/pages/VehicleTrackingReportPage";
@@ -422,6 +430,94 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <UserGrowthReportPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaApplications}
+          element={
+            <ProtectedRoute>
+              <VisaApplicationsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaApplicationDetails}
+          element={
+            <ProtectedRoute>
+              <VisaApplicationDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaCountries}
+          element={
+            <ProtectedRoute>
+              <VisaCountriesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaCountryCreate}
+          element={
+            <ProtectedRoute>
+              <VisaCountryFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaCountryEdit}
+          element={
+            <ProtectedRoute>
+              <VisaCountryFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaRequirements}
+          element={
+            <ProtectedRoute>
+              <VisaRequirementsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaRequirementCreate}
+          element={
+            <ProtectedRoute>
+              <VisaRequirementFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaRequirementEdit}
+          element={
+            <ProtectedRoute>
+              <VisaRequirementFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaTypes}
+          element={
+            <ProtectedRoute>
+              <VisaTypesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaTypeCreate}
+          element={
+            <ProtectedRoute>
+              <VisaTypeFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={APP_ROUTES.visaTypeEdit}
+          element={
+            <ProtectedRoute>
+              <VisaTypeFormPage />
             </ProtectedRoute>
           }
         />
